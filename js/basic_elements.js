@@ -44,6 +44,7 @@ document.getElementById("load_header").innerHTML =
             <li><a class="dropdown-item active white" href="index.html">Главная</a></li>
             <li><a class="dropdown-item" href="https://vk.com/eugene_blogs_official">VK</a></li>
             <li><a class="dropdown-item" href="https://github.com/EugeneBlogs?tab=repositories">GitHub</a></li>
+            <li><a class="dropdown-item" href="games.html">ИГРЫ НА ПК</a></li>
             <li><a class="dropdown-item" href="text-quest.html">(НЕ)выживши(Й/Е)</a></li>
             <li><a class="dropdown-item" href="text-quest-2.html">Операция "Борьба за жизнь"</a></li>
             <li><a class="dropdown-item" href="tic-tac-toe.html">Крестики-нолики</a></li>
