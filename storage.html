@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Локальное хранилище M.Storage</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" id="main" style="display: none;">
+                    <h3>Добро пожаловать!</h3>
+                    <p>На данный момент в хранилище загружен 1 файл.</p>
+                    <table class="table table-dark table-hover" id="table-files">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Название файла</th>
+                                <th scope="col">Тип файла</th>
+                                <th scope="col">Размер файла</th>
+                                <th scope="col">Дата создания</th>
+                                <th scope="col">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Теоретический зачет по геометрии (8 класс)</td>
+                                <td>Текст (.docx)</td>
+                                <td>3.24 МБ</td>
+                                <td>Апрель 2023</td>
+                                <td><a
+                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Теоретический зачет по геометрии.docx">Открыть</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        function Encode(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+                function toSolidBytes(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+                }));
+        }
+        if (Encode(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
+            alert("Неверный пароль! Доступ запрещён!")
+            location.reload()
+        } else {
+            document.getElementById("main").style.display = "block"
+        }
+    </script>
+</body>
+
+</html>

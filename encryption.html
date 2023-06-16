@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Шифрование текста</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-warning">Шифрование текста</h3>
+                    <p>Надёжно зашифровать текст - просто! Наш сайт использует двойную защиту (шифр ключевого слова и
+                        шифр
+                        Цезаря)!<br>Вам необходимо придумать 3 кодовых слова (на русском языке, на английском и цифровой
+                        код), а также ключ сдвига (просто одно число). После введите сообщение, и оно будет зашифровано.
+                        Чтобы его расшифровать, вы должны передать человеку ключи шифрования.</p>
+                </div>
+                <div class="col-12 mt-5">
+                    <h4 class="text-danger">Ключи шифрования</h4>
+                    <div class="form-floating mt-3">
+                        <input type="text" style="background-color: black;" class="form-control text-info"
+                            placeholder="Русское кодовое слово" id="rus_code" />
+                        <label for="rus_code">Русское кодовое слово</label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input type="text" style="background-color: black;" class="form-control text-info"
+                            placeholder="Английское кодовое слово" id="eng_code" />
+                        <label for="eng_code">Английское кодовое слово</label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input type="number" min="0" style="background-color: black;" class="form-control text-info"
+                            placeholder="Цифровой код" id="num_code" />
+                        <label for="num_code">Цифровой код</label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input type="number" min="0" style="background-color: black;" class="form-control text-info"
+                            placeholder="Ключ сдвига" id="key_shift" />
+                        <label for="key_shift">Ключ сдвига</label>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-5">
+                    <textarea style="background-color: black; color: white; border: 2px solid greenyellow;"
+                        class="form-control" id="input_text" placeholder="Вход" rows="10"></textarea>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-5">
+                    <textarea style="background-color: black; color: white; border: 2px solid greenyellow;"
+                        class="form-control" id="output_text" placeholder="Выход" rows="10" readonly></textarea>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choose" id="encode" checked>
+                        <label class="form-check-label" for="encode">Зашифровка</label>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choose" id="decode">
+                        <label class="form-check-label" for="decode">Расшифрока</label>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <a class="btn text-primary mt-3" href="#" onclick="Run()">Запустить</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        function Run() {
+            const russian = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']
+            const english = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+            const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            let new_rus = []
+            let new_eng = []
+            let new_num = []
+
+            let ru_key = document.getElementById("rus_code").value.toUpperCase()
+            let en_key = document.getElementById("eng_code").value.toUpperCase()
+            let num_key = document.getElementById("num_code").value.toUpperCase()
+            let caesar_key = document.getElementById("key_shift").value.toUpperCase()
+            let in_text = document.getElementById("input_text").value.toUpperCase()
+            let out_text = ""
+
+            if (num_key < 0 || num_key == "" || num_key == null) {
+                num_key = 0
+            }
+            if (caesar_key < 0 || caesar_key == "" || caesar_key == null) {
+                caesar_key = 0
+            }
+
+            const rusPattern = /^\p{Script=Cyrillic}+$/u;
+            const engPattern = /^[A-Za-z0-9]*$/;
+            if (!rusPattern.test(ru_key)) {
+                alert("Русское кодовое слово содержит запрещённые символы.")
+            } else if (!engPattern.test(en_key)) {
+                alert("Английское кодовое слово содержит запрещённые символы.")
+            } else {
+                let ru_chars = ru_key.split('')
+                for (let i = 0; i < ru_chars.length; i++) {
+                    if (!new_rus.includes(ru_chars[i])) new_rus.push(ru_chars[i])
+                }
+                for (let i = 0; i < russian.length; i++) {
+                    if (!new_rus.includes(russian[i])) new_rus.push(russian[i])
+                }
+
+                let en_chars = en_key.split('')
+                for (let i = 0; i < en_chars.length; i++) {
+                    if (!new_eng.includes(en_chars[i])) new_eng.push(en_chars[i])
+                }
+                for (let i = 0; i < english.length; i++) {
+                    if (!new_eng.includes(english[i])) new_eng.push(english[i])
+                }
+
+                let num_chars = num_key.split('')
+                for (let i = 0; i < num_chars.length; i++) {
+                    if (!new_num.includes(num_chars[i])) new_num.push(num_chars[i])
+                }
+                for (let i = 0; i < numbers.length; i++) {
+                    if (!new_num.includes(numbers[i])) new_num.push(numbers[i])
+                }
+
+                for (let i = 0; i < caesar_key; i++) {
+                    new_rus.push(new_rus.shift())
+                    new_eng.push(new_eng.shift())
+                    new_num.push(new_num.shift())
+                }
+
+                let in_chars = in_text.split('')
+                for (let i = 0; i < in_chars.length; i++) {
+                    if (document.getElementById("encode").checked) {
+                        if (russian.includes(in_chars[i])) {
+                            out_text += new_rus[russian.indexOf(in_chars[i])]
+                        } else if (english.includes(in_chars[i])) {
+                            out_text += new_eng[english.indexOf(in_chars[i])]
+                        } else if (numbers.includes(in_chars[i])) {
+                            out_text += new_num[numbers.indexOf(in_chars[i])]
+                        } else {
+                            out_text += in_chars[i]
+                        }
+                    } else {
+                        if (russian.includes(in_chars[i])) {
+                            out_text += russian[new_rus.indexOf(in_chars[i])]
+                        } else if (english.includes(in_chars[i])) {
+                            out_text += english[new_eng.indexOf(in_chars[i])]
+                        } else if (numbers.includes(in_chars[i])) {
+                            out_text += numbers[new_num.indexOf(in_chars[i])]
+                        } else {
+                            out_text += in_chars[i]
+                        }
+                    }
+                }
+
+                document.getElementById("output_text").value = out_text
+            }
+        }
+    </script>
+</body>
+
+</html>
