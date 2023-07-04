@@ -141,6 +141,24 @@ body {
     font-family: "Disket-Mono";
 }
 
+/* Полоса прокрутки */
+body::-webkit-scrollbar {
+    /* Ширина ScrollBar */
+    width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    /* Цвет дорожки */
+    background: #4caf7d;
+}
+
+body::-webkit-scrollbar-thumb {
+    /* Цвет плашки */
+    background-color: black;
+    /* Padding вокруг плашки */
+    border: 3px solid #1e1e1e;
+}
+
 header {
     position: fixed;
     top: 0;
