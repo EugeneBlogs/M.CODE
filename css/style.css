@@ -456,6 +456,60 @@ nav li:hover>.submenu {
     stroke-dasharray: 15 100;
 }
 
+/* Достижения */
+.image-wrapper {
+    position: relative;
+    padding: 15px;
+    background: #4caf7d;
+}
+
+.image-inner {
+    position: relative;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+}
+
+.image-wrapper:before,
+.image-wrapper:after,
+.image-inner:before,
+.image-inner:after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+}
+
+.image-wrapper:before {
+    bottom: 0;
+    left: 0;
+    border-left: 6px double red;
+    border-bottom: 6px double red;
+}
+
+.image-wrapper:after {
+    right: 0;
+    top: 0;
+    border-right: 6px double red;
+    border-top: 6px double red;
+}
+
+.image-inner:before {
+    bottom: -15px;
+    right: -15px;
+    border-right: 6px dotted red;
+    border-bottom: 6px dotted red;
+}
+
+.image-inner:after {
+    top: -15px;
+    left: -15px;
+    border-left: 6px dotted red;
+    border-top: 6px dotted red;
+}
+
 /* Афиша квеста */
 .cursor {
     display: none;
