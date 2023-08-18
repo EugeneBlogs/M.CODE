@@ -429,7 +429,7 @@ nav li:hover>.submenu {
 }
 
 .cpp circle:nth-child(2) {
-    stroke-dasharray: 50 100;
+    stroke-dasharray: 75 100;
 }
 
 .cs {
@@ -454,6 +454,14 @@ nav li:hover>.submenu {
 
 .py circle:nth-child(2) {
     stroke-dasharray: 15 100;
+}
+
+.unity {
+    color: gray;
+}
+
+.unity circle:nth-child(2) {
+    stroke-dasharray: 10 100;
 }
 
 /* Достижения */
