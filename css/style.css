@@ -448,20 +448,20 @@ nav li:hover>.submenu {
     stroke-dasharray: 50 100;
 }
 
+.py {
+    color: blue;
+}
+
+.py circle:nth-child(2) {
+    stroke-dasharray: 45 100;
+}
+
 .unity {
     color: gray;
 }
 
 .unity circle:nth-child(2) {
     stroke-dasharray: 30 100;
-}
-
-.py {
-    color: blue;
-}
-
-.py circle:nth-child(2) {
-    stroke-dasharray: 15 100;
 }
 
 /* Достижения */
