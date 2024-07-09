@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Карточки</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-primary">Карточки</h3>
+                    <p><span class="text-success">Количество игроков:</span> 3-6 (можно больше).<br>
+                        <span class="text-success">Правила игры:</span> компьютер выбирает случайную тему и тип игры
+                        (совпадение / несовпадение). Участникам необходимо написать по 5 слов на карточках на заданную
+                        тему.<br>
+                        <br>
+                        <span class="text-warning">Тип игры «Совпадение»:</span> нужно писать слова, чтобы они совпали с
+                        другим участником. Участники, у которых совпало слово, получают по 1 баллу. Если у игрока
+                        совпали все слова (необязательно с одним игроком), то он получает дополнительный балл.<br>
+                        <span class="text-warning">Тип игры «Несовпадение»:</span> нужно писать слова, чтобы они НЕ
+                        совпали с другим участником. Участник, который написал уникальное слово, получает 1 балл. Если у
+                        игрока НЕ совпали все слова, то он получает дополнительный балл.<br>
+                        <br>
+                        <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
+                        <span class="text-warning">Максимальное количество раундов на нашем сайте <span
+                                class="text-danger">60</span> (30 тем по 2 типа: совпадение / несовпадение).</span> Если
+                        вы придумаете ещё темы - можете играть дальше :)<br>
+                        <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании, вы
+                        можете их изменять.<br>
+                        <br>
+                        <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
+                            данной теме) решаются голосованием игроков.</span><br>
+                    </p>
+                    <a class="btn text-info mt-3" href="#" onclick="GenerateCard()">Сгенерировать тему</a>
+                    <a class="btn text-warning mt-3" href="#" onclick="location.reload()">Начать сначала</a>
+                    <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h3>
+                        <a class="btn text-success mt-3" href="#" onclick="AddPlayer()">Добавить игрока</a>
+                        <table class="table table-bordered text-light text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Игрок</th>
+                                    <th scope="col">Баллы</th>
+                                    <th scope="col">Изменить баллы</th>
+                                    <th scope="col">Удалить</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players">
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        number = 1
+        
+        function AddPlayer() {
+            let name = prompt("Введите имя игрока:")
+            if (typeof name !== 'undefined' && name !== null) {
+                let table = document.getElementById("players")
+                let tr = document.createElement("tr")
+                tr.id = `player${number}`
+                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" href="#" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" href="#" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" href="#" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                table.appendChild(tr)
+                number++
+            }
+        }
+        function DeletePlayer(number) {
+            name = document.getElementById(`name${number}`).innerHTML
+            if (confirm(`Удалить игрока ${name}?`))
+                document.getElementById(`player${number}`).remove()
+        }
+        function PlusPoint(number) {
+            now_score = document.getElementById(`score${number}`).innerHTML
+            score = Number(now_score) + 1
+            document.getElementById(`score${number}`).innerHTML = score
+        }
+        function MinusPoint(number) {
+            now_score = document.getElementById(`score${number}`).innerHTML
+            score = Number(now_score) - 1
+            if (score < 0) {
+                score = 0
+            }
+            document.getElementById(`score${number}`).innerHTML = score
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        let themes_yes = [
+            "Марки автомобилей",
+            "Бренды смартфонов",
+            "Бренды одежды",
+            "Школьные уроки",
+            "Вещь в сумке",
+            "Средства передвижения",
+            "Города на букву «К»",
+            "Русские актёры (мужского пола)",
+            "Русские актрисы",
+            "Русские рок-группы",
+            "Породы собак",
+            "Фрукты",
+            "Знаки зодиака",
+            "Банки",
+            "ТВ-каналы",
+            "Виды кофе",
+            "Женское имя",
+            "Мужское имя",
+            "Компьютерные игры",
+            "Виды цветов (растения)",
+            "Жанры фильмов",
+            "Кинопремии",
+            "Сериалы на канале ТНТ (показывают сейчас или когда-либо показывали)",
+            "Онлайн-кинотеатры",
+            "Фильмы с актёром Джейсоном Стэйтемом (нельзя писать части одного фильма)",
+            "Песни группы «Король и Шут»",
+            "Названия морей",
+            "Резиденты «Comedy Club»",
+            "Телеведущие (женщины)",
+            "Улицы в Калининграде"
+        ]
+        let themes_no = []
+        for (let i = 0; i < themes_yes.length; i++) {
+            themes_no.push(themes_yes[i])
+        }
+        let max_levels = themes_yes.length * 2
+        let count_levels = 1
+
+        function GenerateCard() {
+            if (count_levels <= max_levels) {
+                good = false
+                while (good == false) {
+                    type = RND(1, 3)
+                    type_game = ""
+                    if (type == 1 && themes_yes.length != 0) {
+                        type_game = "Совпадение"
+                        theme_number = RND(0, themes_yes.length)
+                        theme = themes_yes[theme_number]
+                        themes_yes.splice(theme_number, 1)
+                        alert(`Вопрос №${count_levels}.\nТип игры: ${type_game}.\nТема: ${theme}.`)
+                        good = true
+                    }
+                    else if (type == 2 && themes_no.length != 0) {
+                        type_game = "Несовпадение"
+                        theme_number = RND(0, themes_no.length)
+                        theme = themes_no[theme_number]
+                        themes_no.splice(theme_number, 1)
+                        alert(`Вопрос №${count_levels}.\nТип игры: ${type_game}.\nТема: ${theme}.`)
+                        good = true
+                    }
+                }
+                count_levels++
+            }
+            else {
+                alert("Игра окончена! Тем больше нет.")
+            }
+        }
+    </script>
+</body>
+
+</html>
