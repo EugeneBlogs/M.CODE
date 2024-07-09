@@ -31,8 +31,9 @@
                         игрока НЕ совпали все слова, то он получает дополнительный балл.<br>
                         <br>
                         <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
-                        <span class="text-warning">Максимальное количество раундов на нашем сайте <span
-                                class="text-danger">60</span> (30 тем по 2 типа: совпадение / несовпадение).</span> Если
+                        <span class="text-warning">Максимальное количество раундов на нашем сайте: <span
+                                class="text-danger" id="max_levels_span">60</span> (<span= class="text-danger"
+                                id="themes_span">30</span> тем(а/ы) по 2 типа: совпадение / несовпадение).</span> Если
                         вы придумаете ещё темы - можете играть дальше :)<br>
                         <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании, вы
                         можете их изменять.<br>
@@ -67,7 +68,7 @@
     <script src="js/basic_elements.js"></script>
     <script>
         number = 1
-        
+
         function AddPlayer() {
             let name = prompt("Введите имя игрока:")
             if (typeof name !== 'undefined' && name !== null) {
@@ -142,6 +143,9 @@
         }
         let max_levels = themes_yes.length * 2
         let count_levels = 1
+
+        document.getElementById("max_levels_span").innerHTML = max_levels
+        document.getElementById("themes_span").innerHTML = eval(Number(max_levels) / 2)
 
         function GenerateCard() {
             if (count_levels <= max_levels) {
