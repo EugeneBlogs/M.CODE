@@ -21,6 +21,7 @@ document.getElementById("load_header").innerHTML =
                             <li><a href="tic-tac-toe.html">Крестики-нолики</a></li>
                             <li><a href="words.html">Загадай-Угадай</a></li>
                             <li><a href="crocodile.html">Крокомист</a></li>
+                            <li><a href="cards.html">Карточки</a></li>
                         </ul>
                     </li>
                     <li><a href="text-analysis.html">Анализ текста</a></li>
@@ -50,6 +51,7 @@ document.getElementById("load_header").innerHTML =
             <li><a class="dropdown-item" href="tic-tac-toe.html">Крестики-нолики</a></li>
             <li><a class="dropdown-item" href="words.html">Загадай-Угадай</a></li>
             <li><a class="dropdown-item" href="crocodile.html">Крокомист</a></li>
+            <li><a class="dropdown-item" href="cards.html">Карточки</a></li>
             <li><a class="dropdown-item" href="text-analysis.html">Анализ текста</a></li>
             <li><a class="dropdown-item" href="encryption.html">Шифрование текста</a></li>
             <li><a class="dropdown-item" href="password-generator.html">Генератор паролей</a></li>
