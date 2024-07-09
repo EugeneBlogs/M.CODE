@@ -41,10 +41,10 @@
                         <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
                             данной теме) решаются голосованием игроков.</span><br>
                     </p>
-                    <a class="btn text-info mt-3" href="#" onclick="GenerateCard()">Сгенерировать тему</a>
-                    <a class="btn text-warning mt-3" href="#" onclick="location.reload()">Начать сначала</a>
+                    <a class="btn text-info mt-3" onclick="GenerateCard()">Сгенерировать тему</a>
+                    <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
                     <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h3>
-                        <a class="btn text-success mt-3" href="#" onclick="AddPlayer()">Добавить игрока</a>
+                        <a class="btn text-success mt-3" onclick="AddPlayer()">Добавить игрока</a>
                         <table class="table table-bordered text-light text-center">
                             <thead>
                                 <tr>
@@ -75,7 +75,7 @@
                 let table = document.getElementById("players")
                 let tr = document.createElement("tr")
                 tr.id = `player${number}`
-                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" href="#" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" href="#" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" href="#" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
                 number++
             }
