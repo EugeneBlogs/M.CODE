@@ -23,7 +23,7 @@ document.getElementById("load_header").innerHTML =
                             <li><a href="crocodile.html">Крокомист</a></li>
                             <li><a href="associations.html">Ассоциации</a></li>
                             <li><a href="1-12.html">1-12</a></li>
-                            <li><a href="letter.html">На букву ...</a></li>
+                            <li><a href="vocabulary.html">Словарный запас</a></li>
                         </ul>
                     </li>
                     <li><a href="text-analysis.html">Анализ текста</a></li>
@@ -55,7 +55,7 @@ document.getElementById("load_header").innerHTML =
             <li><a class="dropdown-item" href="crocodile.html">Крокомист</a></li>
             <li><a class="dropdown-item" href="associations.html">Ассоциации</a></li>
             <li><a class="dropdown-item" href="1-12.html">1-12</a></li>
-            <li><a class="dropdown-item" href="letter.html">На букву ...</a></li>
+            <li><a class="dropdown-item" href="vocabulary.html">Словарный запас</a></li>
             <li><a class="dropdown-item" href="text-analysis.html">Анализ текста</a></li>
             <li><a class="dropdown-item" href="encryption.html">Шифрование текста</a></li>
             <li><a class="dropdown-item" href="password-generator.html">Генератор паролей</a></li>
