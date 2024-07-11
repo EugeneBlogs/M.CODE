@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Карточки</title>
+    <title>Ассоциации</title>
 </head>
 
 <body class="text-center">
@@ -17,46 +17,52 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h3 class="text-primary">Карточки</h3>
-                    <p><span class="text-success">Количество игроков:</span> 3-6 (можно больше).<br>
-                        <span class="text-success">Правила игры:</span> компьютер выбирает случайную тему и тип игры
-                        (совпадение / несовпадение). Участникам необходимо написать по 5 слов на карточках на заданную
-                        тему.<br>
-                        <br>
-                        <span class="text-warning">Тип игры «Совпадение»:</span> нужно писать слова, чтобы они совпали с
-                        другим участником. Участники, у которых совпало слово, получают по 1 баллу. Если у игрока
-                        совпали все слова (необязательно с одним игроком), то он получает дополнительный балл.<br>
-                        <span class="text-warning">Тип игры «Несовпадение»:</span> нужно писать слова, чтобы они НЕ
-                        совпали с другим участником. Участник, который написал уникальное слово, получает 1 балл. Если у
-                        игрока НЕ совпали все слова, то он получает дополнительный балл.<br>
-                        <br>
-                        <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
-                        <span class="text-warning">Максимальное количество раундов на нашем сайте: <span
-                                class="text-danger" id="max_levels_span">60</span> (<span= class="text-danger"
-                                id="themes_span">30</span> тем(а/ы) по 2 типа: совпадение / несовпадение).</span> Если
-                        вы придумаете ещё темы - можете играть дальше :)<br>
-                        <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании, вы
-                        можете их изменять.<br>
-                        <br>
-                        <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
-                            данной теме) решаются голосованием игроков.</span><br>
-                    </p>
-                    <a class="btn text-info mt-3" onclick="GenerateCard()">Сгенерировать тему</a>
-                    <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
-                    <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
-                    <a class="btn text-success mt-3" onclick="AddPlayer()">Добавить игрока</a>
-                    <table class="table table-bordered text-light text-center">
-                        <thead>
-                            <tr>
-                                <th scope="col">Игрок</th>
-                                <th scope="col">Баллы</th>
-                                <th scope="col">Изменить баллы</th>
-                                <th scope="col">Удалить</th>
-                            </tr>
-                        </thead>
-                        <tbody id="players">
-                        </tbody>
-                    </table>
+                    <h3 class="text-primary">Ассоциации</h3>
+                    <h6 class="text-info">Идея: шоу "Тейбл Тайм".</h3>
+                        <p><span class="text-success">Количество игроков:</span> 3-6 (можно больше).<br>
+                            <span class="text-success">Правила игры:</span> компьютер выбирает случайную тему и тип игры
+                            (совпадение / несовпадение). Участникам необходимо написать по 5 слов на карточках на
+                            заданную
+                            тему.<br>
+                            <br>
+                            <span class="text-warning">Тип игры «Совпадение»:</span> нужно писать слова, чтобы они
+                            совпали с
+                            другим участником. Участники, у которых совпало слово, получают по 1 баллу. Если у игрока
+                            совпали все слова (необязательно с одним игроком), то он получает дополнительный балл.<br>
+                            <span class="text-warning">Тип игры «Несовпадение»:</span> нужно писать слова, чтобы они НЕ
+                            совпали с другим участником. Участник, который написал уникальное слово, получает 1 балл.
+                            Если у
+                            игрока НЕ совпали все слова, то он получает дополнительный балл.<br>
+                            <br>
+                            <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
+                            <span class="text-warning">Максимальное количество раундов на нашем сайте: <span
+                                    class="text-danger" id="max_levels_span">60</span> (<span= class="text-danger"
+                                    id="themes_span">30</span> тем(а/ы) по 2 типа: совпадение / несовпадение).</span>
+                            Если
+                            вы придумаете ещё темы - можете играть дальше :)<br>
+                            <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании,
+                            вы
+                            можете их изменять.<br>
+                            <br>
+                            <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
+                                данной теме) решаются голосованием игроков.</span><br>
+                        </p>
+                        <a class="btn text-info mt-3" onclick="GenerateCard()">Сгенерировать тему</a>
+                        <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
+                        <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
+                        <a class="btn text-success mt-3" onclick="AddPlayer()">Добавить игрока</a>
+                        <table class="table table-bordered text-light text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Игрок</th>
+                                    <th scope="col">Баллы</th>
+                                    <th scope="col">Изменить баллы</th>
+                                    <th scope="col">Удалить</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players">
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>
