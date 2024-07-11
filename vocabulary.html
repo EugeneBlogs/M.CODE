@@ -21,7 +21,8 @@
                     <h6 class="text-info">Идея: шоу "Тейбл Тайм".</h6>
                     <p><span class="text-primary">Количество игроков:</span> 2-∞.<br>
                         <span class="text-primary">Правила игры:</span> компьютер генерирует одну букву русского
-                        алфавита (исключения: «Ы», «Ь», «Ъ») и запускает таймер на 1 минуту. За это время каждый игрок
+                        алфавита (исключения: «Ы», «Ь», «Ъ») и запускает таймер на 1 минуту (когда время закончится,
+                        будет воспроизведён звуковой сигнал). За это время каждый игрок
                         должен на бумажке написать наибольшее количество слов на данную букву. Тот, у кого слов будет
                         больше всего, получает 1 балл.<br>
                         <span class="text-warning">Побеждает тот, кто набрал большее количество баллов.</span><br>
@@ -34,7 +35,8 @@
                     <h6 class="text-warning mt-5">Раунд: <span id="round">0</span>.</h6>
                     <h5 class="text-primary">Таймер: <span id="timer">0</span>.</h5>
                     <h3 class="text-info">Буква: <span id="gen_letter">?</span>.</h3>
-                    <button style="background: transparent; border: none !important;" id="btn_audio" onclick="Sound()"></button>
+                    <button style="background: transparent; border: none !important;" id="btn_audio"
+                        onclick="Sound()"></button>
                     <br>
                     <a class="btn text-success mt-3" id="btn_gen" onclick="GenerateLetter()">Сгенерировать букву</a>
                     <a class="btn text-danger mt-3" onclick="location.reload()">Начать сначала</a>
