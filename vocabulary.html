@@ -106,7 +106,7 @@
         let max_levels = 30
         let count_levels = 1
         let bool_gen = true
-        let time = 3
+        let time = 59
 
         function GenerateLetter() {
             if (bool_gen) {
@@ -119,6 +119,7 @@
                     count_levels++
                     StartTimer()
                     document.getElementById("timer").innerHTML = "60"
+                    setTimeout(Sound, 60000);
                 }
                 else {
                     alert("Игра окончена! Буквы закончились.")
@@ -139,7 +140,6 @@
                 if (time <= 0) {
                     clearInterval(timer)
                     StopTimer()
-                    Sound()
                 } else {
                     time--
                 }
