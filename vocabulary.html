@@ -36,9 +36,6 @@
                     <h6 class="text-warning mt-5">Раунд: <span id="round">0</span>.</h6>
                     <h5 class="text-primary">Таймер: <span id="timer">0</span>.</h5>
                     <h3 class="text-info">Буква: <span id="gen_letter">?</span>.</h3>
-                    <audio id="sound">
-                        <source src='files/timer.mp3' type="audio/mp3" />
-                    </audio>
                     <br>
                     <a class="btn text-success mt-3" id="btn_gen" onclick="GenerateLetter()">Сгенерировать букву</a>
                     <a class="btn text-danger mt-3" onclick="location.reload()">Начать сначала</a>
@@ -109,7 +106,7 @@
         let max_levels = 30
         let count_levels = 1
         let bool_gen = true
-        let time = 59
+        let time = 3
 
         function GenerateLetter() {
             if (bool_gen) {
@@ -158,7 +155,8 @@
         }
 
         function Sound() {
-            let sound = document.getElementById("sound")
+            let sound = new Audio("files/timer.mp3")
+            sound.load()
             sound.play()
         }
     </script>
