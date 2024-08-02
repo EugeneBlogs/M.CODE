@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Кто я?</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-warning">Кто я?</h3>
+                    <p><span class="text-success">Количество игроков:</span> 2-∞.<br>
+                        <span class="text-success">Количество персонажей в игре:</span> <span id="count">0</span>.<br>
+                        <span class="text-success">Правила игры:</span> участник нажимает на кнопку «Кто я?» и
+                        отворачивает телефон. Через 1,5 секунды на экране появляется имя какого-то персонажа или
+                        человека.
+                        Игрок, который держит телефон, должен угадать, кем он является, задавая вопросы другим
+                        участникам, а они должны отвечать только «Да»/«Нет»/«Не знаю»/«Частично».<br>
+                    </p>
+                    <a class="btn text-info mt-3" onclick="location.reload()">Начать сначала</a>
+                    <a class="btn text-danger mt-3" onclick="GenerateCharacter()">Кто я?</a>
+                    <h2 class="text-primary mt-3" id="name">Имя персонажа/человека</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let names =
+            [
+                "Владимир Путин",
+                "Пётр I",
+                "Стив Джобс",
+                "Илон Маск",
+                "Билл Гейтс",
+                "Павел Воля",
+                "Гарик Харламов",
+                "Денис Дорохов",
+                "Азамат Мусагалиев",
+                "Антон Шастун",
+                "Ольга Бузова",
+                "Регина Тодоренко",
+                "Тимур Родригез",
+                "Михаил Горшенёв («Король и Шут»)",
+                "Сергей Жуков",
+                "Ваня Дмитриенко",
+                "Филипп Киркоров",
+                "Никита Кологривый",
+                "Александр Петров",
+                "Джеки Чан",
+                "Вин Дизель",
+                "Михаил Боярский",
+                "Леонардо Ди Каприо",
+                "Ида Галич",
+                "Джеймс Кэмерон",
+                "Гай Ричи",
+                "Исаак Ньютон",
+                "Христофор Колумб",
+                "Людвиг ван Бетховин",
+                "Валентин Петухов (Wylsacom)",
+                "Дмитрий Куплинов",
+                "Криштиану Роналду",
+                "Артём Дзюба",
+                "Леонид Якубович",
+                "Леонид Каневский",
+                "Александр Пушкин",
+                "Винсент ван Гог",
+                "Леонардо да Винчи",
+                "Джеймс Бонд",
+                "Терминатор",
+                "Шерлок Холмс",
+                "Рокки Бальбоа",
+                "Марат («Слово Пацана»)",
+                "Евгений Онегин",
+                "Чичиков («Мёртвые души»)",
+                "Эдуард Кузьмин («Универ»)",
+                "Джек Воробей",
+                "Гарри Поттер",
+                "Индиана Джонс",
+                "Человек Паук",
+                "Бэтмен",
+                "Джокер",
+                "Нео («Матрица»)",
+                "Леонардо («Черепашки Ниндзя»)",
+                "Миньон",
+                "Губка Боб",
+                "Граф Дракула («Монстры на каникулах»)",
+                "Крош («Смешарики»)",
+                "Микки Маус",
+                "Вуди Вудпекер",
+                "Лунтик",
+                " Нолик («Фиксики»)",
+                "Дружок («Барбоскины»)",
+                "Шрек",
+                "Карлсон",
+                "Маугли",
+                "Барт Симпсон",
+                "Кот Леопольд",
+                "Буратино",
+                "Чебурашка",
+                "Баба Яга",
+                "Радость («Головоломка»)",
+                "Будь самим собой/Ты сам",
+                "Игрок, который будет ходить следующим",
+                "Душнила"
+            ]
+
+        document.getElementById("count").innerHTML = names.length
+
+        function GenerateCharacter() {
+            if (names.length != 0) {
+                rnd_number = RND(0, names.length)
+                name = names[rnd_number]
+                names.splice(rnd_number, 1)
+                setTimeout(() => document.getElementById("name").innerHTML = name, 1500)
+            } else {
+                alert("Игра окончена! Персонажей больше нет.")
+            }
+        }
+    </script>
+</body>
+
+</html>
