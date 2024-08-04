@@ -41,7 +41,9 @@
                             завершена</span>.
                         <br>
                     </p>
-                    <h4 class="text-warning mt-5">Ваш город: <span id="name_user_city"></span></h4>
+                    <h6 class="text-success mt-5">Не назвали ещё <span class="text-danger" id="number_cities">0</span>
+                        городов</h6>
+                    <h4 class="text-warning">Ваш город: <span id="name_user_city"></span></h4>
                     <h4 class="text-danger">Город компьютера: <span id="name_ai_city"></span></h4>
                     <h4 class="text-info">Вы должны назвать город на букву: «<span id="letter_city"></span>»</h4>
                     <input style="background-color: black;" class="form-control text-success mt-5" placeholder="Город"
@@ -1183,7 +1185,7 @@
             console.log(`${i}. ${cities[i]}`)
         }
 
-        let current_player = "ЧЕЛ"
+        let current_player = "ПК"
         let current_letter = ""
         let drop_cities = []
 
@@ -1246,8 +1248,7 @@
             } else {
                 current_player = "ПК"
             }
-            EndGame()
-            if (current_player == "ПК") {
+            if (EndGame() == "NO" && current_player == "ПК") {
                 CallCity()
             }
         }
@@ -1264,6 +1265,7 @@
         }
 
         function EndGame() {
+            document.getElementById("number_cities").innerHTML = Number(cities.length - drop_cities.length)
             let count = 0
             for (let i = 0; i < cities.length; i++) {
                 let city = cities[i]
@@ -1274,11 +1276,16 @@
             if (count == 0) {
                 if (current_player == "ПК") {
                     alert(`Игра окончена! Городов на букву «${current_letter}» больше нет! Вы выиграли!`)
+                    document.getElementById("name_ai_city").innerHTML = ":("
                 } else {
                     alert(`Игра окончена! Городов на букву «${current_letter}» больше нет! Выиграл компьютер!`)
+                    document.getElementById("name_user_city").innerHTML = ":("
                 }
-               document.getElementById("btn_1").style.display = "none"
-               document.getElementById("btn_2").style.display = "none"
+                document.getElementById("btn_1").style.display = "none"
+                document.getElementById("btn_2").style.display = "none"
+                return "YES"
+            } else {
+                return "NO"
             }
         }
 
