@@ -130,12 +130,13 @@
             let word = document.getElementById("user_word").value
             word = word.toUpperCase()
             document.getElementById("user_word").value = ""
-            if (words == result) {
+            if (word == result) {
                 alert("Поздравляем! Вы угадали!")
                 document.getElementById("btn_1").style.display = "none"
                 document.getElementById("btn_2").style.display = "none"
                 document.getElementById("btn_3").style.display = "none"
                 document.getElementById("btn_4").style.display = "none"
+                document.getElementById("btn_5").style.display = "none"
             } else {
                 alert("Неверно!")
             }
