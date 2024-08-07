@@ -21,9 +21,7 @@
                     <h6 class="text-info">Идея: шоу "Тейбл Тайм".</h6>
                     <p><span class="text-success">Количество игроков:</span> 3-6 (можно больше).<br>
                         <span class="text-success">Правила игры:</span> компьютер выбирает случайную тему и тип игры
-                        (совпадение / несовпадение). Участникам необходимо написать по 5 слов на карточках на
-                        заданную
-                        тему.<br>
+                        (совпадение / несовпадение). Участникам необходимо написать по 5 слов на заданную тему.<br>
                         <br>
                         <span class="text-warning">Тип игры «Совпадение»:</span> нужно писать слова, чтобы они
                         совпали с
@@ -36,8 +34,7 @@
                         <br>
                         <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
                         <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
-                            class="text-danger" id="max_levels_span">60</span> (<span class="text-danger"
-                            id="themes_span">30</span> тем(а/ы) по 2 типа: совпадение / несовпадение).
+                            class="text-danger" id="max_levels_span">0</span>.
                         Если вы придумаете ещё темы - можете играть дальше :)<br>
                         <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании,
                         вы
@@ -66,6 +63,66 @@
             </div>
         </div>
     </section>
+    <section class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-info">Используйте историю, чтобы сайт запомнил темы, которые уже использовались и
+                        игроков.
+                        Таким образом, вы сможете продолжить игру позже без повторения тем.</p>
+                    <a class="btn text-success mt-3" id="btn_load" onclick="LoadHistory()">Загрузить историю</a>
+                    <a class="btn text-warning mt-3" id=btn_save" onclick="SaveHistory()">Сохранить историю</a>
+                    <a class="btn text-danger mt-3" id="btn_clear" onclick="ClearHistory()">Очистить историю</a>
+                    <details id="settings">
+                        <summary class="text-danger">Настройки игры</summary>
+                        <p class="text-primary">Уберите галочку с тех тем, которые вы не хотите использовать в игре.</p>
+                        <table class="table table-bordered text-light text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Тема</th>
+                                    <th scope="col">Использовать</th>
+                                </tr>
+                            </thead>
+                            <tbody id="themes_list">
+                            </tbody>
+                        </table>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal" tabindex="-1" id="modal_theme">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-dark">Вопрос №<span class="text-danger" id="number_game_text"></span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-dark">Тип игры: <span class="text-primary" id="type_game_text"></span></h4>
+                    <h4 class="text-dark">Тема: <span class="text-primary" id="theme_game_text"></span></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="modal_notification">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger" id="modal_head"></h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-primary" id="modal_text"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="load_footer"></div>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-1.4.2.min.js"></script>
@@ -110,7 +167,62 @@
             return Math.floor(Math.random() * (max - min) + min);
         }
 
-        let themes_yes = [
+        function LoadHistory() {
+            let array = localStorage.getItem("history_themes_associations")
+            for (let i = 0; i < themes.length; i++) {
+                if (array.includes(themes[i])) {
+                    document.getElementById(`theme_${i}`).checked = false
+                }
+            }
+
+            let players_list = JSON.parse(localStorage.getItem("history_players_associations"))
+            for (let i = 0; i < players_list.length; i++) {
+                let name = players_list[i][0]
+                let score = players_list[i][1]
+                let table = document.getElementById("players")
+                let tr = document.createElement("tr")
+                tr.id = `player${number}`
+                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">${score}</td><td><a class="btn text-success" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                table.appendChild(tr)
+                number++
+            }
+            localStorage.setItem("history_players_associations", players_list)
+
+            document.getElementById("modal_head").innerHTML = "Успешно!"
+            document.getElementById("modal_text").innerHTML = "Данные из истории загружены."
+            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+            modal.show()
+
+            document.getElementById("btn_load").style.display = "none"
+        }
+        function SaveHistory() {
+            localStorage.setItem("history_themes_associations", used_themes)
+
+            let players_list = []
+            for (let i = 1; i < number; i++) {
+                let name = document.getElementById(`name${i}`).innerHTML
+                let score = document.getElementById(`score${i}`).innerHTML
+                let player = [name, score]
+                players_list.push(player)
+            }
+            localStorage.setItem("history_players_associations", JSON.stringify(players_list))
+
+            document.getElementById("modal_head").innerHTML = "Успешно!"
+            document.getElementById("modal_text").innerHTML = "Данные сохранены в историю."
+            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+            modal.show()
+        }
+        function ClearHistory() {
+            localStorage.removeItem("history_themes_associations")
+            localStorage.removeItem("history_players_associations")
+
+            document.getElementById("modal_head").innerHTML = "Успешно!"
+            document.getElementById("modal_text").innerHTML = "Данные истории удалены."
+            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+            modal.show()
+        }
+
+        let themes = [
             "Марки автомобилей",
             "Бренды смартфонов",
             "Бренды одежды",
@@ -121,6 +233,8 @@
             "Страны",
             "Русские актёры (мужского пола)",
             "Русские актрисы",
+            "Стендап-комики (любой пол, любая нацианальность)",
+            "Мультперсонажи",
             "Русские рок-группы",
             "Знаменитый Александр (написать фамилию)",
             "Породы собак",
@@ -145,46 +259,63 @@
             "Песни группы «Король и Шут»",
             "Моря",
             "Резиденты «Comedy Club» (сейчас или были когда-то)",
+            "Телеведущие (мужчины)",
             "Телеведущие (женщины)",
             "Улицы в Калининграде"
         ]
-        let themes_no = []
-        for (let i = 0; i < themes_yes.length; i++) {
-            themes_no.push(themes_yes[i])
-        }
-        let max_levels = themes_yes.length * 2
-        let count_levels = 1
 
-        document.getElementById("max_levels_span").innerHTML = max_levels
-        document.getElementById("themes_span").innerHTML = eval(Number(max_levels) / 2)
+        let checked_themes = []
+        let used_themes = []
+
+        for (let i = 0; i < themes.length; i++) {
+            let table = document.getElementById("themes_list")
+            let tr = document.createElement("tr")
+            tr.innerHTML = `<td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${i}" checked></div></td>`
+            table.appendChild(tr)
+        }
+
+        let count_levels = 1
+        let max_levels = themes.length
+
+        document.getElementById("max_levels_span").innerHTML = themes.length
 
         function GenerateCard() {
-            if (count_levels <= max_levels) {
-                good = false
-                while (good == false) {
-                    type = RND(1, 3)
-                    type_game = ""
-                    if (type == 1 && themes_yes.length != 0) {
-                        type_game = "Совпадение"
-                        theme_number = RND(0, themes_yes.length)
-                        theme = themes_yes[theme_number]
-                        themes_yes.splice(theme_number, 1)
-                        alert(`Вопрос №${count_levels}.\nТип игры: ${type_game}.\nТема: ${theme}.`)
-                        good = true
-                    }
-                    else if (type == 2 && themes_no.length != 0) {
-                        type_game = "Несовпадение"
-                        theme_number = RND(0, themes_no.length)
-                        theme = themes_no[theme_number]
-                        themes_no.splice(theme_number, 1)
-                        alert(`Вопрос №${count_levels}.\nТип игры: ${type_game}.\nТема: ${theme}.`)
-                        good = true
+            if (count_levels == 1) {
+                for (let i = 0; i < themes.length; i++) {
+                    if (document.getElementById(`theme_${i}`).checked) {
+                        checked_themes.push(themes[i])
                     }
                 }
+                max_levels = checked_themes.length
+                document.getElementById("settings").style.display = "none"
+                document.getElementById("btn_load").style.display = "none"
+                document.getElementById("btn_clear").style.display = "none"
+            }
+            if (count_levels <= max_levels) {
+                type = RND(1, 3)
+                type_game = ""
+                if (type == 1) {
+                    type_game = "Совпадение"
+                }
+                else if (type == 2) {
+                    type_game = "Несовпадение"
+                }
+                theme_number = RND(0, checked_themes.length)
+                theme = checked_themes[theme_number]
+                checked_themes.splice(theme_number, 1)
+                document.getElementById("number_game_text").innerHTML = count_levels
+                document.getElementById("type_game_text").innerHTML = type_game
+                document.getElementById("theme_game_text").innerHTML = theme
+                let modal = new bootstrap.Modal(document.getElementById("modal_theme"))
+                modal.show()
                 count_levels++
+                used_themes.push(theme)
             }
             else {
-                alert("Игра окончена! Тем больше нет.")
+                document.getElementById("modal_head").innerHTML = "Игра окончена!"
+                document.getElementById("modal_text").innerHTML = "Тем больше нет."
+                let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+                modal.show()
             }
         }
     </script>
