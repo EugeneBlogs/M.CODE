@@ -144,8 +144,10 @@
         }
         function DeletePlayer(number) {
             name = document.getElementById(`name${number}`).innerHTML
-            if (confirm(`Удалить игрока ${name}?`))
+            if (confirm(`Удалить игрока ${name}?`)) {
                 document.getElementById(`player${number}`).remove()
+                number--
+            }
         }
         function PlusPoint(number) {
             now_score = document.getElementById(`score${number}`).innerHTML
