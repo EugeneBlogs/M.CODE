@@ -149,18 +149,18 @@
                 number--
             }
         }
-        function PlusPoint(number) {
-            now_score = document.getElementById(`score${number}`).innerHTML
+        function PlusPoint(num) {
+            now_score = document.getElementById(`score${num}`).innerHTML
             score = Number(now_score) + 1
-            document.getElementById(`score${number}`).innerHTML = score
+            document.getElementById(`score${num}`).innerHTML = score
         }
-        function MinusPoint(number) {
-            now_score = document.getElementById(`score${number}`).innerHTML
+        function MinusPoint(num) {
+            now_score = document.getElementById(`score${num}`).innerHTML
             score = Number(now_score) - 1
             if (score < 0) {
                 score = 0
             }
-            document.getElementById(`score${number}`).innerHTML = score
+            document.getElementById(`score${num}`).innerHTML = score
         }
 
         function RND(min, max) {
@@ -202,7 +202,6 @@
             localStorage.setItem("history_themes_associations", used_themes)
 
             let players_list = []
-            alert(number)
             for (let i = 1; i < number; i++) {
                 let name = document.getElementById(`name${i}`).innerHTML
                 let score = document.getElementById(`score${i}`).innerHTML
