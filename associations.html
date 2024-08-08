@@ -35,10 +35,11 @@
                         <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
                         <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
                             class="text-danger" id="max_levels_span">0</span>.
-                        Если вы придумаете ещё темы - можете играть дальше :)<br>
+                        Если вы придумаете ещё темы, вы можете их добавить и грать дальше :) (Важно! Добавленные темы
+                        хранятся локально на вашем устройстве)<br>
                         <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании,
                         вы
-                        можете их изменять.<br>
+                        можете их не использовать.<br>
                         <br>
                         <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
                             данной теме) решаются голосованием игроков.</span><br>
@@ -73,14 +74,18 @@
                     <a class="btn text-success mt-3" id="btn_load" onclick="LoadHistory()">Загрузить историю</a>
                     <a class="btn text-warning mt-3" id=btn_save" onclick="SaveHistory()">Сохранить историю</a>
                     <a class="btn text-danger mt-3" id="btn_clear" onclick="ClearHistory()">Очистить историю</a>
+                    <br>
+                    <a class="btn text-info mt-3" id="btn_add" onclick="AddTheme()">Добавить тему</a>
                     <details class="mt-4" id="settings">
                         <summary class="text-primary">Настройки игры</summary>
                         <p class="text-info">Уберите галочку с тех тем, которые вы не хотите использовать в игре.</p>
                         <table class="table table-bordered text-light text-center">
                             <thead>
                                 <tr>
+                                    <th scope="col">№</th>
                                     <th scope="col">Тема</th>
                                     <th scope="col">Использовать</th>
+                                    <th scope="col">Удалить</th>
                                 </tr>
                             </thead>
                             <tbody id="themes_list">
@@ -224,7 +229,24 @@
             modal.show()
         }
 
-        let themes = [
+        function AddTheme() {
+            let str = prompt("Тема: ")
+            let array = JSON.parse(localStorage.getItem("themes_associations"))
+            if (array == null) {
+                let arr = []
+                localStorage.setItem("themes_associations", JSON.stringify(arr))
+                array = JSON.parse(localStorage.getItem("themes_associations"))
+            }
+            array.push(str)
+            localStorage.setItem("themes_associations", JSON.stringify(array))
+            document.getElementById("modal_head").innerHTML = "Успешно!"
+            document.getElementById("modal_text").innerHTML = "Новая тема сохранена на вашем устройстве!"
+            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+            modal.show()
+            UpdateThemes()
+        }
+
+        let const_themes = [
             "Марки автомобилей",
             "Бренды смартфонов",
             "Бренды одежды",
@@ -253,10 +275,11 @@
             "Деревья",
             "Грибы",
             "Праздники",
+            "Русские футбольные команды",
             "Жанры фильмов",
             "Кинорежиссёры (любой пол, любая нацианальность)",
             "Сериалы на канале ТНТ (показывают сейчас или когда-либо показывали)",
-            "Фильмы с актёром Джейсоном Стэйтемом (нельзя писать части одного фильма)",
+            "Фильмы с Джеки Чаном (нельзя писать части одного фильма)",
             "Учёные-физики (любой пол, любая нацианальность)",
             "Песни группы «Король и Шут»",
             "Моря",
@@ -266,20 +289,64 @@
             "Улицы в Калининграде"
         ]
 
+        let themes = []
+        UpdateThemes()
         let checked_themes = []
         let used_themes = []
 
-        for (let i = 0; i < themes.length; i++) {
-            let table = document.getElementById("themes_list")
-            let tr = document.createElement("tr")
-            tr.innerHTML = `<td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${i}" checked></div></td>`
-            table.appendChild(tr)
+        let number_themes = 1
+
+        function DefaultThemes() {
+            themes = []
+            for (let i = 0; i < const_themes.length; i++) {
+                themes.push(const_themes[i])
+            }
+            document.getElementById("themes_list").innerHTML = ""
+            window.number_themes = 1
+            for (let i = 0; i < themes.length; i++) {
+                let table = document.getElementById("themes_list")
+                let tr = document.createElement("tr")
+                tr.innerHTML = `<td>${window.number_themes}</td><td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" checked></div></td><td class="text-danger">Невозможно</td>`
+                table.appendChild(tr)
+                window.number_themes++
+            }
+        }
+
+        function UpdateThemes() {
+            let array = JSON.parse(localStorage.getItem("themes_associations"))
+            DefaultThemes()
+            for (let i = 0; i < array.length; i++) {
+                themes.push(array[i])
+                let table = document.getElementById("themes_list")
+                let tr = document.createElement("tr")
+                tr.innerHTML = `<td>${window.number_themes}</td><td>${array[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" checked></div></td><td><a class="btn text-warning" onclick="DeleteTheme(${window.number_themes - 1})">Удалить</a></td>`
+                table.appendChild(tr)
+                window.number_themes++
+            }
+        }
+
+        function DeleteTheme(index) {
+            let el = themes[index]
+            let array = JSON.parse(localStorage.getItem("themes_associations"))
+            let num = 0
+            for (let i = 0; i < array.length; i++) {
+                if (array[i] == el) [
+                    num = i
+                ]
+            }
+            array.splice(num, 1)
+            localStorage.setItem("themes_associations", JSON.stringify(array))
+            document.getElementById("modal_head").innerHTML = "Успешно!"
+            document.getElementById("modal_text").innerHTML = `Тема «${el}» удалена с устройства!`
+            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+            modal.show()
+            UpdateThemes()
         }
 
         let count_levels = 1
         let max_levels = themes.length
 
-        document.getElementById("max_levels_span").innerHTML = themes.length
+        document.getElementById("max_levels_span").innerHTML = const_themes.length
 
         function GenerateCard() {
             if (count_levels == 1) {
