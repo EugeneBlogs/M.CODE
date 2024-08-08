@@ -240,7 +240,7 @@
             array.push(str)
             localStorage.setItem("themes_associations", JSON.stringify(array))
             document.getElementById("modal_head").innerHTML = "Успешно!"
-            document.getElementById("modal_text").innerHTML = "Новая тема сохранена на вашем устройстве!"
+            document.getElementById("modal_text").innerHTML = `Новая тема «${el}» сохранена на вашем устройстве!`
             let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
             modal.show()
             UpdateThemes()
