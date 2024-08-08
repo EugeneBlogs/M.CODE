@@ -70,9 +70,10 @@
                 <div class="col-12">
                     <p class="text-info">Используйте историю, чтобы сайт запомнил темы, которые уже использовались и
                         игроков.
-                        Таким образом, вы сможете продолжить игру позже без повторения тем.</p>
+                        Таким образом, вы сможете продолжить игру позже без повторения тем.<br><span
+                            class="text-warning">Автосохранение каждые 2 секунды.</span></p>
                     <a class="btn text-success mt-3" id="btn_load" onclick="LoadHistory()">Загрузить историю</a>
-                    <a class="btn text-warning mt-3" id=btn_save" onclick="SaveHistory()">Сохранить историю</a>
+                    <a class="btn text-warning mt-3" id=btn_save" onclick="SaveHistory(1)">Сохранить историю</a>
                     <a class="btn text-danger mt-3" id="btn_clear" onclick="ClearHistory()">Очистить историю</a>
                     <br>
                     <a class="btn text-info mt-3" id="btn_add" onclick="AddTheme()">Добавить тему</a>
@@ -134,7 +135,8 @@
     <script src="js/jquery.bubble.text.min.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
-        number = 1
+        let play = false
+        let number = 1
 
         function AddPlayer() {
             let name = prompt("Введите имя игрока:")
@@ -148,7 +150,7 @@
             }
         }
         function DeletePlayer(num) {
-            name = document.getElementById(`name${num}`).innerHTML
+            let name = document.getElementById(`name${num}`).innerHTML
             if (confirm(`Удалить игрока ${name}?`)) {
                 document.getElementById(`player${num}`).remove()
                 number--
@@ -202,22 +204,26 @@
 
             document.getElementById("btn_load").style.display = "none"
         }
-        function SaveHistory() {
-            localStorage.setItem("history_themes_associations", used_themes)
+        function SaveHistory(message) {
+            if (play) {
+                localStorage.setItem("history_themes_associations", used_themes)
 
-            let players_list = []
-            for (let i = 1; i < number; i++) {
-                let name = document.getElementById(`name${i}`).innerHTML
-                let score = document.getElementById(`score${i}`).innerHTML
-                let player = [name, score]
-                players_list.push(player)
+                let players_list = []
+                for (let i = 1; i < number; i++) {
+                    let name = document.getElementById(`name${i}`).innerHTML
+                    let score = document.getElementById(`score${i}`).innerHTML
+                    let player = [name, score]
+                    players_list.push(player)
+                }
+                localStorage.setItem("history_players_associations", JSON.stringify(players_list))
+
+                if (message == 1) {
+                    document.getElementById("modal_head").innerHTML = "Успешно!"
+                    document.getElementById("modal_text").innerHTML = "Данные сохранены в историю."
+                    let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+                    modal.show()
+                }
             }
-            localStorage.setItem("history_players_associations", JSON.stringify(players_list))
-
-            document.getElementById("modal_head").innerHTML = "Успешно!"
-            document.getElementById("modal_text").innerHTML = "Данные сохранены в историю."
-            let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
-            modal.show()
         }
         function ClearHistory() {
             localStorage.removeItem("history_themes_associations")
@@ -359,6 +365,7 @@
                 document.getElementById("settings").style.display = "none"
                 document.getElementById("btn_load").style.display = "none"
                 document.getElementById("btn_clear").style.display = "none"
+                play = true
             }
             if (count_levels <= max_levels) {
                 type = RND(1, 3)
@@ -387,6 +394,10 @@
                 modal.show()
             }
         }
+
+        setInterval(function () {
+            SaveHistory()
+        }, 2000)
     </script>
 </body>
 
