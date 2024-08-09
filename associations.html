@@ -144,7 +144,7 @@
                 let table = document.getElementById("players")
                 let tr = document.createElement("tr")
                 tr.id = `player${number}`
-                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
                 number++
             }
@@ -156,15 +156,17 @@
                 number--
             }
         }
-        function PlusPoint(num) {
+        function Operation(oper, num) {
             now_score = document.getElementById(`score${num}`).innerHTML
-            score = Number(now_score) + 1
-            document.getElementById(`score${num}`).innerHTML = score
-        }
-        function MinusPoint(num) {
-            now_score = document.getElementById(`score${num}`).innerHTML
-            score = Number(now_score) - 1
-            if (score < 0) {
+            let score = 0
+            if (oper == "+") {
+                score = Number(now_score) + 1
+            } else if (oper == "-") {
+                score = Number(now_score) - 1
+                if (score < 0) {
+                    score = 0
+                }
+            } else if (oper == "0") {
                 score = 0
             }
             document.getElementById(`score${num}`).innerHTML = score
