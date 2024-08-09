@@ -357,19 +357,19 @@
         document.getElementById("max_levels_span").innerHTML = const_themes.length
 
         function GenerateCard() {
-            if (window.count_levels == 1) {
+            if (count_levels == 1) {
                 for (let i = 0; i < themes.length; i++) {
                     if (document.getElementById(`theme_${i}`).checked) {
                         checked_themes.push(themes[i])
                     }
                 }
-                window.max_levels = checked_themes.length
+                max_levels = checked_themes.length
                 document.getElementById("settings").style.display = "none"
                 document.getElementById("btn_load").style.display = "none"
                 document.getElementById("btn_clear").style.display = "none"
                 play = true
             }
-            if (window.count_levels <= window.max_levels) {
+            if (count_levels <= max_levels) {
                 type = RND(1, 3)
                 type_game = ""
                 if (type == 1) {
@@ -386,7 +386,7 @@
                 document.getElementById("theme_game_text").innerHTML = theme
                 let modal = new bootstrap.Modal(document.getElementById("modal_theme"))
                 modal.show()
-                window.count_levels++
+                count_levels++
                 used_themes.push(theme)
             }
             else {
