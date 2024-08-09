@@ -363,13 +363,13 @@
                         checked_themes.push(themes[i])
                     }
                 }
-                max_levels = checked_themes.length
+                window.max_levels = checked_themes.length
                 document.getElementById("settings").style.display = "none"
                 document.getElementById("btn_load").style.display = "none"
                 document.getElementById("btn_clear").style.display = "none"
                 play = true
             }
-            if (window.count_levels <= max_levels) {
+            if (window.count_levels <= window.max_levels) {
                 type = RND(1, 3)
                 type_game = ""
                 if (type == 1) {
