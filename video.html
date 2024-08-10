@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+
+<body>
+    <video id="my-player" class="video-js">
+        <source src="https://rutube.ru/video/private/57de8283e66f5234cc81b01e7d71fe30/?p=lXXsrjFmp8BJuUL8W5suzg"
+            type="video/mp4">
+    </video>
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+    <script>
+        let player = videojs('my-player',{
+            controls:true,
+            autoplay: false,
+            preload: 'auto'
+        })
+    </script>
+</body>
+
+</html>
