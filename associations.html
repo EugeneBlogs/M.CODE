@@ -378,6 +378,11 @@
 
         function GenerateCard() {
             if (count_levels == 1) {
+                if (localStorage.getItem("history_themes_associations") != null) {
+                    if (!confirm("У вас есть сохранения в истории. Вы действительно хотите начать игру сначала? История будет перезаписана.")) {
+                        return false
+                    }
+                }
                 for (let i = 0; i < themes.length; i++) {
                     if (document.getElementById(`theme_${i}`).checked) {
                         checked_themes.push(themes[i])
