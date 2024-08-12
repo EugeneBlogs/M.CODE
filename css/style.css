@@ -139,6 +139,7 @@ body {
     background-color: black;
     color: white;
     font-family: "Disket-Mono";
+    padding-bottom: 150px;
 }
 
 /* Полоса прокрутки */
@@ -203,6 +204,10 @@ nav a:hover {
 
 .active {
     background-color: #4caf7d;
+}
+
+.profile {
+    background-color: #af4c4c;
 }
 
 .topmenu>li {
@@ -648,4 +653,15 @@ nav li:hover>.submenu {
     100% {
         transform: rotate(360deg);
     }
+}
+
+/* Футер */
+#load_footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #4caf7d;
+    opacity: 0.5;
 }
