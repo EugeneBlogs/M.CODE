@@ -53,7 +53,7 @@
                                 <a class="text-success" href="#" onclick="Enter()">Войти</a>
                                 <br>
                                 <div class="mb-3"></div>
-                                <a class="text-info" href="#" onclick="Soon()">Забыли
+                                <a class="text-info" href="#" onclick="Forgot()">Забыли
                                     пароль?</a>
                                 <a class="text-warning" href="#"
                                     onclick="ChangeScenes('login', 'registration')">Регистрация</a>
@@ -153,6 +153,26 @@
             </div>
         </div>
     </section>
+    <div class="modal" tabindex="-1" id="modal_password" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger">Восстановление доступа</h4>
+                </div>
+                <div class="modal-body">
+                    <h6 class="text-primary">Введите код, отправленный на почту «<span id="email_secret"></span>»:</h6>
+                    <p class="text-secondary">Внимание! Функция отправки писем находится в разработке, поэтому введите
+                        дату в формате "ддммгггг".</p>
+                    <input type="text" class="field font form-control" id="forgot_code" placeholder="Код восстановления"
+                        maxlength="8">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                        onclick="SendCode()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal" tabindex="-1" id="modal_notification" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark">
@@ -257,6 +277,8 @@
         }
 
         function ClearFields() {
+            document.getElementById("forgot_code").value = ""
+
             document.getElementById("user_login").value = ""
             document.getElementById("user_password").value = ""
 
@@ -472,6 +494,62 @@
             } else {
                 head.innerHTML = "Ошибка!"
                 text.innerHTML = "Необходимо заполнить все поля."
+                modal.show()
+            }
+        }
+
+        let code = ""
+        let attempt = 5
+        function Forgot() {
+            if (attempt != 0) {
+                let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+                if (account != null) {
+                    let email = account[3]
+                    let words = email.split("@")
+                    let str = `${words[0][0]}${words[0][1]}${words[0][2]}`
+                    for (let i = 2; i < words[0].length; i++) {
+                        str += "*"
+                    }
+                    str += `@${words[1]}`
+                    document.getElementById("email_secret").innerHTML = str
+                    let data = new Date()
+                    let day = data.getDate()
+                    if (day < 10) {
+                        day = "0" + day
+                    }
+                    let month = eval(Number(data.getMonth()) + 1)
+                    if (month < 10) {
+                        month = "0" + month
+                    }
+                    let year = data.getFullYear()
+                    code = String(day) + String(month) + String(year)
+                    let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
+                    modal_p.show()
+                } else {
+                    head.innerHTML = "Ошибка!"
+                    text.innerHTML = "У вас нет созданного профиля."
+                    modal.show()
+                }
+            } else {
+                head.innerHTML = "Доступ ограничен!"
+                text.innerHTML = `Вы потратили все попытки. Попробуйте в следующий раз.`
+                modal.show()
+            }
+        }
+        function SendCode() {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            let user_code = document.getElementById("forgot_code").value
+            if (user_code == code) {
+                sessionStorage.setItem('login', "Yes")
+                document.getElementById("profile_tag_pc").innerHTML = account[1]
+                document.getElementById("profile_tag_mobile").innerHTML = account[1]
+                LoadData()
+                ClearFields()
+                ChangeScenes('login', 'profile')
+            } else {
+                attempt--
+                head.innerHTML = "Ошибка!"
+                text.innerHTML = `Неверный код восстановления.\nОсталось ${attempt} попыток.`
                 modal.show()
             }
         }
