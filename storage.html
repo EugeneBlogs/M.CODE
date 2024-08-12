@@ -101,7 +101,7 @@
                                         href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Механические колебания и волны/Распространение звука, Звуковые волны и Скорость звука.mp4">Открыть</a>
                                 </td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <th scope="row">8</th>
                                 <td>Физика. Оптика</td>
                                 <td>Документ Word (.docx)</td>
@@ -123,13 +123,7 @@
     <script src="js/jquery.bubble.text.min.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
-        function Encode(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-                function toSolidBytes(match, p1) {
-                    return String.fromCharCode('0x' + p1);
-                }));
-        }
-        if (Encode(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
+        if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
             alert("Неверный пароль! Доступ запрещён!")
             location.reload()
         } else {
