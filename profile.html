@@ -28,6 +28,10 @@
             justify-content: center;
             overflow: auto;
         }
+
+        .font {
+            font-family: 'Courier New', Courier, monospace;
+        }
     </style>
     <title>Профиль</title>
 </head>
@@ -42,9 +46,9 @@
                         <div class="border border-danger p-5">
                             <h3 class="text-primary">Вход</h3>
                             <div class="mt-3">
-                                <input type="email" class="field form-control" id="user_login"
+                                <input type="email" class="field font form-control" id="user_login"
                                     placeholder="Логин/Почта">
-                                <input type="password" id="user_password" class="field form-control mb-3"
+                                <input type="password" id="user_password" class="field font form-control mb-3"
                                     placeholder="Пароль">
                                 <a class="text-success" href="#" onclick="Enter()">Войти</a>
                                 <br>
@@ -68,12 +72,12 @@
                         <div class="border border-warning p-5">
                             <h3 class="text-primary">Регистрация</h3>
                             <div class="mt-3">
-                                <input type="text" class="field form-control" id="reg_name" placeholder="Имя">
-                                <input type="text" class="field form-control" id="reg_login" placeholder="Логин">
-                                <input type="email" class="field form-control" id="reg_email" placeholder="Почта">
-                                <input type="password" id="reg_password" class="field form-control"
+                                <input type="text" class="field font form-control" id="reg_name" placeholder="Имя">
+                                <input type="text" class="field font form-control" id="reg_login" placeholder="Логин">
+                                <input type="email" class="field font form-control" id="reg_email" placeholder="Почта">
+                                <input type="password" id="reg_password" class="field font form-control"
                                     placeholder="Пароль">
-                                <input type="password" id="reg_password_check" class="field form-control mb-3"
+                                <input type="password" id="reg_password_check" class="field font form-control mb-3"
                                     placeholder="Подтвердите пароль">
                                 <p class="form-text mb-3">Пароль должен содержать минимум 6 символов.</p>
                                 <a class="text-success" href="#" onclick="Registrate()">Зарегистрироваться</a>
@@ -100,10 +104,10 @@
                             <h3 class="text-primary mt-5">Профиль</h3>
                             <div class="mt-3">
                                 <h6>ID: <span class="text-danger" id="profile_id"></span></h6>
-                                <h6>Имя пользователя: <span class="text-danger" id="profile_name"></span></h6>
-                                <h6>Логин: <span class="text-danger" id="profile_login"></span></h6>
-                                <h6>Email: <span class="text-danger" id="profile_email"></span></h6>
-                                <h6>Пароль: <span class="text-danger" id="profile_password"></span></h6>
+                                <h6>Имя пользователя: <span class="text-danger font" id="profile_name"></span></h6>
+                                <h6>Логин: <span class="text-danger font" id="profile_login"></span></h6>
+                                <h6>Email: <span class="text-danger font" id="profile_email"></span></h6>
+                                <h6>Пароль: <span class="text-danger font" id="profile_password"></span></h6>
                                 <p class="text-secondary mb-3">Данная опция ("Профиль") находится в
                                     бета-тестировании.<br>
                                     Пока он не даёт вам никаких возможностей,<br>но в будущем мы обязательно что-нибудь
@@ -130,12 +134,12 @@
                             <a class="text-secondary" href="#" onclick="ChangeScenes('edit', 'profile')">Отмена</a>
                             <h3 class="text-primary mt-5">Редактирование</h3>
                             <div class="mt-3">
-                                <input type="text" class="field form-control" id="edit_name" placeholder="Имя">
-                                <input type="text" class="field form-control" id="edit_login" placeholder="Логин">
-                                <input type="email" class="field form-control" id="edit_email" placeholder="Почта">
-                                <input type="password" id="edit_password" class="field form-control"
+                                <input type="text" class="field font form-control" id="edit_name" placeholder="Имя">
+                                <input type="text" class="field font form-control" id="edit_login" placeholder="Логин">
+                                <input type="email" class="field font form-control" id="edit_email" placeholder="Почта">
+                                <input type="password" id="edit_password" class="field font form-control"
                                     placeholder="Пароль">
-                                <input type="password" id="edit_password_check" class="field form-control mb-3"
+                                <input type="password" id="edit_password_check" class="field font form-control mb-3"
                                     placeholder="Подтвердите пароль">
                                 <p class="form-text mb-3">Пароль должен содержать минимум 6 символов.</p>
                                 <a class="text-success" href="#" onclick="Save()">Сохранить</a>
@@ -156,7 +160,7 @@
                     <h4 class="modal-title text-danger" id="modal_head"></h4>
                 </div>
                 <div class="modal-body">
-                    <h4 style="font-family: 'Courier New', Courier, monospace" class="text-primary" id="modal_text">
+                    <h4 class="text-primary font" id="modal_text">
                     </h4>
                 </div>
                 <div class="modal-footer">
