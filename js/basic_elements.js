@@ -4,6 +4,7 @@ document.getElementById("load_header").innerHTML =
     <header id="computer-menu">
     <nav>
         <ul class="topmenu">
+            <li><a href="profile.html" class="profile" id="profile_tag_pc">Вход</a></li>
             <li><a href="index.html" class="active">Главная</a></li>
             <li><a href="https://vk.com/eugene_blogs_official" target="_blank">VK</a></li>
             <li><a href="https://github.com/EugeneBlogs?tab=repositories" target="_blank">GitHub</a></li>
@@ -47,6 +48,7 @@ document.getElementById("load_header").innerHTML =
             <span class="burger__line"></span>
         </a>
         <ul class="dropdown-menu bg-gray">
+            <li><a class="dropdown-item profile white" href="profile.html" id="profile_tag_mobile">Вход</a></li>
             <li><a class="dropdown-item active white" href="index.html">Главная</a></li>
             <li><a class="dropdown-item" href="https://vk.com/eugene_blogs_official">VK</a></li>
             <li><a class="dropdown-item" href="https://github.com/EugeneBlogs?tab=repositories">GitHub</a></li>
@@ -79,67 +81,74 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phon
     document.getElementById("computer-menu").style.display = "block";
 }
 
+// Если осуществлён вход в профиль
+if (sessionStorage.getItem("login") == "Yes") {
+    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+    document.getElementById("profile_tag_pc").innerHTML = account[1]
+    document.getElementById("profile_tag_mobile").innerHTML = account[1]
+}
+
 // Загрузка подвала
 document.getElementById("load_footer").innerHTML =
     `
-<footer class="mt-5 pb-3">
-<div class="container">
-    <div class="row">
-        <div class="col-4">
-            <p>© ${new Date().getUTCFullYear()} MylnikCode</p>
+    <footer class="mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <p>© ${new Date().getUTCFullYear()} MylnikCode</p>
+                </div>
+                <div class="col-4">
+                    <p>Все права защищены.</p>
+                </div>
+                <div class="col-4">
+                    <p id="slogan">Creating the impossible!</p>
+                </div>
+            </div>
         </div>
-        <div class="col-4">
-            <p>Все права защищены.</p>
-        </div>
-        <div class="col-4">
-            <p id="slogan">Creating the impossible!</p>
-        </div>
-    </div>
-</div>
-</footer>
+    </footer>
 `
 
 // Цитата
 let texts =
-[
-    "Если хочешь идти новым путём, ты должен проложить его сам.",
-    "Не ждите. Время никогда не будет подходящим.",
-    "Я благодарен всем тем, кто сказал мне «Нет». Именно благодаря им я чего-то добился сам.",
-    "Есть только один способ избежать критики: ничего не делать, ничего не говорить и никем не быть.",
-    "Куда бы вы ни шли, идите туда со всем сердцем.",
-    "Каждый момент - это новое начало.",
-    "Простота - высшая степень изысканности.",
-    "Все, что вы можете себе вообразить, реально.",
-    "Мы знаем, кто мы есть, но не знаем, кем мы можем стать.",
-    "Вы никогда не увидите радугу, если будете смотреть вниз.",
-    "В моем словаре нет слова «невозможно».",
-    "Вы никогда не пересечете океан, если не наберетесь мужества потерять берег из виду.",
-    "У всего есть своя красота, но не каждый может ее увидеть.",
-    "Поражение – не поражение, если только вы не признаете его таковым в своем сознании.",
-    "Сделай шаг и увидишь, как перед тобой появится дорога."
-]
+    [
+        "Если хочешь идти новым путём, ты должен проложить его сам.",
+        "Не ждите. Время никогда не будет подходящим.",
+        "Я благодарен всем тем, кто сказал мне «Нет». Именно благодаря им я чего-то добился сам.",
+        "Есть только один способ избежать критики: ничего не делать, ничего не говорить и никем не быть.",
+        "Куда бы вы ни шли, идите туда со всем сердцем.",
+        "Каждый момент - это новое начало.",
+        "Простота - высшая степень изысканности.",
+        "Все, что вы можете себе вообразить, реально.",
+        "Мы знаем, кто мы есть, но не знаем, кем мы можем стать.",
+        "Вы никогда не увидите радугу, если будете смотреть вниз.",
+        "В моем словаре нет слова «невозможно».",
+        "Вы никогда не пересечете океан, если не наберетесь мужества потерять берег из виду.",
+        "У всего есть своя красота, но не каждый может ее увидеть.",
+        "Поражение – не поражение, если только вы не признаете его таковым в своем сознании.",
+        "Сделай шаг и увидишь, как перед тобой появится дорога."
+    ]
 let authors =
-[
-    "Стив Джобс",
-    "Наполеон Хилл",
-    "Альберт Эйнштейн",
-    "Аристотель",
-    "Конфуций",
-    "Т.С. Элиот",
-    "Леонардо да Винчи",
-    "Пабло Пикассо",
-    "Уильям Шекспир",
-    "Чарли Чаплин",
-    "Наполеон Бонапарт",
-    "Христофор Колумб",
-    "Конфуций",
-    "Брюс Ли",
-    "Стив Джобс"
-]
+    [
+        "Стив Джобс",
+        "Наполеон Хилл",
+        "Альберт Эйнштейн",
+        "Аристотель",
+        "Конфуций",
+        "Т.С. Элиот",
+        "Леонардо да Винчи",
+        "Пабло Пикассо",
+        "Уильям Шекспир",
+        "Чарли Чаплин",
+        "Наполеон Бонапарт",
+        "Христофор Колумб",
+        "Конфуций",
+        "Брюс Ли",
+        "Стив Джобс"
+    ]
 function RND(min, max) {
-min = Math.ceil(min)
-max = Math.floor(max)
-return Math.floor(Math.random() * (max - min)) + min
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min)) + min
 }
 let i = RND(0, texts.length)
 document.getElementById("text-blockquote").innerHTML = texts[i]
