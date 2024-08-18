@@ -34,7 +34,7 @@
                         <br>
                         <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
                         <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
-                            class="text-danger" id="window.max_levels_span">0</span>.
+                            class="text-danger" id="max_levels_span">0</span>.
                         Если вы придумаете ещё темы, вы можете их добавить и грать дальше :) (Важно! Добавленные темы
                         хранятся локально на вашем устройстве)<br>
                         <span class="text-danger">Примечание:</span> все темы я составлял на свой вкус. При желании,
@@ -374,7 +374,7 @@
         let count_levels = 1
         let max_levels = themes.length
 
-        document.getElementById("window.max_levels_span").innerHTML = const_themes.length
+        document.getElementById("max_levels_span").innerHTML = const_themes.length
 
         function GenerateCard() {
             if (count_levels == 1) {
