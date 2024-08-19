@@ -199,7 +199,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #4400ff;
+    background-color: #3c3cff;
 }
 
 .active {
@@ -253,7 +253,8 @@ nav a:hover {
 }
 
 .submenu li a:hover {
-    color: white;
+    background-color: #ff2f2f;
+    color: #3c3cff;
 }
 
 .submenu .submenu {
