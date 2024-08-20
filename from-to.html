@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>От и До (18+)</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-danger">От и До (18+)</h3>
+                    <h6 class="text-info">Идея: шоу "ОТЫДО".</h6>
+                    <p><span class="text-warning">Количество игроков:</span> 2-6 (можно больше).<br><br>
+                        <span class="text-success">Мы предлагаем вам 2 версии игры!</span><br>
+                        <span class="text-warning">Общая информация:</span> по нажатию на кнопку "Сгенерировать шкалу"
+                        компьютер выдаёт шкалу от 0 до 100, то есть, что принять за минимум и что принять за максимум.
+                        Также генерируется случайное число от 0 до 100.<br>
+                        <span class="text-primary">1 версия игры:</span> один игрок называет ассоциацию на заданное
+                        число (остальные игроки не должны видеть число), а остальные игроки стараются угадать какое было
+                        число. Выигрывает то, кто был ближе к правильному ответу.<br>
+                        <span class="text-primary">2 версия игры:</span> все игроки называют свои ассоциации на заданную
+                        тему. Выигрывает тот, чья ассоциация была смешнее.<br><br>
+                        <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
+                            class="text-danger" id="max_levels_span">0</span>.
+                    </p>
+                    <a class="btn text-primary mt-3" onclick="GenerateScale()">Сгенерировать шкалу</a>
+                    <a class="btn text-info mt-3" onclick="location.reload()">Начать сначала</a>
+                    <div class="mt-5">
+                        <h6 class="text-secondary">Раунд: <span class="text-info" id="number_text"></span></h6>
+                        <h4 class="text-primary">Общая тема: <span class="text-info" id="theme_text"></span></h4>
+                        <h5 class="text-danger">Минимум (0): <span class="text-info" id="min_text"></span></h5>
+                        <h5 class="text-success">Максимум (100): <span class="text-info" id="max_text"></span></h5>
+                        <h3 class="text-warning mt-3">Текущее число: <span class="text-info" id="gen_num"></span></h3>
+                        <div class="progress" role="progressbar">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                style="width: 0%" id="progress_bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        function getAge(date) {
+            var today = new Date()
+            var birthDate = new Date(date)
+            var age = today.getFullYear() - birthDate.getFullYear()
+            var m = today.getMonth() - birthDate.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--
+            }
+            return age
+        }
+
+        if (sessionStorage.getItem("login") == "Yes") {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            if (getAge(account[2]) >= 18) {
+                if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
+                    alert("Неверный пароль! Доступ запрещён!")
+                    location.reload()
+                }
+            } else {
+                alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
+                location.reload()
+            }
+        } else {
+            alert("Необходимо быть авторизованным пользователем.")
+            location.reload()
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min)
+            max = Math.floor(max)
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+
+        let scales =
+            [
+                ["Поступок партнёра во время с$кса", "Ну, норм", "Что за х*йnя?"],
+                ["Испуг человека", "И чё?", "Бл%ть, у меня инфаркт!"],
+                ["Поступок водителя такси", "Обычная ситуация", "Ты чё творишь, €блан?"],
+                ["Выходной", "Ужасный", "Наилучший"],
+                ["Комплимент девушке", "Ты чё, тварь?", "Я тебя обожаю ♥"],
+                ["Подарок другу на Новый Год", "Хр€нь полная", "Ох&еть просто"],
+                ["Идея для стартапа", "Банкротство", "Мы открывем бизнес, мы будем делать бабки"],
+                ["Наряд на вечеринке", "Абсолютно не привлекаю внимание", "\"Абсолютно не привлекаю внимание\""],
+                ["Звук 0ргазма", "Беззвучный режим", "Что же думают соседи?"],
+                ["Ник в компьютерной игре", "Имя Фамилия", "СуперМегаПроГеймер"],
+                ["Новость в интернете", "Стандартный криминал", "Них@я себе!"],
+                ["Имя для мальчика", "Иван Дурак", "Абдурахм...да в пи3дY!"],
+                ["Повод устроить вечеринку", "День Рождения", "День мизинца на правой ноге"],
+                ["Отмазка для опоздания", "Я проспал", "Я помогал корове жевать траву"],
+                ["Имя друга в телефонной книге", "Саня, верни косарь", "Какой-то долба%б"]
+            ]
+        document.getElementById("max_levels_span").innerHTML = scales.length
+
+        let current_theme = 1
+
+        function GenerateScale() {
+            if (scales.length != 0) {
+                document.getElementById("number_text").innerHTML = current_theme
+                scale_number = RND(0, scales.length)
+                document.getElementById("theme_text").innerHTML = scales[scale_number][0]
+                document.getElementById("min_text").innerHTML = scales[scale_number][1]
+                document.getElementById("max_text").innerHTML = scales[scale_number][2]
+                scales.splice(scale_number, 1)
+                let rand = RND(0, 101)
+                document.getElementById("gen_num").innerHTML = rand
+                document.getElementById("progress_bar").innerHTML = rand
+                document.getElementById("progress_bar").style.width = `${rand}%`
+                current_theme++
+            } else {
+                alert("Игра окончена. Тем больше нет.")
+            }
+        }
+    </script>
+</body>
+
+</html>
