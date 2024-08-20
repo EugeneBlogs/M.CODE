@@ -23,6 +23,7 @@ document.getElementById("load_header").innerHTML =
                             <li><a href="words.html">Загадай-Угадай</a></li>
                             <li><a href="crocodile.html">Крокомист</a></li>
                             <li><a href="associations.html">Ассоциации</a></li>
+                            <li><a href="from-to.html">От и До (18+)</a></li>
                             <li><a href="1-12.html">1-12</a></li>
                             <li><a href="vocabulary.html">Словарный запас</a></li>
                             <li><a href="cities.html">Города России</a></li>
@@ -59,6 +60,7 @@ document.getElementById("load_header").innerHTML =
             <li><a class="dropdown-item" href="words.html">Загадай-Угадай</a></li>
             <li><a class="dropdown-item" href="crocodile.html">Крокомист</a></li>
             <li><a class="dropdown-item" href="associations.html">Ассоциации</a></li>
+            <li><a class="dropdown-item" href="from-to.html">От и До (18+)</a></li>
             <li><a class="dropdown-item" href="1-12.html">1-12</a></li>
             <li><a class="dropdown-item" href="vocabulary.html">Словарный запас</a></li>
             <li><a class="dropdown-item" href="cities.html">Города России</a></li>
