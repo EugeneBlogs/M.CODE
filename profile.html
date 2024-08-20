@@ -490,6 +490,16 @@
             }
         }
 
+        function getAge(date) {
+            var today = new Date()
+            var birthDate = new Date(date)
+            var age = today.getFullYear() - birthDate.getFullYear()
+            var m = today.getMonth() - birthDate.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--
+            }
+            return age
+        }
         function LoadData() {
             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
             let password = atob(account[5])
@@ -499,7 +509,7 @@
             }
             document.getElementById("profile_id").innerHTML = account[0]
             document.getElementById("profile_name").innerHTML = account[1]
-            document.getElementById("profile_birthday").innerHTML = account[2]
+            document.getElementById("profile_birthday").innerHTML = `${account[2]} (${getAge(account[2])} лет)`
             document.getElementById("profile_login").innerHTML = account[3]
             document.getElementById("profile_email").innerHTML = account[4]
             document.getElementById("profile_password").innerHTML = str
