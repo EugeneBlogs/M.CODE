@@ -73,6 +73,8 @@
                             <h3 class="text-primary">Регистрация</h3>
                             <div class="mt-3">
                                 <input type="text" class="field font form-control" id="reg_name" placeholder="Имя">
+                                <input type="date" class="field font form-control" id="reg_birthday"
+                                    placeholder="Дата рождения">
                                 <input type="text" class="field font form-control" id="reg_login" placeholder="Логин">
                                 <input type="email" class="field font form-control" id="reg_email" placeholder="Почта">
                                 <input type="password" id="reg_password" class="field font form-control"
@@ -111,13 +113,14 @@
                             <div class="mt-3">
                                 <h6>ID: <span class="text-danger" id="profile_id"></span></h6>
                                 <h6>Имя пользователя: <span class="text-danger font" id="profile_name"></span></h6>
+                                <h6>Дата рождения: <span class="text-danger font" id="profile_birthday"></span></h6>
                                 <h6>Логин: <span class="text-danger font" id="profile_login"></span></h6>
                                 <h6>Email: <span class="text-danger font" id="profile_email"></span></h6>
                                 <h6>Пароль: <span class="text-danger font" id="profile_password"></span></h6>
                                 <p class="text-secondary mb-3">Данная опция ("Профиль") находится в
                                     бета-тестировании.<br>
-                                    Пока он не даёт вам никаких возможностей,<br>но в будущем мы обязательно что-нибудь
-                                    придумаем :)</p>
+                                    Пока он даёт вам мало возможностей,<br>но в будущем мы обязательно его улучшим :)
+                                </p>
                                 <a class="text-info" id="password_btn" href="#" onclick="VisiblePassword()">Показать
                                     пароль</a>
                                 <br>
@@ -141,6 +144,8 @@
                             <h3 class="text-primary mt-5">Редактирование</h3>
                             <div class="mt-3">
                                 <input type="text" class="field font form-control" id="edit_name" placeholder="Имя">
+                                <input type="date" class="field font form-control" id="edit_birthday"
+                                    placeholder="Дата рождения">
                                 <input type="text" class="field font form-control" id="edit_login" placeholder="Логин">
                                 <input type="email" class="field font form-control" id="edit_email" placeholder="Почта">
                                 <input type="password" id="edit_password" class="field font form-control"
@@ -391,6 +396,7 @@
             document.getElementById("user_password").value = ""
 
             document.getElementById("reg_name").value = ""
+            document.getElementById("reg_birthday").value = ""
             document.getElementById("reg_login").value = ""
             document.getElementById("reg_email").value = ""
             document.getElementById("reg_password").value = ""
@@ -414,7 +420,7 @@
             let password = document.getElementById("user_password").value
             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
             if (account != null) {
-                if ((login == account[2] || login == account[3]) && password == atob(account[4])) {
+                if ((login == account[2] || login == account[3]) && password == atob(account[5])) {
                     sessionStorage.setItem('login', "Yes")
                     document.getElementById("profile_tag_pc").innerHTML = account[1]
                     document.getElementById("profile_tag_mobile").innerHTML = account[1]
@@ -436,18 +442,19 @@
 
         function Registrate() {
             let name = document.getElementById("reg_name").value
+            let birthday = document.getElementById("reg_birthday").value
             let login = document.getElementById("reg_login").value
             let email = document.getElementById("reg_email").value
             let password = document.getElementById("reg_password").value
             let password_check = document.getElementById("reg_password_check").value
             let privacy_policy = document.getElementById("privacy_policy").checked
             if (localStorage.getItem("profile_mcode_profile") == null) {
-                if (name != "" && login != "" && email != "" && password != "" && password_check != "" && privacy_policy) {
+                if (name != "" && birthday != "" && login != "" && email != "" && password != "" && password_check != "" && privacy_policy) {
                     if (password == password_check) {
                         if (password.length >= 6) {
                             if (EmailValidation(email)) {
                                 let ID = GenerateID()
-                                let account = [`${ID}`, name, login, email, btoa(password)]
+                                let account = [`${ID}`, name, birthday, login, email, btoa(password)]
                                 localStorage.setItem("profile_mcode_profile", JSON.stringify(account))
                                 head.innerHTML = `Добро пожаловать, ${name}!`
                                 text.innerHTML = "Вы успешно зарегистрировались на сайте MylnikCode."
@@ -485,20 +492,22 @@
 
         function LoadData() {
             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-            let password = atob(account[4])
+            let password = atob(account[5])
             let str = ""
             for (let i = 0; i < password.length; i++) {
                 str += "*"
             }
             document.getElementById("profile_id").innerHTML = account[0]
             document.getElementById("profile_name").innerHTML = account[1]
-            document.getElementById("profile_login").innerHTML = account[2]
-            document.getElementById("profile_email").innerHTML = account[3]
+            document.getElementById("profile_birthday").innerHTML = account[2]
+            document.getElementById("profile_login").innerHTML = account[3]
+            document.getElementById("profile_email").innerHTML = account[4]
             document.getElementById("profile_password").innerHTML = str
 
             document.getElementById("edit_name").value = account[1]
-            document.getElementById("edit_login").value = account[2]
-            document.getElementById("edit_email").value = account[3]
+            document.getElementById("edit_birthday").value = account[2]
+            document.getElementById("edit_login").value = account[3]
+            document.getElementById("edit_email").value = account[4]
             document.getElementById("edit_password").value = ""
             document.getElementById("edit_password_check").value = ""
 
@@ -509,7 +518,7 @@
         let show_pass = false
         function VisiblePassword() {
             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-            let password = atob(account[4])
+            let password = atob(account[5])
             let str = ""
             for (let i = 0; i < password.length; i++) {
                 str += "*"
@@ -569,17 +578,18 @@
 
         function Save() {
             let name = document.getElementById("edit_name").value
+            let birthday = document.getElementById("edit_birthday").value
             let login = document.getElementById("edit_login").value
             let email = document.getElementById("edit_email").value
             let password = document.getElementById("edit_password").value
             let password_check = document.getElementById("edit_password_check").value
-            if (name != "" && login != "" && email != "" && password != "" && password_check != "") {
+            if (name != "" && birthday != "" && login != "" && email != "" && password != "" && password_check != "") {
                 if (password == password_check) {
                     if (password.length >= 6) {
                         if (EmailValidation(email)) {
                             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
                             let ID = account[0]
-                            let new_account = [`${ID}`, name, login, email, btoa(password)]
+                            let new_account = [`${ID}`, name, birthday, login, email, btoa(password)]
                             localStorage.setItem("profile_mcode_profile", JSON.stringify(new_account))
                             head.innerHTML = "Успешно"
                             text.innerHTML = "Данные изменены."
