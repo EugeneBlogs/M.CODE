@@ -90,6 +90,23 @@ if (sessionStorage.getItem("login") == "Yes") {
     document.getElementById("profile_tag_mobile").innerHTML = account[1]
 }
 
+// С днём рождения!
+if (localStorage.getItem("profile_mcode_profile") != null) {
+    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+    let date = new Date()
+    let mm = (date.getMonth() + 1).toString()
+    let dd = date.getDate().toString()
+    let mmChars = mm.split('')
+    let ddChars = dd.split('')
+    let result = (mmChars[1] ? mm : "0" + mmChars[0]) + '-' + (ddChars[1] ? dd : "0" + ddChars[0])
+    let user = account[2].split('-')
+    let user_birthday = `${user[1]}-${user[2]}`
+    if (user_birthday == result) {
+        document.getElementById("happy-birthday_text").innerHTML = `🎉С Днём Рождения, ${account[1]}!🎉<br>С вашим ${Number(date.getFullYear()) - user[0]}-летием!`
+        document.getElementById("happy-birthday_text").style.display = "block"
+    }
+}
+
 // Загрузка подвала
 document.getElementById("load_footer").innerHTML =
     `
