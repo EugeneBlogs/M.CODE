@@ -42,7 +42,7 @@
                         <h5 class="text-success">Максимум (100): <span class="text-info" id="max_text"></span></h5>
                         <h3 class="text-warning mt-3">Текущее число: <span class="text-info" id="gen_num"></span></h3>
                         <div class="progress" role="progressbar">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
                                 style="width: 0%" id="progress_bar"></div>
                         </div>
                     </div>
@@ -133,6 +133,16 @@
                 document.getElementById("gen_num").innerHTML = rand
                 document.getElementById("progress_bar").innerHTML = rand
                 document.getElementById("progress_bar").style.width = `${rand}%`
+                document.getElementById("progress_bar").classList.remove("bg-danger")
+                document.getElementById("progress_bar").classList.remove("bg-warning")
+                document.getElementById("progress_bar").classList.remove("bg-success")
+                if (rand <= 40) {
+                    document.getElementById("progress_bar").classList.add("bg-danger")
+                } else if (rand >= 70) {
+                    document.getElementById("progress_bar").classList.add("bg-success")
+                } else if (40 < rand < 70) {
+                    document.getElementById("progress_bar").classList.add("bg-warning")
+                }
                 current_theme++
             } else {
                 alert("Игра окончена. Тем больше нет.")
