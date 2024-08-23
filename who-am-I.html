@@ -26,6 +26,9 @@
                         Игрок, который держит телефон, должен угадать, кем или чем он является, задавая вопросы другим
                         участникам, а они должны отвечать только «Да»/«Нет»/«Не знаю»/«Частично».<br>
                     </p>
+                    <div class="progress" role="progressbar" style="height: 2px">
+                        <div class="progress-bar bg-success" style="width: 100%" id="progress_bar"></div>
+                    </div>
                     <a class="btn text-danger mt-3" onclick="GenerateCharacter()">Кто я?</a>
                     <br>
                     <a class="btn text-info" onclick="location.reload()">Начать сначала</a>
@@ -88,6 +91,7 @@
                 "Евгений Онегин",
                 "Чичиков («Мёртвые души»)",
                 "Эдуард Кузьмин («Универ»)",
+                "Александр Сергеев («СашаТаня»)",
                 "Мистер Бин",
                 "Джек Воробей",
                 "Гарри Поттер",
@@ -146,14 +150,32 @@
                 "Хлеб"
             ]
 
-        document.getElementById("count").innerHTML = names.length
+        let count_levels = 0
+        let max_levels = names.length
+
+        document.getElementById("count").innerHTML = max_levels
 
         function GenerateCharacter() {
             if (names.length != 0) {
+                count_levels++
                 rnd_number = RND(0, names.length)
                 name = names[rnd_number]
                 names.splice(rnd_number, 1)
-                setTimeout(() => document.getElementById("name").innerHTML = name, 1500)
+                setTimeout(() => document.getElementById("name").innerHTML = name, 15)
+                let percent = count_levels / max_levels * 100
+                percent = Math.round(percent)
+                let result = 100 - percent
+                document.getElementById("progress_bar").style.width = `${result}%`
+                document.getElementById("progress_bar").classList.remove("bg-danger")
+                document.getElementById("progress_bar").classList.remove("bg-warning")
+                document.getElementById("progress_bar").classList.remove("bg-success")
+                if (result <= 30) {
+                    document.getElementById("progress_bar").classList.add("bg-danger")
+                } else if (result >= 60) {
+                    document.getElementById("progress_bar").classList.add("bg-success")
+                } else if (30 < result < 60) {
+                    document.getElementById("progress_bar").classList.add("bg-warning")
+                }
             } else {
                 alert("Игра окончена! Слов больше нет.")
             }
