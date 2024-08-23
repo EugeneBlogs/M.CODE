@@ -173,7 +173,7 @@
                 rnd_number = RND(0, names.length)
                 name = names[rnd_number]
                 names.splice(rnd_number, 1)
-                setTimeout(() => document.getElementById("name").innerHTML = name, 15)
+                setTimeout(() => document.getElementById("name").innerHTML = name, 1500)
                 let percent = count_levels / max_levels * 100
                 percent = Math.round(percent)
                 let result = 100 - percent
