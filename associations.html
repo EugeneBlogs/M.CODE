@@ -80,6 +80,7 @@
                     <details class="mt-4" id="settings">
                         <summary class="text-primary">Настройки игры</summary>
                         <p class="text-info">Уберите галочку с тех тем, которые вы не хотите использовать в игре.</p>
+                        <p class="text-warning">Отмечено <span class="text-danger" id="checked_themes_txt">?</span> тем.</p>
                         <table class="table table-bordered text-light text-center">
                             <thead>
                                 <tr>
@@ -98,7 +99,7 @@
         </div>
     </section>
     <div class="modal" tabindex="-1" id="modal_theme">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title text-dark">Вопрос №<span class="text-danger" id="number_game_text"></span>
@@ -115,7 +116,7 @@
         </div>
     </div>
     <div class="modal" tabindex="-1" id="modal_notification">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title text-danger" id="modal_head"></h4>
@@ -215,6 +216,7 @@
 
             document.getElementById("btn_load").style.display = "none"
             load_history = true
+            ChangeCheck()
         }
         function SaveHistory(message) {
             if (play) {
@@ -288,6 +290,7 @@
             "Русские актёры (мужского пола)",
             "Русские актрисы",
             "Стендап-комики (любой пол, любая нацианальность)",
+            "Блогеры (любой пол, любая нацианальность)",
             "Мультперсонажи",
             "Русские рок-группы",
             "Знаменитый Александр (написать фамилию)",
@@ -307,6 +310,8 @@
             "Деревья",
             "Грибы",
             "Праздники",
+            "Связано с Новым Годом",
+            "Виды спорта",
             "Русские футбольные команды",
             "Жанры фильмов",
             "Кинорежиссёры (любой пол, любая нацианальность)",
@@ -314,11 +319,13 @@
             "Фильмы с Джеки Чаном (нельзя писать части одного фильма)",
             "Учёные-физики (любой пол, любая нацианальность)",
             "Песни группы «Король и Шут»",
+            "Шоу «Medium Quality»",
             "Моря",
             "Резиденты «Comedy Club» (сейчас или были когда-то)",
             "Телеведущие (мужчины)",
             "Телеведущие (женщины)",
-            "Улицы в Калининграде"
+            "Улицы в Калининграде",
+            "Достопримечательности Москвы"
         ]
 
         let themes = []
@@ -338,7 +345,7 @@
             for (let i = 0; i < themes.length; i++) {
                 let table = document.getElementById("themes_list")
                 let tr = document.createElement("tr")
-                tr.innerHTML = `<td>${window.number_themes}</td><td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" checked></div></td><td class="text-danger">Невозможно</td>`
+                tr.innerHTML = `<td>${window.number_themes}</td><td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" onchange="ChangeCheck()" checked></div></td><td class="text-danger">Невозможно</td>`
                 table.appendChild(tr)
                 window.number_themes++
             }
@@ -352,11 +359,22 @@
                     themes.push(array[i])
                     let table = document.getElementById("themes_list")
                     let tr = document.createElement("tr")
-                    tr.innerHTML = `<td>${window.number_themes}</td><td>${array[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" checked></div></td><td><a class="btn text-warning" onclick="DeleteTheme(${window.number_themes - 1})">Удалить</a></td>`
+                    tr.innerHTML = `<td>${window.number_themes}</td><td>${array[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" onchange="ChangeCheck()" checked></div></td><td><a class="btn text-warning" onclick="DeleteTheme(${window.number_themes - 1})">Удалить</a></td>`
                     table.appendChild(tr)
                     window.number_themes++
                 }
             }
+            ChangeCheck()
+        }
+
+        function ChangeCheck() {
+            let num_themes = 0
+            for (let i = 0; i < themes.length; i++) {
+                if (document.getElementById(`theme_${i}`).checked) {
+                    num_themes++
+                }
+            }
+            document.getElementById("checked_themes_txt").innerHTML = num_themes
         }
 
         function DeleteTheme(index) {
@@ -434,6 +452,8 @@
         setInterval(function () {
             SaveHistory()
         }, 2000)
+
+        ChangeCheck()
     </script>
 </body>
 
