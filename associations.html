@@ -136,6 +136,7 @@
     <script src="js/basic_elements.js"></script>
     <script>
         let play = false
+        let load_history = false
         let number = 1
         let players = []
 
@@ -203,6 +204,7 @@
                 tr.id = `player${number}`
                 tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">${score}</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
+                players.push(number)
                 number++
             }
 
@@ -212,6 +214,7 @@
             modal.show()
 
             document.getElementById("btn_load").style.display = "none"
+            load_history = true
         }
         function SaveHistory(message) {
             if (play) {
@@ -383,7 +386,7 @@
 
         function GenerateCard() {
             if (count_levels == 1) {
-                if (localStorage.getItem("history_themes_associations") != null) {
+                if (localStorage.getItem("history_themes_associations") != null && load_history == false) {
                     if (!confirm("У вас есть сохранения в истории. Вы действительно хотите начать игру сначала? История будет перезаписана.")) {
                         return false
                     }
