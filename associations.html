@@ -47,6 +47,8 @@
                     <a class="btn text-info mt-3" onclick="GenerateCard()">Сгенерировать тему</a>
                     <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
                     <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
+                    <h6 class="text-info">Цвета: <span class="text-warning">Побеждает</span> <span
+                            class="text-danger">Проигрывает</span></h6>
                     <a class="btn text-success mt-3" onclick="AddPlayer()">Добавить игрока</a>
                     <table class="table table-bordered text-light text-center">
                         <thead>
@@ -80,7 +82,8 @@
                     <details class="mt-4" id="settings">
                         <summary class="text-primary">Настройки игры</summary>
                         <p class="text-info">Уберите галочку с тех тем, которые вы не хотите использовать в игре.</p>
-                        <p class="text-warning">Отмечено <span class="text-danger" id="checked_themes_txt">?</span> тем.</p>
+                        <p class="text-warning">Отмечено <span class="text-danger" id="checked_themes_txt">?</span> тем.
+                        </p>
                         <table class="table table-bordered text-light text-center">
                             <thead>
                                 <tr>
@@ -147,7 +150,7 @@
                 let table = document.getElementById("players")
                 let tr = document.createElement("tr")
                 tr.id = `player${number}`
-                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
                 players.push(number)
                 number++
@@ -179,6 +182,29 @@
                 score = 0
             }
             document.getElementById(`score${num}`).innerHTML = score
+            let scores = []
+            let zero = 0
+            for (let i = 0; i < players.length; i++) {
+                document.getElementById(`name${players[i]}`).classList.add("text-light")
+                document.getElementById(`name${players[i]}`).classList.remove("text-warning")
+                document.getElementById(`name${players[i]}`).classList.remove("text-danger")
+                scores.push(document.getElementById(`score${players[i]}`).innerHTML)
+                if (Number(document.getElementById(`score${players[i]}`).innerHTML) == 0) zero++
+            }
+            let max = Math.max.apply(null, scores)
+            let min = Math.min.apply(null, scores)
+            for (let i = 0; i < players.length; i++) {
+                let now_score = Number(document.getElementById(`score${players[i]}`).innerHTML)
+                if (scores.length == zero) {
+                    document.getElementById(`name${players[i]}`).classList.add("text-light")
+                } else if (now_score == max) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-warning")
+                } else if (now_score == min) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-danger")
+                }
+            }
         }
 
         function RND(min, max) {
