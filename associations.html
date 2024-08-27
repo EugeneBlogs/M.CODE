@@ -229,7 +229,7 @@
                 let table = document.getElementById("players")
                 let tr = document.createElement("tr")
                 tr.id = `player${number}`
-                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">${score}</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">${score}</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 25px;">0</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
                 players.push(number)
                 number++
