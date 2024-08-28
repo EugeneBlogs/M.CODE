@@ -41,6 +41,8 @@
                     <a class="btn text-success mt-3" id="btn_gen" onclick="GenerateLetter()">Сгенерировать букву</a>
                     <a class="btn text-danger mt-3" onclick="location.reload()">Начать сначала</a>
                     <h5 class="text-info mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
+                    <h6 class="text-primary">Цвета: <span class="text-warning">Побеждает</span> <span
+                            class="text-danger">Проигрывает</span></h6>
                     <a class="btn text-warning mt-3" onclick="AddPlayer()">Добавить игрока</a>
                     <table class="table table-bordered text-light text-center">
                         <thead>
@@ -64,7 +66,8 @@
     <script src="js/jquery.bubble.text.min.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
-        number = 1
+        let number = 1
+        let players = []
 
         function AddPlayer() {
             let name = prompt("Введите имя игрока:")
@@ -72,28 +75,65 @@
                 let table = document.getElementById("players")
                 let tr = document.createElement("tr")
                 tr.id = `player${number}`
-                tr.innerHTML = `<th id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="PlusPoint(${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="MinusPoint(${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><input style="display: inline; background-color: black; width: 150px;" class="form-control text-primary" type="number" id="number${number}" placeholder="Число" /><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
                 table.appendChild(tr)
+                players.push(number)
                 number++
             }
         }
-        function DeletePlayer(number) {
-            name = document.getElementById(`name${number}`).innerHTML
-            if (confirm(`Удалить игрока ${name}?`))
-                document.getElementById(`player${number}`).remove()
-        }
-        function PlusPoint(number) {
-            now_score = document.getElementById(`score${number}`).innerHTML
-            score = Number(now_score) + 1
-            document.getElementById(`score${number}`).innerHTML = score
-        }
-        function MinusPoint(number) {
-            now_score = document.getElementById(`score${number}`).innerHTML
-            score = Number(now_score) - 1
-            if (score < 0) {
-                score = 0
+        function DeletePlayer(num) {
+            let name = document.getElementById(`name${num}`).innerHTML
+            if (confirm(`Удалить игрока «${name}»?`)) {
+                document.getElementById(`player${num}`).remove()
+                let num_index = 0
+                for (let i = 0; i < players.length; i++) {
+                    if (players[i] == num)
+                        num_index = i
+                }
+                players.splice(num_index, 1)
             }
-            document.getElementById(`score${number}`).innerHTML = score
+        }
+        function Operation(oper, num) {
+            let now_score = document.getElementById(`score${num}`).innerHTML
+            let edit_score = document.getElementById(`number${num}`).value
+            if (isNaN(edit_score)) {
+                edit_score = 0
+            } else if (Number(edit_score) < 0) {
+                edit_score = 0
+            }
+            let result_score = 0
+            if (oper == "+") {
+                result_score = Number(now_score) + Number(edit_score)
+            } else if (oper == "-") {
+                result_score = Number(now_score) - Number(edit_score)
+                if (result_score < 0) {
+                    result_score = 0
+                }
+            }
+            document.getElementById(`score${num}`).innerHTML = result_score
+            let scores = []
+            let zero = 0
+            for (let i = 0; i < players.length; i++) {
+                document.getElementById(`name${players[i]}`).classList.add("text-light")
+                document.getElementById(`name${players[i]}`).classList.remove("text-warning")
+                document.getElementById(`name${players[i]}`).classList.remove("text-danger")
+                scores.push(document.getElementById(`score${players[i]}`).innerHTML)
+                if (Number(document.getElementById(`score${players[i]}`).innerHTML) == 0) zero++
+            }
+            let max = Math.max.apply(null, scores)
+            let min = Math.min.apply(null, scores)
+            for (let i = 0; i < players.length; i++) {
+                let now_score = Number(document.getElementById(`score${players[i]}`).innerHTML)
+                if (scores.length == zero) {
+                    document.getElementById(`name${players[i]}`).classList.add("text-light")
+                } else if (now_score == max) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-warning")
+                } else if (now_score == min) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-danger")
+                }
+            }
         }
 
         function RND(min, max) {
