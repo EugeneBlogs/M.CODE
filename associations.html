@@ -169,7 +169,7 @@
             }
         }
         function Operation(oper, num) {
-            now_score = document.getElementById(`score${num}`).innerHTML
+            let now_score = document.getElementById(`score${num}`).innerHTML
             let score = 0
             if (oper == "+") {
                 score = Number(now_score) + 1
