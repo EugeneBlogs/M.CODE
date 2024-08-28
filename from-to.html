@@ -45,6 +45,7 @@
                             <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"
                                 id="progress_bar"></div>
                         </div>
+                        <a class="btn text-info mt-3" id="visible_btn" onclick="VisibleScale()">Скрыть шкалу</a>
                     </div>
                 </div>
             </div>
@@ -67,21 +68,21 @@
             return age
         }
 
-        if (sessionStorage.getItem("login") == "Yes") {
-            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-            if (getAge(account[2]) >= 18) {
-                if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
-                    alert("Неверный пароль! Доступ запрещён!")
-                    location.reload()
-                }
-            } else {
-                alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
-                location.reload()
-            }
-        } else {
-            alert("Необходимо быть авторизованным пользователем.")
-            location.reload()
-        }
+        // if (sessionStorage.getItem("login") == "Yes") {
+        //     let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+        //     if (getAge(account[2]) >= 18) {
+        //         if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
+        //             alert("Неверный пароль! Доступ запрещён!")
+        //             location.reload()
+        //         }
+        //     } else {
+        //         alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
+        //         location.reload()
+        //     }
+        // } else {
+        //     alert("Необходимо быть авторизованным пользователем.")
+        //     location.reload()
+        // }
 
         function RND(min, max) {
             min = Math.ceil(min)
@@ -131,9 +132,12 @@
         document.getElementById("max_levels_span").innerHTML = scales.length
 
         let current_theme = 1
+        let hidden = false
+        let current = 0
 
         function GenerateScale() {
             if (scales.length != 0) {
+                if (hidden) VisibleScale()
                 document.getElementById("number_text").innerHTML = current_theme
                 scale_number = RND(0, scales.length)
                 document.getElementById("theme_text").innerHTML = scales[scale_number][0]
@@ -141,22 +145,37 @@
                 document.getElementById("max_text").innerHTML = scales[scale_number][2]
                 scales.splice(scale_number, 1)
                 let rand = RND(0, 101)
-                document.getElementById("gen_num").innerHTML = rand
-                document.getElementById("progress_bar").innerHTML = rand
-                document.getElementById("progress_bar").style.width = `${rand}%`
+                current = rand
+                document.getElementById("gen_num").innerHTML = current
+                document.getElementById("progress_bar").innerHTML = current
+                document.getElementById("progress_bar").style.width = `${current}%`
                 document.getElementById("progress_bar").classList.remove("bg-danger")
                 document.getElementById("progress_bar").classList.remove("bg-warning")
                 document.getElementById("progress_bar").classList.remove("bg-success")
-                if (rand <= 40) {
+                if (current <= 40) {
                     document.getElementById("progress_bar").classList.add("bg-danger")
-                } else if (rand >= 70) {
+                } else if (current >= 70) {
                     document.getElementById("progress_bar").classList.add("bg-success")
-                } else if (40 < rand < 70) {
+                } else if (40 < current < 70) {
                     document.getElementById("progress_bar").classList.add("bg-warning")
                 }
                 current_theme++
             } else {
                 alert("Игра окончена. Тем больше нет.")
+            }
+        }
+
+        function VisibleScale() {
+            if (hidden) {
+                document.getElementById("gen_num").innerHTML = current
+                document.getElementById("progress_bar").style.width = `${current}%`
+                document.getElementById("visible_btn").innerHTML = "скрыть шкалу"
+                hidden = false
+            } else {
+                document.getElementById("gen_num").innerHTML = "?"
+                document.getElementById("progress_bar").style.width = `0%`
+                document.getElementById("visible_btn").innerHTML = "Показать шкалу"
+                hidden = true
             }
         }
     </script>
