@@ -18,10 +18,16 @@
             <div class="row">
                 <div class="col-12" id="main" style="display: none;">
                     <h3 class="text-danger">Добро пожаловать!</h3>
-                    <h6 class="text-secondary">Внимание! Загрузка файлов может занять продолжительное время, потому что
-                        информация доставляется с сервера. Мы скоро это исправим!</h6>
+                    <h6 class="text-secondary">Внимание! Загрузка файлов может занять некоторое время, потому что
+                        информация получается с сервера.</h6>
                     <p>На данный момент в хранилище загружено <span class="text-warning" id="files_count">0</span>
                         файлов.</p>
+                    <div id="loading">
+                        <h5 class="text-success">Загрузка файлов: <span class="text-info" id="now_files"></span>.</h5>
+                        <div class="progress mb-5" role="progressbar" style="height: 2px">
+                            <div class="progress-bar bg-success" style="width: 0%" id="progress_bar"></div>
+                        </div>
+                    </div>
                     <table class="table table-dark table-hover" id="table-files">
                         <thead>
                             <tr>
@@ -101,7 +107,7 @@
         formats.set("jpeg", "Фото")
         formats.set("jpg", "Фото")
         formats.set("png", "Фото")
-        formats.set("gif", "Графическое изображение")
+        formats.set("gif", "Анимация")
         formats.set("svg", "Векторное изображение")
         function GetFormat(type) {
             let result = ""
@@ -121,24 +127,35 @@
             "Физика 8 класс. Электромагнитные явления.pptx",
             "Физика 9 класс. Законы Ньютона и Силы в природе.docx",
             "Физика 9 класс. Законы сохранения в механике.docx",
-            "Физика 9 класс. Звуковые колебания, Источники и Характеристики звука.mp4",
             "Физика 9 класс. Оптика.docx",
+            "Физика 9 класс. Звуковые колебания, Источники и Характеристики звука.mp4",
             "Физика 9 класс. Распространение звука, Звуковые волны и Скорость звука.mp4"
         ]
 
-        function LoadFiles() {
+        let count = 1
+        function delay() {
+            return new Promise(resolve => setTimeout(resolve, 500))
+        }
+        async function delayAsync() {
+            await delay()
+            document.getElementById("now_files").innerHTML = `${count}/${files.length}`
+            let percent = count / Number(files.length) * 100
+            percent = Math.round(percent)
+            document.getElementById("progress_bar").style.width = `${percent}%`
+        }
+        async function LoadFiles() {
             document.getElementById("files_count").innerHTML = files.length
-            for (let i = 0; i < files.length; i++) {
-                let str = path + files[i]
+            for (const item of files) {
+                let str = path + item
                 let words = str.split('.')
                 let format = words[words.length - 1]
-                let name = files[i].replace(`.${format}`, "")
+                let name = item.replace(`.${format}`, "")
 
                 let table = document.getElementById("files_list")
                 let tr = document.createElement("tr")
                 tr.innerHTML =
                     `
-                <th scope="row">${i + 1}</th>
+                <th scope="row">${count}</th>
                 <td>${name}</td>
                 <td>${GetFormat(format)}</td>
                 <td>${GetInfo(str, "Size")}</td>
@@ -146,7 +163,10 @@
                 <td><a href="${str}">Открыть</a></td>
             `
                 table.appendChild(tr)
+                count++
+                await delayAsync()
             }
+            document.getElementById("loading").style.display = "none"
         }
 
         if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
