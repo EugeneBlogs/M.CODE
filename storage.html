@@ -17,8 +17,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-12" id="main" style="display: none;">
-                    <h3>Добро пожаловать!</h3>
-                    <p>На данный момент в хранилище загружено 8 файлов.</p>
+                    <h3 class="text-danger">Добро пожаловать!</h3>
+                    <h6 class="text-secondary">Внимание! Загрузка файлов может занять продолжительное время, потому что
+                        информация доставляется с сервера. Мы скоро это исправим!</h6>
+                    <p>На данный момент в хранилище загружено <span class="text-warning" id="files_count">0</span>
+                        файлов.</p>
                     <table class="table table-dark table-hover" id="table-files">
                         <thead>
                             <tr>
@@ -26,91 +29,11 @@
                                 <th scope="col">Название файла</th>
                                 <th scope="col">Тип файла</th>
                                 <th scope="col">Размер файла</th>
-                                <th scope="col">Дата создания</th>
+                                <th scope="col">Дата обновления</th>
                                 <th scope="col">Действие</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Теоретический зачет по геометрии (8 класс)</td>
-                                <td>Текст (.docx)</td>
-                                <td>3.24 МБ</td>
-                                <td>Апрель 2023</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Теоретический зачет по геометрии.docx">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Физика. Тепловые явления (8 класс)</td>
-                                <td>Презентация (.pptx)</td>
-                                <td>2.9 МБ</td>
-                                <td>Сентябрь 2023</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Повторение 8 класса/Тепловые явления.pptx">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Физика. Электромагинтыне явления (8 класс)</td>
-                                <td>Презентация (.pptx)</td>
-                                <td>2.6 МБ</td>
-                                <td>Сентябрь 2023</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Повторение 8 класса/Электромагнитные явления.pptx">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Физика. Законы сохранения в механике</td>
-                                <td>Документ Word (.docx)</td>
-                                <td>2.8 МБ</td>
-                                <td>Январь 2024</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Динамика/Законы сохранения в механике.docx">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Физика. Законы Ньютона и Силы в природе</td>
-                                <td>Документ Word (.docx)</td>
-                                <td>4.6 МБ</td>
-                                <td>Январь 2024</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Динамика/Законы Ньютона и Силы в природе.docx">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Физика. Звуковые колебания, Источники и Характеристики звука</td>
-                                <td>Видео (.mp4)</td>
-                                <td>25.8 МБ</td>
-                                <td>Февраль 2024</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Механические колебания и волны/Звуковые колебания, Источники и Характеристики звука.mp4">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">7</th>
-                                <td>Физика. Распространение звука, Звуковые волны и Скорость звука</td>
-                                <td>Видео (.mp4)</td>
-                                <td>16.4 МБ</td>
-                                <td>Февраль 2024</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Механические колебания и волны/Распространение звука, Звуковые волны и Скорость звука.mp4">Открыть</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">8</th>
-                                <td>Физика. Оптика</td>
-                                <td>Документ Word (.docx)</td>
-                                <td>840 КБ</td>
-                                <td>Апрель 2024</td>
-                                <td><a
-                                        href="https://eugeneblogs.github.io/M.CODE/FilesStorage/Школа/Физика 9 класс/Оптика.docx">Открыть</a>
-                                </td>
-                            </tr>
+                        <tbody id="files_list">
                         </tbody>
                     </table>
                 </div>
@@ -123,11 +46,115 @@
     <script src="js/jquery.bubble.text.min.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
+        let months = new Map()
+        months.set("Jan", "01")
+        months.set("Feb", "02")
+        months.set("Mar", "03")
+        months.set("Apr", "04")
+        months.set("May", "05")
+        months.set("Jun", "06")
+        months.set("Jul", "07")
+        months.set("Aug", "08")
+        months.set("Sept", "09")
+        months.set("Oct", "10")
+        months.set("Nov", "11")
+        months.set("Dec", "12")
+        function GetInfo(url, type) {
+            let req = new XMLHttpRequest()
+            req.open("GET", url, false)
+            req.send()
+            if (req.status == 200) {
+                if (type == "Size") {
+                    let bytes = req.getResponseHeader('content-length')
+                    if (!+bytes) return '0 Б'
+                    const decimals = 2
+                    const k = 1024
+                    const dm = decimals < 0 ? 0 : decimals
+                    const sizes = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ЙБ']
+                    const i = Math.floor(Math.log(bytes) / Math.log(k))
+                    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+                } else if (type == "Date") {
+                    let date = req.getResponseHeader('last-modified')
+                    let words = date.split(" ")
+                    let month = months.get(words[2])
+                    let result = `${words[1]}/${month}/${words[3]} ${words[4]}`
+                    return result
+                }
+            } else {
+                alert("Не удалось получить данные файла с сервера.")
+                return "Error"
+            }
+        }
+
+        let formats = new Map()
+        formats.set("doc", "Документ Word")
+        formats.set("docx", "Документ Word")
+        formats.set("txt", "Текстовый файл")
+        formats.set("ppt", "Презентаця PowerPoint")
+        formats.set("pptx", "Презентаця PowerPoint")
+        formats.set("pdf", "Документ PDF")
+        formats.set("mp3", "Аудио")
+        formats.set("wav", "Аудио")
+        formats.set("mp4", "Видео")
+        formats.set("mkv", "Видео")
+        formats.set("avi", "Видео")
+        formats.set("jpeg", "Фото")
+        formats.set("jpg", "Фото")
+        formats.set("png", "Фото")
+        formats.set("gif", "Графическое изображение")
+        formats.set("svg", "Векторное изображение")
+        function GetFormat(type) {
+            let result = ""
+            if (formats.has(type)) {
+                let text = formats.get(type)
+                result = `${text} (.${type})`
+            } else {
+                result = `Файл (.${type})`
+            }
+            return result
+        }
+
+        const path = "https://eugeneblogs.github.io/M.CODE/FilesStorage/"
+        let files = [
+            "Теоретический зачет по геометрии.docx",
+            "Физика 8 класс. Тепловые явления.pptx",
+            "Физика 8 класс. Электромагнитные явления.pptx",
+            "Физика 9 класс. Законы Ньютона и Силы в природе.docx",
+            "Физика 9 класс. Законы сохранения в механике.docx",
+            "Физика 9 класс. Звуковые колебания, Источники и Характеристики звука.mp4",
+            "Физика 9 класс. Оптика.docx",
+            "Физика 9 класс. Распространение звука, Звуковые волны и Скорость звука.mp4"
+        ]
+
+        function LoadFiles() {
+            document.getElementById("files_count").innerHTML = files.length
+            for (let i = 0; i < files.length; i++) {
+                let str = path + files[i]
+                let words = str.split('.')
+                let format = words[words.length - 1]
+                let name = files[i].replace(`.${format}`, "")
+
+                let table = document.getElementById("files_list")
+                let tr = document.createElement("tr")
+                tr.innerHTML =
+                    `
+                <th scope="row">${i + 1}</th>
+                <td>${name}</td>
+                <td>${GetFormat(format)}</td>
+                <td>${GetInfo(str, "Size")}</td>
+                <td>${GetInfo(str, "Date")}</td>
+                <td><a href="${str}">Открыть</a></td>
+            `
+                table.appendChild(tr)
+            }
+        }
+
         if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
             alert("Неверный пароль! Доступ запрещён!")
             location.reload()
         } else {
             document.getElementById("main").style.display = "block"
+            LoadFiles()
         }
     </script>
 </body>
