@@ -22,8 +22,10 @@
                         информация получается с сервера.</h6>
                     <p>На данный момент в хранилище загружено <span class="text-warning" id="files_count">0</span>
                         файлов.</p>
+                    <p>Дата последнего обновления: <span class="text-primary" id="date_update">дд/мм/гггг чч:мм:сс</span>.</p>
                     <div id="loading">
-                        <h5 class="text-success">Загрузка файлов: <span class="text-info" id="now_files">0/0</span>.</h5>
+                        <h5 class="text-success">Загрузка файлов: <span class="text-info" id="now_files">0/0</span>.
+                        </h5>
                         <div class="progress mb-5" role="progressbar" style="height: 2px">
                             <div class="progress-bar bg-success" style="width: 0%" id="progress_bar"></div>
                         </div>
@@ -35,7 +37,6 @@
                                 <th scope="col">Название файла</th>
                                 <th scope="col">Тип файла</th>
                                 <th scope="col">Размер файла</th>
-                                <th scope="col">Дата обновления</th>
                                 <th scope="col">Действие</th>
                             </tr>
                         </thead>
@@ -144,6 +145,7 @@
         }
         async function LoadFiles() {
             document.getElementById("files_count").innerHTML = files.length
+            document.getElementById("date_update").innerHTML = GetInfo(`${path}/${files[0]}`, "Date")
             for (const item of files) {
                 let str = path + item
                 let words = str.split('.')
@@ -158,7 +160,6 @@
                 <td>${name}</td>
                 <td>${GetFormat(format)}</td>
                 <td>${GetInfo(str, "Size")}</td>
-                <td>${GetInfo(str, "Date")}</td>
                 <td><a href="${str}">Открыть</a></td>
             `
                 table.appendChild(tr)
