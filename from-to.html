@@ -68,21 +68,21 @@
             return age
         }
 
-        // if (sessionStorage.getItem("login") == "Yes") {
-        //     let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-        //     if (getAge(account[2]) >= 18) {
-        //         if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
-        //             alert("Неверный пароль! Доступ запрещён!")
-        //             location.reload()
-        //         }
-        //     } else {
-        //         alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
-        //         location.reload()
-        //     }
-        // } else {
-        //     alert("Необходимо быть авторизованным пользователем.")
-        //     location.reload()
-        // }
+        if (sessionStorage.getItem("login") == "Yes") {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            if (getAge(account[2]) >= 18) {
+                if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
+                    alert("Неверный пароль! Доступ запрещён!")
+                    location.reload()
+                }
+            } else {
+                alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
+                location.reload()
+            }
+        } else {
+            alert("Необходимо быть авторизованным пользователем.")
+            location.reload()
+        }
 
         function RND(min, max) {
             min = Math.ceil(min)
