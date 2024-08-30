@@ -67,30 +67,6 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phon
     document.getElementById("computer-menu").style.display = "block";
 }
 
-// Если осуществлён вход в профиль
-if (sessionStorage.getItem("login") == "Yes") {
-    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-    document.getElementById("profile_tag_pc").innerHTML = account[1]
-    document.getElementById("profile_tag_mobile").innerHTML = account[1]
-}
-
-// С днём рождения!
-if (localStorage.getItem("profile_mcode_profile") != null) {
-    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-    let date = new Date()
-    let mm = (date.getMonth() + 1).toString()
-    let dd = date.getDate().toString()
-    let mmChars = mm.split('')
-    let ddChars = dd.split('')
-    let result = (mmChars[1] ? mm : "0" + mmChars[0]) + '-' + (ddChars[1] ? dd : "0" + ddChars[0])
-    let user = account[2].split('-')
-    let user_birthday = `${user[1]}-${user[2]}`
-    if (user_birthday == result) {
-        document.getElementById("happy-birthday_text").innerHTML = `🎉С Днём Рождения, ${account[1]}!🎉<br>С вашим ${Number(date.getFullYear()) - user[0]}-летием!`
-        document.getElementById("happy-birthday_text").style.display = "block"
-    }
-}
-
 // Загрузка подвала
 document.getElementById("load_footer").innerHTML =
     `
@@ -154,8 +130,36 @@ function RND(min, max) {
     return Math.floor(Math.random() * (max - min)) + min
 }
 let i = RND(0, texts.length)
-document.getElementById("text-blockquote").innerHTML = texts[i][0]
-document.getElementById("author-blockquote").innerHTML = texts[i][1]
+if (document.getElementById("text-blockquote")) {
+    document.getElementById("text-blockquote").innerHTML = texts[i][0]
+    document.getElementById("author-blockquote").innerHTML = texts[i][1]
+}
+
+// Если осуществлён вход в профиль
+if (sessionStorage.getItem("login") == "Yes") {
+    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+    document.getElementById("profile_tag_pc").innerHTML = account[1]
+    document.getElementById("profile_tag_mobile").innerHTML = account[1]
+}
+
+// С днём рождения!
+if (localStorage.getItem("profile_mcode_profile") != null) {
+    let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+    let date = new Date()
+    let mm = (date.getMonth() + 1).toString()
+    let dd = date.getDate().toString()
+    let mmChars = mm.split('')
+    let ddChars = dd.split('')
+    let result = (mmChars[1] ? mm : "0" + mmChars[0]) + '-' + (ddChars[1] ? dd : "0" + ddChars[0])
+    let user = account[2].split('-')
+    let user_birthday = `${user[1]}-${user[2]}`
+    if (user_birthday == result) {
+        if (document.getElementById("happy-birthday_text")) {
+            document.getElementById("happy-birthday_text").innerHTML = `🎉С Днём Рождения, ${account[1]}!🎉<br>С вашим ${Number(date.getFullYear()) - user[0]}-летием!`
+            document.getElementById("happy-birthday_text").style.display = "block"
+        }
+    }
+}
 
 // Смена заголовка страницы
 var timer;
