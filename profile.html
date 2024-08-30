@@ -36,7 +36,7 @@
     <title>Профиль</title>
 </head>
 
-<body class="text-center">
+<body class="text-center"> 
     <div id="load_header"></div>
     <section class="pt-5" id="login">
         <div class="container">
@@ -423,7 +423,7 @@
             let password = document.getElementById("user_password").value
             let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
             if (account != null) {
-                if ((login == account[2] || login == account[3]) && password == atob(account[5])) {
+                if ((login == account[3] || login == account[4]) && password == atob(account[5])) {
                     sessionStorage.setItem('login', "Yes")
                     document.getElementById("profile_tag_pc").innerHTML = account[1]
                     document.getElementById("profile_tag_mobile").innerHTML = account[1]
@@ -639,7 +639,7 @@
             if (sessionStorage.getItem("block") != "Yes") {
                 let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
                 if (account != null) {
-                    let email = account[3]
+                    let email = account[4]
                     let words = email.split("@")
                     let str = `${words[0][0]}${words[0][1]}${words[0][2]}`
                     for (let i = 2; i < words[0].length; i++) {
