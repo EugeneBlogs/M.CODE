@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Уровень 5</title>
+</head>
+
+<body class="text-center">
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <a style="color: deeppink; font-size: 30px;" href="../big-word.html">Назад</a>
+                    <h3 class="text-success mt-5">Уровень 5</h3>
+                </div>
+                <div class="col-12 border border-info p-5 mt-5">
+                    <h3 class="mb-3">Футболка</h3>
+                    <h6><span class="text-primary">Угаданные слова:</span> <span id="correct_words">???</span>.</h6>
+                    <h6><span class="text-primary">Осталось:</span> <span id="count_words"></span> слов.</h6>
+                    <div class="form-floating mt-5">
+                        <input style="background-color: black;" class="form-control text-primary" placeholder="Слово"
+                            id="user_word" />
+                        <label for="word">Слово</label>
+                    </div>
+                    <a class="btn text-info mt-3" href="#" id="btn_1" onclick="Check()">Проверить слово</a>
+                    <a class="btn text-info mt-3" href="#" id="btn_2" onclick="Hint()">Подсказка</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        let words =
+            [
+                "ФУТБОЛ",
+                "БОКАЛ",
+                "БУЛКА",
+                "КОЛБА",
+                "КОФТА",
+                "ТАБЛО",
+                "БЛОК",
+                "БОЛТ",
+                "КЛУБ",
+                "ТОЛК",
+                "УКОЛ",
+                "ФЛОТ",
+                "ФАКТ",
+                "АКТ",
+                "БАЛ",
+                "БОК",
+                "КОТ",
+                "ЛОБ",
+                "ТОК",
+                "КУБ"
+            ]
+        document.getElementById("count_words").innerHTML = words.length
+
+        let correct = []
+
+        function Hint() {
+            alert(`Слово «${words[Math.floor(Math.random() * words.length)]}»`)
+        }
+
+        function Check() {
+            let word = document.getElementById("user_word").value
+            word = word.toUpperCase()
+            if (words.includes(word)) {
+                correct.push(word)
+                let index = words.indexOf(word)
+                words.splice(index, 1)
+                alert("Верно!")
+            }
+            else {
+                alert("Такого слова мы не загадали!")
+            }
+            let str = ""
+            for (let i = 0; i < correct.length; i++) {
+                str += `${correct[i]}, `
+            }
+            str = str.substring(0, str.length - 2)
+            document.getElementById("correct_words").innerHTML = str
+            document.getElementById("count_words").innerHTML = words.length
+            document.getElementById("user_word").value = ""
+            if (words.length == 0) {
+                alert("Поздравляем! Вы угадали все слова!")
+                document.getElementById("btn_1").style.display = "none"
+                document.getElementById("btn_2").style.display = "none"
+            }
+        }
+    </script>
+</body>
+
+</html>
