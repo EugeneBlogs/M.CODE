@@ -57,6 +57,12 @@
     <script src="js/jquery.bubble.text.min.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
+        function Redirect() {
+            let str = String(window.location)
+            str = str.replace("from-to.html", "index.html")
+            window.location.href = str
+        }
+
         function getAge(date) {
             var today = new Date()
             var birthDate = new Date(date)
@@ -73,15 +79,15 @@
             if (getAge(account[2]) >= 18) {
                 if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
                     alert("Неверный пароль! Доступ запрещён!")
-                    location.reload()
+                    Redirect()
                 }
             } else {
                 alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
-                location.reload()
+                Redirect()
             }
         } else {
             alert("Необходимо быть авторизованным пользователем.")
-            location.reload()
+            Redirect()
         }
 
         function RND(min, max) {
