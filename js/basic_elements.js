@@ -8,7 +8,7 @@ document.getElementById("load_header").innerHTML =
             <li><a href="index.html" class="active">Главная</a></li>
             <li><a href="https://vk.com/eugene_blogs_official" target="_blank">VK</a></li>
             <li><a href="https://github.com/EugeneBlogs?tab=repositories" target="_blank">GitHub</a></li>
-            <li><a href="#">Наши проекты ↓</a>
+            <li><a href="projects.html">Наши проекты ↓</a>
                 <ul class="submenu">
                     <li><a href="#">Игры →</a>
                         <ul class="submenu">
@@ -53,22 +53,7 @@ document.getElementById("load_header").innerHTML =
             <li><a class="dropdown-item active white" href="index.html">Главная</a></li>
             <li><a class="dropdown-item" href="https://vk.com/eugene_blogs_official">VK</a></li>
             <li><a class="dropdown-item" href="https://github.com/EugeneBlogs?tab=repositories">GitHub</a></li>
-            <li><a class="dropdown-item" href="text-quest.html">(НЕ)выживши(Й/Е)</a></li>
-            <li><a class="dropdown-item" href="text-quest-2.html">Операция "Борьба за жизнь"</a></li>
-            <li><a class="dropdown-item" href="tic-tac-toe.html">Крестики-нолики</a></li>
-            <li><a class="dropdown-item" href="words.html">Загадай-Угадай</a></li>
-            <li><a class="dropdown-item" href="crocodile.html">Крокомист</a></li>
-            <li><a class="dropdown-item" href="associations.html">Ассоциации</a></li>
-            <li><a class="dropdown-item" href="from-to.html">От и До (18+)</a></li>
-            <li><a class="dropdown-item" href="1-12.html">1-12</a></li>
-            <li><a class="dropdown-item" href="vocabulary.html">Словарный запас</a></li>
-            <li><a class="dropdown-item" href="cities.html">Города России</a></li>
-            <li><a class="dropdown-item" href="who-am-I.html">Кто я?</a></li>
-            <li><a class="dropdown-item" href="big-word.html">Слова из слова</a></li>
-            <li><a class="dropdown-item" href="text-analysis.html">Анализ текста</a></li>
-            <li><a class="dropdown-item" href="encryption.html">Шифрование текста</a></li>
-            <li><a class="dropdown-item" href="password-generator.html">Генератор паролей</a></li>
-            <li><a class="dropdown-item" href="antimate.html">JS-библиотека "!МАТ"</a></li>
+            <li><a class="dropdown-item" href="projects.html">Наши проекты</a></li>
             <li><a class="dropdown-item" href="storage.html">M.Storage</a></li>
         </ul>
     </div>
