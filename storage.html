@@ -22,12 +22,13 @@
                         информация получается с сервера.</h6>
                     <p>На данный момент в хранилище загружено <span class="text-warning" id="files_count">0</span>
                         файлов.</p>
-                    <p>Дата последнего обновления: <span class="text-primary" id="date_update">дд/мм/гггг чч:мм:сс</span>.</p>
+                    <p>Дата последнего обновления: <span class="text-primary" id="date_update">дд/мм/гггг
+                            чч:мм:сс</span>.</p>
                     <div id="loading">
                         <h5 class="text-success">Загрузка файлов: <span class="text-info" id="now_files">0/0</span>.
                         </h5>
-                        <div class="progress mb-5" role="progressbar" style="height: 2px">
-                            <div class="progress-bar bg-success" style="width: 0%" id="progress_bar"></div>
+                        <div class="progress mb-5" role="progressbar">
+                            <div class="progress-bar bg-info text-dark" style="width: 0%" id="progress_bar">0%</div>
                         </div>
                     </div>
                     <table class="table table-dark table-hover" id="table-files">
@@ -109,6 +110,9 @@
         formats.set("png", "Фото")
         formats.set("gif", "Анимация")
         formats.set("svg", "Векторное изображение")
+        formats.set("zip", "Архив")
+        formats.set("rar", "Архив")
+        formats.set("7z", "Архив")
         function GetFormat(type) {
             let result = ""
             if (formats.has(type)) {
@@ -122,7 +126,7 @@
 
         const path = "https://eugeneblogs.github.io/M.CODE/FilesStorage/"
         let files = [
-            "Теоретический зачет по геометрии.docx",
+            "Геометрия. Теория.docx",
             "Физика 8 класс. Тепловые явления.pptx",
             "Физика 8 класс. Электромагнитные явления.pptx",
             "Физика 9 класс. Законы Ньютона и Силы в природе.docx",
@@ -133,19 +137,24 @@
         ]
 
         let count = 1
-        function delay() {
-            return new Promise(resolve => setTimeout(resolve, 500))
-        }
-        async function delayAsync() {
-            await delay()
+        function UpdateLoad() {
             document.getElementById("now_files").innerHTML = `${count}/${files.length}`
             let percent = count / Number(files.length) * 100
             percent = Math.round(percent)
             document.getElementById("progress_bar").style.width = `${percent}%`
+            document.getElementById("progress_bar").innerHTML = `${percent}%`
+        }
+        function Delay() {
+            return new Promise(resolve => setTimeout(resolve, 500))
+        }
+        async function DelayAsync() {
+            await Delay()
+            UpdateLoad()
         }
         async function LoadFiles() {
             document.getElementById("files_count").innerHTML = files.length
             document.getElementById("date_update").innerHTML = GetInfo(`${path}/${files[0]}`, "Date")
+            UpdateLoad()
             for (const item of files) {
                 let str = path + item
                 let words = str.split('.')
@@ -164,7 +173,7 @@
             `
                 table.appendChild(tr)
                 count++
-                await delayAsync()
+                await DelayAsync()
             }
             document.getElementById("loading").style.display = "none"
         }
