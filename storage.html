@@ -178,12 +178,22 @@
             document.getElementById("loading").style.display = "none"
         }
 
-        if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) != "MjkwMzIwMjM=") {
-            alert("Неверный пароль! Доступ запрещён!")
-            location.reload()
+        function Redirect() {
+            let str = String(window.location)
+            str = str.replace("storage.html", "index.html")
+            window.location.href = str
+        }
+        if (sessionStorage.getItem("login") == "Yes") {
+            if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) == "MjkwMzIwMjM=") {
+                document.getElementById("main").style.display = "block"
+                LoadFiles()
+            } else {
+                alert("Неверный пароль! Доступ запрещён!")
+                Redirect()
+            }
         } else {
-            document.getElementById("main").style.display = "block"
-            LoadFiles()
+            alert("Необходимо быть авторизованным пользователем.")
+            Redirect()
         }
     </script>
 </body>
