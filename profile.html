@@ -172,7 +172,8 @@
                 </div>
                 <div class="modal-body">
                     <h6 class="text-primary">Введите код, отправленный на почту «<span id="email_secret"></span>»:</h6>
-                    <p class="text-secondary">Проверьте папку "Спам".</p>
+                    <p class="text-secondary">Внимание! Функция отправки писем находится в разработке, поэтому введите
+                        пароль "<span id="password_text">00000000</span>".</p>
                     <input type="text" class="field font form-control" id="forgot_code" placeholder="Код восстановления"
                         maxlength="8">
                 </div>
@@ -324,7 +325,6 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-1.4.2.min.js"></script>
     <script src="js/jquery.bubble.text.min.js"></script>
-    <script src="js/smtp.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
         let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
@@ -659,18 +659,9 @@
                     str += `@${words[1]}`
                     document.getElementById("email_secret").innerHTML = str
                     code = `${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}`
-                    Email.send({
-                        Host: "smtp.gmail.com",
-                        Username: "mylnikcode@gmail.com",
-                        Password: "Kaban310808",
-                        To: email,
-                        From: "mylnikcode@gmail.com",
-                        Subject: "Восстановление доступа на сайт Mylnikcode",
-                        Body: `Пароль для восстановления доступа: ${code}.`
-                    }).then(function (message) {
-                        let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
-                        modal_p.show()
-                    });
+                    document.getElementById("password_text").innerHTML = code
+                    let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
+                    modal_p.show()
                 } else {
                     head.innerHTML = "Ошибка!"
                     text.innerHTML = "У вас нет созданного профиля."
