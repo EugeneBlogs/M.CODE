@@ -172,8 +172,7 @@
                 </div>
                 <div class="modal-body">
                     <h6 class="text-primary">Введите код, отправленный на почту «<span id="email_secret"></span>»:</h6>
-                    <p class="text-secondary">Внимание! Функция отправки писем находится в разработке, поэтому введите
-                        дату в формате "ддммгггг".</p>
+                    <p class="text-secondary">Проверьте папку "Спам".</p>
                     <input type="text" class="field font form-control" id="forgot_code" placeholder="Код восстановления"
                         maxlength="8">
                 </div>
@@ -325,6 +324,7 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-1.4.2.min.js"></script>
     <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/smtp.js"></script>
     <script src="js/basic_elements.js"></script>
     <script>
         let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
@@ -418,28 +418,39 @@
             modal.show()
         }
 
+        let attempt_login = 3
         function Enter() {
-            let login = document.getElementById("user_login").value
-            let password = document.getElementById("user_password").value
-            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
-            if (account != null) {
-                if ((login == account[3] || login == account[4]) && password == atob(account[5])) {
-                    sessionStorage.setItem('login', "Yes")
-                    document.getElementById("profile_tag_pc").innerHTML = account[1]
-                    document.getElementById("profile_tag_mobile").innerHTML = account[1]
-                    LoadData()
-                    ClearFields()
-                    ChangeScenes('login', 'profile')
+            if (sessionStorage.getItem("block_login") != "Yes") {
+                let login = document.getElementById("user_login").value
+                let password = document.getElementById("user_password").value
+                let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+                if (account != null) {
+                    if ((login == account[3] || login == account[4]) && password == atob(account[5])) {
+                        sessionStorage.setItem('login', "Yes")
+                        document.getElementById("profile_tag_pc").innerHTML = account[1]
+                        document.getElementById("profile_tag_mobile").innerHTML = account[1]
+                        LoadData()
+                        ClearFields()
+                        ChangeScenes('login', 'profile')
+                    } else {
+                        attempt_login--
+                        head.innerHTML = "Ошибка!"
+                        text.innerHTML = `Неверный логин или пароль.\nОсталось ${attempt_login} попыток.`
+                        modal.show()
+                        if (attempt_login == 0) {
+                            sessionStorage.setItem("block_login", "Yes")
+                        }
+                    }
                 } else {
                     head.innerHTML = "Ошибка!"
-                    text.innerHTML = "Неверный логин или пароль."
+                    text.innerHTML = "У вас нет созданного профиля."
                     modal.show()
+                    ClearFields()
                 }
             } else {
-                head.innerHTML = "Ошибка!"
-                text.innerHTML = "У вас нет созданного профиля."
+                head.innerHTML = "Доступ ограничен!"
+                text.innerHTML = `Вы потратили все попытки. Попробуйте в следующий раз.`
                 modal.show()
-                ClearFields()
             }
         }
 
@@ -634,9 +645,9 @@
         }
 
         let code = ""
-        let attempt = 5
+        let attempt_forgot = 3
         function Forgot() {
-            if (sessionStorage.getItem("block") != "Yes") {
+            if (sessionStorage.getItem("block_forgot") != "Yes") {
                 let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
                 if (account != null) {
                     let email = account[4]
@@ -647,19 +658,19 @@
                     }
                     str += `@${words[1]}`
                     document.getElementById("email_secret").innerHTML = str
-                    let data = new Date()
-                    let day = data.getDate()
-                    if (day < 10) {
-                        day = "0" + day
-                    }
-                    let month = eval(Number(data.getMonth()) + 1)
-                    if (month < 10) {
-                        month = "0" + month
-                    }
-                    let year = data.getFullYear()
-                    code = String(day) + String(month) + String(year)
-                    let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
-                    modal_p.show()
+                    code = `${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}`
+                    Email.send({
+                        Host: "smtp.gmail.com",
+                        Username: "mylnikcode@gmail.com",
+                        Password: "Kaban310808",
+                        To: email,
+                        From: "mylnikcode@gmail.com",
+                        Subject: "Восстановление доступа на сайт Mylnikcode",
+                        Body: `Пароль для восстановления доступа: ${code}.`
+                    }).then(function (message) {
+                        let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
+                        modal_p.show()
+                    });
                 } else {
                     head.innerHTML = "Ошибка!"
                     text.innerHTML = "У вас нет созданного профиля."
@@ -682,13 +693,13 @@
                 ClearFields()
                 ChangeScenes('login', 'profile')
             } else {
-                attempt--
+                attempt_forgot--
                 head.innerHTML = "Ошибка!"
-                text.innerHTML = `Неверный код восстановления.\nОсталось ${attempt} попыток.`
+                text.innerHTML = `Неверный код восстановления.\nОсталось ${attempt_forgot} попыток.`
                 modal.show()
             }
-            if (attempt == 0) {
-                sessionStorage.setItem("block", "Yes")
+            if (attempt_forgot == 0) {
+                sessionStorage.setItem("block_forgot", "Yes")
             }
         }
     </script>
