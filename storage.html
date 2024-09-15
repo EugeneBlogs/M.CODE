@@ -186,16 +186,11 @@
             str = str.replace("storage.html", "index.html")
             window.location.href = str
         }
-        if (sessionStorage.getItem("login") == "Yes") {
-            if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) == "MjkwMzIwMjM=") {
-                document.getElementById("main").style.display = "block"
-                LoadFiles()
-            } else {
-                alert("Неверный пароль! Доступ запрещён!")
-                Redirect()
-            }
+        if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) == "MjkwMzIwMjM=") {
+            document.getElementById("main").style.display = "block"
+            LoadFiles()
         } else {
-            alert("Необходимо быть авторизованным пользователем.")
+            alert("Неверный пароль! Доступ запрещён!")
             Redirect()
         }
     </script>
