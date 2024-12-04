@@ -1,14 +1,14 @@
 // Смена заголовка
 $(document).ready(function () {
-  var $element = $('#title');
-  var phrases = [
+  let $element = $('#title');
+  let phrases = [
     'Текстовый квест',
     '(НЕ)выживши(Й/Е)',
     'Невыжившие',
     'Выжившие',
     'Выживший',
   ];
-  var index = -1;
+  let index = -1;
   (function loopAnimation() {
     index = (index + 1) % phrases.length;
     bubbleText({
@@ -425,7 +425,7 @@ function Continue() {
   }
 }
 function ShowMessage() {
-  var toast = new bootstrap.Toast(document.getElementById("toast"))
+  let toast = new bootstrap.Toast(document.getElementById("toast"))
   toast.show()
 }
 
