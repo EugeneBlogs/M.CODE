@@ -257,11 +257,13 @@
     <script src="js/aos.js"></script>
     <script src="js/circletype.min.js"></script>
     <script src="js/basic_elements.js"></script>
-    <script>
+     <script>
         // К Новому Году
-        var now_date = new Date()
+        let now_date = new Date()
         if (now_date.getMonth() == 0 || now_date.getMonth() == 11) {
-            document.getElementById("new-year_text").style.display = "block"
+            if (now_date.getMonth() == 0) {
+                document.getElementById("new-year_text").style.display = "block"
+            }
             document.getElementById("snowflakes").style.display = "block"
         }
         const circleType = new CircleType(document.getElementById('new-year_text'))
