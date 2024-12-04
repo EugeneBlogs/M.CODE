@@ -162,10 +162,10 @@ if (localStorage.getItem("profile_mcode_profile") != null) {
 }
 
 // Смена заголовка страницы
-var timer;
-var counter = 0;
-var start_title = document.title;
-var message = 'MylnikCode';
+let timer;
+let counter = 0;
+let start_title = document.title;
+let message = 'MylnikCode';
 timer = setInterval(function () {
     if (counter % 2) {
         document.title = start_title;
@@ -177,12 +177,12 @@ timer = setInterval(function () {
 
 // Печатающийся текст
 $(document).ready(function () {
-    var $element = $('#slogan');
-    var phrases = [
+    let $element = $('#slogan');
+    let phrases = [
         'Программируем будущее!',
         'Programming the future!',
     ];
-    var index = -1;
+    let index = -1;
     (function loopAnimation() {
         index = (index + 1) % phrases.length;
         bubbleText({
