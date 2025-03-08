@@ -435,7 +435,7 @@ nav li:hover>.submenu {
 }
 
 .cpp circle:nth-child(2) {
-    stroke-dasharray: 75 100;
+    stroke-dasharray: 60 100;
 }
 
 .cs {
@@ -443,7 +443,7 @@ nav li:hover>.submenu {
 }
 
 .cs circle:nth-child(2) {
-    stroke-dasharray: 60 100;
+    stroke-dasharray: 70 100;
 }
 
 .sql {
@@ -451,7 +451,7 @@ nav li:hover>.submenu {
 }
 
 .sql circle:nth-child(2) {
-    stroke-dasharray: 50 100;
+    stroke-dasharray: 55 100;
 }
 
 .py {
@@ -459,7 +459,7 @@ nav li:hover>.submenu {
 }
 
 .py circle:nth-child(2) {
-    stroke-dasharray: 45 100;
+    stroke-dasharray: 85 100;
 }
 
 .unity {
