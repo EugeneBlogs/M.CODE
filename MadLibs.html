@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор смешных историй</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #fd79a8;
+            --text-color: #2d3436;
+            --light-color: #f5f6fa;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --error-color: #d63031;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Roboto Slab', serif;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(108, 92, 231, 0.1);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .combo-container {
+            margin: 30px 0;
+        }
+
+        select {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid var(--secondary-color);
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 1em;
+        }
+
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5649c0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #e84393;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .form-container {
+            margin: 30px 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .form-group input {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .story-title {
+            font-family: 'Roboto Slab', serif;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2rem;
+            margin: 30px 0;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: rgba(108, 92, 231, 0.05);
+            white-space: pre-line;
+        }
+
+        .scroll-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-title {
+            font-family: 'Roboto Slab', serif;
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #636e72;
+            background: none;
+            border: none;
+        }
+
+        .modal-close:hover {
+            color: var(--error-color);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Назад</a>
+
+        <div class="card">
+            <h1>Генератор смешных историй</h1>
+
+            <div class="info">
+                Приготовьтесь к веселью — будет очень смешно!😂<br><br>
+                Выберите название истории из предложенного списка, затем ответьте на вопросы.
+                Ответом может служить как одно слово, так и словосочетания.<br><br>
+                Данные ответы будут подставлены в текст.<br>
+                Так как вы не знали контекст, получится смешная история :)
+            </div>
+
+            <div class="combo-container">
+                <select id="story-select">
+                    <!-- Варианты будут заполнены JavaScript -->
+                </select>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" id="start-btn">Начать историю</button>
+            </div>
+        </div>
+
+        <div class="card" id="form-section" style="display: none">
+            <h2 class="story-title" id="current-title"></h2>
+            <div class="scroll-container" id="form-container">
+                <!-- Поля формы будут добавлены здесь JavaScript -->
+            </div>
+            <button class="btn btn-accent" id="result-btn">Показать результат</button>
+        </div>
+
+        <div class="card" id="result-section" style="display: none">
+            <h2 class="story-title" id="result-title"></h2>
+            <div class="story-text" id="result-text"></div>
+            <div class="btn-container">
+                <button class="btn btn-primary" id="home-btn">Выбрать другую историю</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            Идея: MylnikCode.<br>Разработка сайта и генерация историй: DeepSeek.
+        </div>
+    </div>
+
+    <!-- Модальное окно для сообщений -->
+    <div class="modal" id="message-modal">
+        <div class="modal-content fade-in">
+            <button class="modal-close" id="modal-close">&times</button>
+            <h3 class="modal-title" id="modal-title">Сообщение</h3>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="modal-confirm">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные об историях
+        const titles = [
+            "Отпуск мечты", "Вот так музей!", "Больничка", "Однажды на уроке", "Испуг требует жертв",
+            "Случай в мастерской", "(Не)профессиональный ремонт", "Письмо Деду Морозу", "Потерянная вещь",
+            "Поездочка в купе", "Всё началось в супермаркете", "Как в сказке", "ЗаГАВчительная история",
+            "Устроим вечеринку?", "64-битная история", "ДТП (СКОРО)", "Квест (СКОРО)",
+            "Дело о загадочной посылке (СКОРО)", "На работу! (СКОРО)", "День, когда всё пошло не так (СКОРО)",
+            "#НикомуНеГовори (СКОРО)", "Отель №666 (СКОРО)",
+            "Звонок с того света? (СКОРО)", "Ключ, лифт, свеча, тайна (СКОРО)", "Виртуальный конфликт (СКОРО)"
+        ]
+
+        const stories = [
+            [
+                "Мужское имя", "Куда?", "Кем? Чем? (мужской род)", "Кем? Чем? (мужской род)", "Каким?", "Каким?",
+                "Кого? Что?", "Кого? Что?", "Кого? Чего? (множественное число)", "Где?", "Что делая?", "Что делая?",
+                "Что делал?", "Что делая?", "Что сделать?", "Что? (средний род)", "Кем? Чем?", "Кем? Чем?",
+                "Кого? Чего? (множественное число)"
+            ],
+            [
+                "Женское имя", "Кого? Чего?", "Кого? Что?", "Кого? Что?", "Кого? Что? (мужской род)", "Кем?",
+                "Что сделали?", "Кто? Что?", "Кем? Чем?", "Возглас (междометие)", "Какая?", "Каком?", "Кого? Что?",
+                "Кого? Что?", "Какая?", "Какая?"
+            ],
+            [
+                "Мужское имя", "Кем? Чем?", "Что сделать?", "Куда?", "Фамилия женщины",
+                "Прямая речь в повелительном наклонении", "Кого? Чего? (мужской род)", "Орган человека (родительный падеж)",
+                "Что сделать?", "Где?", "Кого? Чего?", "Какой?"
+            ],
+            [
+                "Число", "Школьный урок (дательный падеж)", "Женское имя и отчество", "Кто? Что?", "Что делать?",
+                "Имя мальчика", "Прямая речь с вопросом", "Кого? Что? (множественное число)", "Возглас", "Что делать?",
+                "Имя мальчика (дательный падеж)", "Прямая речь с вопросом", "Что делай?", "Любая прямая речь",
+                "Оценка (от 2 до 5)", "Кого? Что?"
+            ],
+            [
+                "Какой?", "Что? (мужской род)", "Кого?", "Мужское имя и фамилия", "Какие?", "Что? (множественное число)",
+                "Что сделать?", "Кто?", "Что сделал?", "Что сделали?", "Что сделали?", "Как?", "Кого?",
+                "Женское имя и фамилия"
+            ],
+            [
+                "Мужское имя", "Что?", "Каким?", "Какой?", "Мужское имя", "Какой?", "Что делать?", "Число",
+                "Кого? Что?", "Кого? Что?", "Что делал?", "Радостный возглас", "Число", "Что? (винительный падеж)",
+                "Куда?", "Какой?", "Что делать?"
+            ],
+            [
+                "Фамилия семьи", "Кого? (мужской род)", "Какого?", "Что?", "Кого? Чего?", "Кого? Чего?", "Откуда?",
+                "Куда?", "Что делать?", "Что сделать?", "Что сделала?", "Как?", "Как?", "Какую?", "Что делать?"
+            ],
+            [
+                "Какой?", "Где?", "Кто? Что?", "О ком? О чём? (без предлога)", "Каким?", "Что сделал?", "Каким?",
+                "Что делать?", "Кем? Чем? (множественное число)", "Что делать?", "Кто?"
+            ],
+            [
+                "Женское имя", "Где?", "Куда?", "Что сделать?", "Кого? Что?", "Какой?", "Кого? Что?", "Что сделала?",
+                "Куда?", "Кого? (мужской род)", "Кого? Чего?", "Кто? (женский род)", "Где?", "Кого? Что?", "Что делала?"
+            ],
+            [
+                "Мужское имя", "Город (родительный падеж)", "Город (родительный падеж)", "Кого? Что?",
+                "Кем? Чем? (множественное число)", "Кто?", "Кем? Чем? (мужской род)", "Что сделаю?", "Кого? Что?",
+                "Кого? Что?", "Кто? Что? (мужской род)", "Что сделал?", "Мужское имя (творительный падеж)", "Какой?",
+                "Кто? Что? (мужской род)", "Какую?", "Кого? Что? (женский род)", "Возглас", "Кто? Что?", "Что делать?"
+            ],
+            [
+                "Какой?", "Кто? Что? (мужской род)", "Каком?", "Какой?", "Кто? Что? (мужской род)", "Кто? (женский род)",
+                "Кем? Чем?", "Какую?", "Кого? Что? (мужской род)", "Радостный возглас", "Какой?",
+                "Кто? Что? (мужской род)", "Крик", "Прямая речь с вопросом", "Что делаем?", "Куда?"
+            ],
+            [
+                "Кто? Что? (мужской род)", "Какой?", "Какая?", "Кто? Что? (женский род)", "Кто? Что? (мужской род)",
+                "Какой?", "Кого? Что?", "Что делает?", "Кого? Что?", "Что делает?", "Кто? Что?", "Что делает?",
+                "Кто? Что? (единственное число)", "Где?", "Кого? Чего? (множественное число)", "Кто? Что?",
+                "Что делает?", "Какой?", "Кто? Что? (мужской род)", "Кем? (2 слова)", "Кто? (мужской род)",
+                "Кем? Чем?", "Кого? Что?"
+            ],
+            [
+                "Какое?", "Куда?", "Кличка собаки (кабель)", "Каким?", "Каким?", "Каким?", "Какой?", "Где?",
+                "Орган собаки (винительный падеж)", "Какой?", "Что сделал?", "Любая прямая речь",
+                "Кого? Что? (винительный падеж)", "Куда?", "Где?", "Какая? (родительный падеж)", "Что делала?",
+                "Что делал?", "Число", "Кого? Что?"
+            ],
+            [
+                "Мужское имя", "Кем? Чем? (множественное число)", "Кем? Чем? (женский род)", "Кем? Чем? (женский род)",
+                "Кто? Что? (мужской род)", "Кто? Что? (женский род)", "Женское имя", "Кого? (мужской род)",
+                "Кто? Что? (мужской род)", "Кто? Что? (мужской род)", "Прямая речь в повелительном наклонении",
+                "Жидкость (творительный падеж)", "Название песни", "Мужское имя", "Кого? Что?", "Где?", "Где?"
+            ],
+            [
+                "В каком?", "В ком? В чём? (мужской род)", "Число", "Какой?", "Кто? Что? (мужской род)", "Кто?",
+                "Название игры", "Название игры", "Мужское имя", "Что делать?", "Какой?", "Какой?", "Кто? Что?",
+                "Какой?", "Мужское имя", "Что делать? Что сделать?", "Каких?", "Кого? Чего? (множетсвенное число)",
+                "Выкрик"
+            ]
+        ]
+
+        // Элементы DOM
+        const storySelect = document.getElementById('story-select')
+        const startBtn = document.getElementById('start-btn')
+        const resultBtn = document.getElementById('result-btn')
+        const homeBtn = document.getElementById('home-btn')
+        const formSection = document.getElementById('form-section')
+        const resultSection = document.getElementById('result-section')
+        const formContainer = document.getElementById('form-container')
+        const currentTitle = document.getElementById('current-title')
+        const resultTitle = document.getElementById('result-title')
+        const resultText = document.getElementById('result-text')
+
+        // Элементы модального окна
+        const messageModal = document.getElementById('message-modal')
+        const modalClose = document.getElementById('modal-close')
+        const modalTitle = document.getElementById('modal-title')
+        const modalMessage = document.getElementById('modal-message')
+        const modalConfirm = document.getElementById('modal-confirm')
+
+        // Текущее состояние
+        let currentStoryId = -1
+        let currentStoryTitle = ""
+
+        // Инициализация выпадающего списка с историями
+        function initDropdown() {
+            titles.forEach(title => {
+                const option = document.createElement('option')
+                option.value = title
+                option.textContent = title
+                storySelect.appendChild(option)
+            })
+
+            // Установка случайного начального значения (без "СКОРО")
+            let randomTitle
+            do {
+                randomTitle = titles[Math.floor(Math.random() * titles.length)]
+            } while (randomTitle.includes("СКОРО"))
+
+            storySelect.value = randomTitle
+        }
+
+        // Показать модальное окно с сообщением
+        function showModal(title, message) {
+            modalTitle.textContent = title
+            modalMessage.textContent = message
+            messageModal.style.display = 'flex'
+        }
+
+        // Скрыть модальное окно
+        function hideModal() {
+            messageModal.style.display = 'none'
+        }
+
+        // Начать новую историю
+        function startStory() {
+            currentStoryTitle = storySelect.value
+
+            if (currentStoryTitle.includes("СКОРО")) {
+                showModal("Внимание", "Эта история ещё в разработке, выберите другую!")
+                return
+            }
+
+            currentStoryId = titles.indexOf(currentStoryTitle)
+
+            // Показать раздел с формой
+            formSection.style.display = 'block'
+            resultSection.style.display = 'none'
+
+            // Установить заголовок
+            currentTitle.textContent = currentStoryTitle
+
+            // Очистить предыдущие поля формы
+            formContainer.innerHTML = ''
+
+            // Создать поля формы
+            stories[currentStoryId].forEach((question, index) => {
+                const formGroup = document.createElement('div')
+                formGroup.className = 'form-group'
+
+                const label = document.createElement('label')
+                label.textContent = `${index + 1}. ${question}`
+
+                const input = document.createElement('input')
+                input.type = 'text'
+                input.id = `input-${index}`
+                input.placeholder = 'Введите ответ...'
+                input.autocomplete = 'off'
+
+                formGroup.appendChild(label)
+                formGroup.appendChild(input)
+                formContainer.appendChild(formGroup)
+            })
+        }
+
+        // Показать результат истории
+        function showResult() {
+            const words = []
+            // Собрать все ответы
+            for (let i = 0; i < stories[currentStoryId].length; i++) {
+                const input = document.getElementById(`input-${i}`)
+                const word = input.value.trim() || '___'
+                words.push(word)
+            }
+
+            // Сгенерировать историю на основе выбранного заголовка
+            let story = ""
+
+            switch (currentStoryTitle) {
+                case titles[0]:
+                    story = `На протяжении всего года ${words[0]} мечтал о своём летнем отпуске. Он планировал отправиться ${words[1]}, чтобы насладиться ${words[4]} ${words[2]} и ${words[5]} ${words[3]}. Наконец, долгожданный отпуск наступил. ${words[0]} собрал свои вещи, включая ${words[6]}, ${words[7]} и несколько ${words[8]}, и отправился ${words[1]}. Первые дни отпуска он провёл ${words[9]}, ${words[10]} и ${words[11]}. Вечером ${words[0]} ${words[12]}, ${words[13]}. В один из дней он решил ${words[14]}. На следующий день произошло ${words[15]}, изменив все его планы. В конце отпуска ${words[0]} был полон впечатлений и воспоминаний о своих приключениях. Он вернулся домой с ${words[16]}, ${words[17]} и множеством ${words[18]}, которые напоминали ему о незабываемых моментах его летнего отпуска.`
+                    break
+                case titles[1]:
+                    story = `${words[0]} давно мечтала посетить музей ${words[1]}, потому что она любила ${words[2]} и ${words[3]}. В день похода в музей ${words[1]}, ${words[0]} надела свой любимый ${words[4]} и отправилась туда с ${words[5]}. Когда они вошли в музей, они ${words[6]}. Они рассмотрели картину "${words[7]} с ${words[8]}". "${words[9]}! Эта картина ${words[10]}", - закричала ${words[0]}. Затем они побывали в ${words[11]} зале, где увидели ${words[12]}. В конце посещения музея, ${words[0]} с ${words[5]} зашли в музейный магазин, где купили себе ${words[13]} на память. Возвращаясь домой, ${words[0]} была очень ${words[14]} и ${words[15]} после этого увлекательного похода.`
+                    break
+                case titles[2]:
+                    story = `Сегодня утром ${words[0]} проснулся с ${words[1]} в животе. Он попытался ${words[2]} таблетку от боли, но не помогло. ${words[0]} решил, что лучше всего будет сходить ${words[3]}. Там его приняла доктор ${words[4]}, которая провела осмотр и сказала: "${words[5]}!". Затем с помощью профессионального медицинского ${words[6]} доктор провела обследование. Результаты показали, что у него было острое воспаление ${words[7]}. Доктор рекомендовала ${words[8]} для лучшего контроля состояния. ${words[0]} поначалу опасался, но понял, что это лучшее решение для его здоровья. Проведя несколько дней ${words[9]} под наблюдением ${words[10]}, он почувствовал себя гораздо лучше. Теперь он знает, ${words[4]} - самый ${words[11]} врач на планете.`
+                    break
+                case titles[3]:
+                    story = `Сегодня в школе №${words[0]} учительница по ${words[1]} ${words[2]} объявила, что на уроке будет ${words[3]}. Все начали ${words[4]}. ${words[5]} сказал: "${words[6]}?". ${words[2]} достала из ящика ${words[7]} и раздала ученикам. ${words[5]} закричал: "${words[8]}!". Прошло несколько минут. ${words[2]} следила за учениками, а затем начала ${words[9]}. В это время ${words[5]} обратился к ${words[10]} и спросил: "${words[11]}?". ${words[2]} заметила это, перестала ${words[9]} и крикнула: "${words[5]}, а ну ${words[12]} сам!". Тогда ${words[5]} ответил: "${words[13]}" и вышел из класса. ${words[2]} поставила ему ${words[14]}, а родители дома дали ему ${words[15]}.`
+                    break
+                case titles[4]:
+                    story = `Сегодня вечером я решил посмотреть новый фильм ужасов "${words[0]} ${words[1]} ${words[2]}", о котором многие говорили. Главную роль исполнил ${words[3]}. Я пригласил друзей и приготовил ${words[4]} ${words[5]}. Когда начался фильм, я захотел ${words[6]}. Вдруг на экране появился ${words[7]}, и я ${words[8]}, а мои друзья ${words[9]}. Мы поставили фильм на паузу, ${words[10]}, а затем продолжили смотреть. Вдруг, на экране снова появлялся ${words[7]}, и я опять ${words[8]}. Когда фильм закончился, друзья сказали: "Было ${words[11]}!" и предложили в следующий раз посмотреть фильм "Проклятье ${words[12]}". Я сказал, что буду посмотрю это фильм, если в главной роли будет ${words[13]}.`
+                    break
+                case titles[5]:
+                    story = `В маленькой мастерской по ремонту телефонов работал мастер по имени ${words[0]}. У него было прозвище "${words[1]}", потому что он был очень ${words[2]}. Однажды в мастерскую заглянул ${words[3]} парень по имени ${words[4]}. У него был ${words[5]} телефон, которому требовался серьёзный ремонт. Мастер ${words[1]} попросил рассказать о проблеме. ${words[4]} рассказал, что его телефон начал ${words[6]} после того, как он уронил его с высоты ${words[7]} метров на ${words[8]}. ${words[0]} внимательно осмотрел телефон и понял, что нужно заменить ${words[9]}. Мастер приступил к работе, а ${words[4]} с интересом наблюдал за процессом и ${words[10]}. Вскоре телефон был полностью восстановлен. Парень обрадовался и крикнул: "${words[11]}!". ${words[4]} спросил, сколько стоит ремонт. Мастер ответил: "${words[12]} рублей". ${words[4]} сказал, что у него нет таких денег и протянул мастеру ${words[13]}. Тогда ${words[0]} выхватил телефон у парня и кинул его ${words[14]}. ${words[4]} сказал: "Вы очень ${words[15]} мастер. Я буду ${words[16]} на вас!".`
+                    break
+                case titles[6]:
+                    story = `${words[0]} решили провести давно запланированный ремонт в своей квартире. Всё началось с поиска ${words[1]}, который смог бы помочь им с ремонтом. После долгих поисков им удалось найти ${words[2]} ${words[1]} по ремонту. Они обговорили все детали, выбрали ${words[3]}, и началась работа. Первые дни ремонта были насыщены звуками ${words[4]} и запахом ${words[5]}. Семья переехала временно из ${words[6]} ${words[7]}, чтобы не мешать работникам ${words[8]}. Каждый день они приезжали на недолгие визиты, чтобы ${words[9]}. Наконец, настал день, когда всё было готово. Семья вернулась в свою квартиру и ${words[10]}. Они были поражены результатом. Всё выглядело ${words[11]} и ${words[12]}. Ремонт создал ${words[13]} обстановку, в которой им хотелось проводить время вместе и ${words[14]}.`
+                    break
+                case titles[7]:
+                    story = `Дорогой Дедушка Мороз, ${words[0]} нос! Я очень хочу, чтобы в этом году ${words[1]} у меня оказался ${words[2]}. Ещё я очень мечтаю о ${words[3]}! В этом году я был очень ${words[4]} и хорошо ${words[5]}. В следующем году я обещаю быть ${words[6]}, стараться ${words[7]}, делиться ${words[8]} с родителями, и, конечно же, каждый день ${words[9]} без напоминания. Надеюсь, ты услышишь мою просьбу. С наступающим Новым Годом! С любовью, ${words[10]}.`
+                    break
+                case titles[8]:
+                    story = `"Какой сегодня был тяжёлый день ${words[1]}", - сказала ${words[0]}. Она мечтала добраться ${words[2]}, чтобы ${words[3]}. В автобусе она слушала ${words[4]}, но, выходя, не заметила, как выронила ${words[5]} ${words[6]}. Дома девушка обнаружила пропажу и очень ${words[7]}. На следующий день ${words[0]} пошла ${words[8]}, где сидела вчера, и спросила у ${words[9]}, не видел ли он её ${words[6]}. Он улыбнулся и достал из-под ${words[10]} знакомый ${words[5]} ${words[6]}. Оказалось, его нашла ${words[11]} и оставила ${words[12]}. ${words[0]} поблагодарила и купила ${words[13]} в знак благодарности. Теперь она всегда ${words[14]} карманы перед выходом.`
+                    break
+                case titles[9]:
+                    story = `${words[0]} сел в поезд от ${words[1]} до ${words[2]} и с облегчением бросил ${words[3]} на верхнюю полку. За окном уже темнело, а поезд всё наполнялся ${words[4]}. В купе вошёл ${words[5]} с большим ${words[6]} и сел напротив. "Вы не против, если я ${words[7]}?" - спросил незнакомец, доставая ${words[8]}. ${words[0]} кивнул и достал ${words[9]}, но вдруг поезд дёрнулся, и ${words[10]} упал на пол. Незнакомец поднял его и неожиданно ${words[11]}. Спустя время, незнакомец представился ${words[12]}. Они разговорились, и выяснилось, что незнакомец - ${words[13]} ${words[14]}. Уже была поздняя ночь. ${words[0]} заснул. Во сне он увидел ${words[15]} ${words[16]}, поэтому он резко проснулся и крикнул "${words[17]}!". Когда поезд прибыл, ${words[0]} вышел на станции "${words[18]}" и пошёл ${words[19]}.`
+                    break
+                case titles[10]:
+                    story = `Я решил забежать в магазин "${words[0]} ${words[1]}" перед закрытием, но не учёл, что в это время там начинается настоящий ад. В ${words[2]} отделе я заметил последний ${words[3]} ${words[4]}! Но тут же к полке подлетела ${words[5]} с ${words[6]}, нацелившись на тот же ${words[4]}. Мы устроили ${words[7]} битву. Я схватил ${words[8]}, который лежал рядом и кинул в неё. ${words[5]} испугалась и ушла. Победа была за мной, я ликовал и крикнул: "${words[9]}!". Но тут я услышал громкий топот! ${words[5]} бежала на меня, держа в руках ${words[10]} ${words[11]}, крича: "${words[12]}!". Она сшибла меня с ног, я выронил ${words[4]}, мы оба валялись на полу. Тут подошёл третий покупатель поднял ${words[4]} и ушёл. В итоге я и ${words[5]} проиграли. Тут к нам подошёл охранник и спросил: "${words[13]}?". Мы ответили: "Мы ${words[14]}". В общем, нас выгнали из магазина, и мы пошли ${words[15]}.`
+                    break
+                case titles[11]:
+                    story = `У лукоморья ${words[0]} ${words[1]};\n${words[2]} ${words[3]} на нём:\nИ днём и ночью ${words[4]} ${words[5]}\nВсё ходит по ней кругом;\nИдёт направо - ${words[6]} ${words[7]},\nНалево - ${words[8]} ${words[9]}.\nТам чудеса: там ${words[10]} ${words[11]},\n${words[12]} ${words[13]} сидит;\nТам на неведомых дорожках\nСледы невиданных ${words[14]};\n…\nВ темнице там ${words[15]} ${words[16]},\nА ${words[17]} ${words[18]} ей верно служит;\nТам ступа с ${words[19]}\nИдёт, бредёт сама собой,\nТам царь ${words[20]} над ${words[21]} чахнет;\nТам русский дух… там Русью пахнет!\nИ там я был, и ${words[22]} я пил.`
+                    break
+                case titles[12]:
+                    story = `Было ${words[0]} воскресное утро, и я, как обычно, отправился на прогулку ${words[1]} со своим псом по кличке ${words[2]}. Он был ${words[3]}, ${words[4]} и вечно ${words[5]} - казалось, ничто не могло испортить его настроение. Мы шли по ${words[6]} тропинке ${words[7]}, как вдруг ${words[2]} резко остановился, насторожив ${words[8]}. Из кустов донёсся слабый писк - там сидел ${words[9]} щенок, весь дрожащий от холода. ${words[2]} тут же подошёл и аккуратно ${words[10]} его, будто говоря: "${words[11]}". Я завернул малыша в свою ${words[12]} и уже собирался идти ${words[13]}, как заметил на дереве объявление о пропаже этого пёсика. Я позвонил по номеру указанному в объявлении. И вот через час мы сидели ${words[14]} у ${words[15]} женщины, которая ${words[16]} своего любимца, а он восторженно ${words[17]}. Оказалось, щенок выскользнул из ошейника во время их прогулки ${words[18]} дней назад. По дороге домой ${words[2]} гордо нёс в зубах ${words[19]} - подарок от благодарной женщины.`
+                    break
+                case titles[13]:
+                    story = `${words[0]} решил устроить дома настоящую дискотеку 90-х с цветными ${words[1]}, громкой ${words[2]} и даже ${words[3]}, которую одолжил у друга. Первые полчаса всё шло отлично, пока ${words[4]} не начал вибрировать в такт басам, а ${words[5]} не закачалась, как на шторме. Внезапно раздался резкий стук в дверь - на пороге стояла соседка баба ${words[6]} с лицом, как у ${words[7]}, раздавленного катком. "Молодой человек, у меня тут ${words[8]} дребезжит, а ${words[9]} с дивана упал!" - прошипела она. ${words[0]}, не растерявшись, крикнул: "${words[10]}!" - и сунул ей в руки стакан с ${words[11]}. К удивлению всех, через десять минут баба ${words[6]} уже зажигала под песню "${words[12]}". Вдруг свет погас - оказалось, сосед-электрик дядя ${words[13]} "случайно" вырубил пробки, но, услышав "${words[12]}", сам пришёл чинить и остался танцевать. К полуночи на вечеринке было полподъезда, а баба ${words[6]} отбивала у студентов ${words[14]} под техно. Утром дядя ${words[13]} был найден спящим ${words[15]}, а ${words[16]} - баба ${words[6]}.`
+                    break
+                case titles[14]:
+                    story = `В ${words[0]} ${words[1]} на окраине города уже ${words[2]} лет работал компьютерный клуб "${words[3]} ${words[4]}". Сюда приходили школьники, студенты и даже ${words[5]}, чтобы поиграть в "${words[6]}", "${words[7]}" или просто посидеть в интернете. Владелец клуба, дядя ${words[8]}, знал всех посетителей по именам и иногда разрешал ${words[9]} допоздна. Однажды в клуб зашёл новый парень - ${words[10]}, но ${words[11]}. Он сел за дальний компьютер и начал играть в "${words[12]}" так мастерски, что скоро вокруг собралась толпа зрителей. Через неделю он уже обыгрывал всех в клубе, с тех пор у него прозвище "${words[13]}". Но однажды "${words[13]}" проиграл. Его победил ${words[14]} паренёк ${words[15]}, который обычно приходил просто ${words[16]}. Оказалось, ${words[15]} тренировался по ночам. После этого поражения "${words[13]}" исчез, а в клубе появилась легенда о таинственном гении. Через год клуб закрыли - наступила эра домашних компьютеров. Но те, кто там бывал, до сих пор вспоминают запах ${words[16]} ${words[17]}, крики "${words[18]}!" и последний бой, который вошёл в историю.`
+                    break
+                default:
+                    story = "Неизвестная история"
+            }
+
+            // Показать раздел с результатом
+            formSection.style.display = 'none'
+            resultSection.style.display = 'block'
+
+            // Установить содержимое результата
+            resultTitle.textContent = currentStoryTitle
+            resultText.textContent = story
+        }
+
+        // Вернуться к выбору истории
+        function goHome() {
+            formSection.style.display = 'none'
+            resultSection.style.display = 'none'
+        }
+
+        // Обработчики событий
+        startBtn.addEventListener('click', startStory)
+        resultBtn.addEventListener('click', showResult)
+        homeBtn.addEventListener('click', goHome)
+        modalClose.addEventListener('click', hideModal)
+        modalConfirm.addEventListener('click', hideModal)
+
+        // Закрытие модального окна при клике вне его
+        messageModal.addEventListener('click', (e) => {
+            if (e.target === messageModal) {
+                hideModal()
+            }
+        })
+
+        // Инициализация приложения
+        initDropdown()
+    </script>
+</body>
+
+</html>
