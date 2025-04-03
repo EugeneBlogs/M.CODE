@@ -9,6 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
+        /* База */
         :root {
             --primary-color: #6c5ce7;
             --primary-hover-color: #5649c0;
@@ -21,7 +22,7 @@
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Montserrat", sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-color);
@@ -35,6 +36,7 @@
             padding: 20px;
         }
 
+        /* Кнопка Назад */
         .back-btn {
             display: inline-block;
             margin-bottom: 20px;
@@ -52,6 +54,7 @@
             transform: translateY(-2px);
         }
 
+        /* Основная часть */
         .card {
             background-color: white;
             border-radius: 15px;
@@ -61,7 +64,7 @@
         }
 
         h1 {
-            font-family: 'Roboto Slab', serif;
+            font-family: "Roboto Slab", serif;
             color: var(--primary-color);
             text-align: center;
             font-size: 2.5rem;
@@ -82,7 +85,7 @@
         }
 
         select {
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Montserrat", sans-serif;
             font-size: 1rem;
             padding: 15px;
             width: 100%;
@@ -97,7 +100,7 @@
         }
 
         .btn {
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Montserrat", sans-serif;
             font-size: 1rem;
             font-weight: 600;
             padding: 15px 30px;
@@ -156,7 +159,7 @@
         }
 
         .form-group input {
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Montserrat", sans-serif;
             font-size: 1rem;
             padding: 15px;
             border: 2px solid #dfe6e9;
@@ -170,7 +173,7 @@
         }
 
         .story-title {
-            font-family: 'Roboto Slab', serif;
+            font-family: "Roboto Slab", serif;
             color: var(--primary-color);
             text-align: center;
             font-size: 2rem;
@@ -219,6 +222,45 @@
             text-decoration: underline;
         }
 
+        /* Прогресс-бар */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            color: var(--text-color);
+            margin-top: 5px;
+            text-align: center;
+            font-size: 0.9rem;
+            padding: 5px;
+            background-color: rgba(108, 92, 231, 0.1);
+            border-radius: 8px;
+        }
+
+        .dark-theme .progress-text {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: #f5f6fa;
+        }
+
+
         /* Связь с нами */
         .contact-block {
             margin-bottom: 20px;
@@ -234,6 +276,73 @@
 
         .contact-block a:hover {
             text-decoration: underline;
+        }
+
+        /* Темная тема */
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #f5f6fa;
+        }
+
+        .dark-theme .card {
+            background-color: #2d3436;
+            color: #f5f6fa;
+        }
+
+        .dark-theme .info {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: #f5f6fa;
+        }
+
+        .dark-theme .form-group input {
+            background-color: #3d4548;
+            color: #f5f6fa;
+            border-color: #6c5ce7;
+        }
+
+        .dark-theme .story-text {
+            background-color: rgba(108, 92, 231, 0.1);
+            color: #f5f6fa;
+        }
+
+        .dark-theme .progress-container {
+            background-color: #3d4548;
+        }
+
+        /* Иконки для кнопок */
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* Блок с количеством историй */
+        .stories-count {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+
+        .stories-count span {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* Переключатель темы */
+        .theme-switch {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
         }
 
         /* Модальные окна */
@@ -261,7 +370,7 @@
         }
 
         .modal-title {
-            font-family: 'Roboto Slab', serif;
+            font-family: "Roboto Slab", serif;
             color: var(--primary-color);
             margin-top: 0;
         }
@@ -306,11 +415,18 @@
 </head>
 
 <body>
+    <div class="theme-switch" id="theme-toggle">
+        <i class="theme-icon">🌓</i>
+    </div>
     <div class="container">
         <a href="index.html" class="back-btn">← Назад</a>
 
         <div class="card">
             <h1>Генератор смешных историй</h1>
+
+            <div class="stories-count">
+                На нашем сайте <span id="stories-count">0</span> историй.
+            </div>
 
             <div class="info">
                 Приготовьтесь к веселью - будет очень смешно!😂<br><br>
@@ -333,6 +449,7 @@
 
         <div class="card" id="form-section" style="display: none">
             <h2 class="story-title" id="current-title"></h2>
+            <div id="progress-container-inner"></div>
             <div class="scroll-container" id="form-container">
                 <!-- Поля формы будут добавлены здесь JavaScript -->
             </div>
@@ -348,7 +465,7 @@
         </div>
 
         <div class="card contact-block">
-            <p>Если у вас есть идея для новой истории или вы заметили ошибку в нашей, то вы можете связаться с нами по
+            <p>Если у вас есть идея для новой истории, или вы заметили ошибку в нашей, то вы можете связаться с нами по
                 почте: <a href="mailto:mylnikcode@yandex.ru">mylnikcode@yandex.ru</a>.</p>
         </div>
 
@@ -508,23 +625,24 @@
         ]
 
         // Элементы DOM
-        const storySelect = document.getElementById('story-select')
-        const startBtn = document.getElementById('start-btn')
-        const resultBtn = document.getElementById('result-btn')
-        const homeBtn = document.getElementById('home-btn')
-        const formSection = document.getElementById('form-section')
-        const resultSection = document.getElementById('result-section')
-        const formContainer = document.getElementById('form-container')
-        const currentTitle = document.getElementById('current-title')
-        const resultTitle = document.getElementById('result-title')
-        const resultText = document.getElementById('result-text')
+        const storySelect = document.getElementById("story-select")
+        const startBtn = document.getElementById("start-btn")
+        const resultBtn = document.getElementById("result-btn")
+        const homeBtn = document.getElementById("home-btn")
+        const formSection = document.getElementById("form-section")
+        const progressSection = document.getElementById("progress-container-inner")
+        const resultSection = document.getElementById("result-section")
+        const formContainer = document.getElementById("form-container")
+        const currentTitle = document.getElementById("current-title")
+        const resultTitle = document.getElementById("result-title")
+        const resultText = document.getElementById("result-text")
 
         // Элементы модального окна
-        const messageModal = document.getElementById('message-modal')
-        const modalClose = document.getElementById('modal-close')
-        const modalTitle = document.getElementById('modal-title')
-        const modalMessage = document.getElementById('modal-message')
-        const modalConfirm = document.getElementById('modal-confirm')
+        const messageModal = document.getElementById("message-modal")
+        const modalClose = document.getElementById("modal-close")
+        const modalTitle = document.getElementById("modal-title")
+        const modalMessage = document.getElementById("modal-message")
+        const modalConfirm = document.getElementById("modal-confirm")
 
         // Текущее состояние
         let currentStoryId = -1
@@ -533,7 +651,7 @@
         // Инициализация выпадающего списка с историями
         function initDropdown() {
             titles.forEach(title => {
-                const option = document.createElement('option')
+                const option = document.createElement("option")
                 option.value = title
                 option.textContent = title
                 storySelect.appendChild(option)
@@ -547,9 +665,9 @@
 
             storySelect.value = randomTitle
 
-            storySelect.addEventListener('change', () => {
-                formSection.style.display = 'none'
-                resultSection.style.display = 'none'
+            storySelect.addEventListener("change", () => {
+                formSection.style.display = "none"
+                resultSection.style.display = "none"
             });
         }
 
@@ -557,17 +675,31 @@
         function showModal(title, message) {
             modalTitle.textContent = title
             modalMessage.textContent = message
-            messageModal.style.display = 'flex'
+            messageModal.style.display = "flex"
         }
 
         // Скрыть модальное окно
         function hideModal() {
-            messageModal.style.display = 'none'
+            messageModal.style.display = "none"
+        }
+
+        function showRandomTip() {
+            const tips = [
+                "Используй имена друзей для большего веселья!😆",
+                "Попробуй ввести что-то абсурдное!🤯",
+                "Сочетай несочетаемое!🤪",
+                "Отвечай естественно, что первое придёт в голову!🤩",
+                "Воплоти в историях свои фактазии!😍"
+            ]
+            const tipElement = document.createElement("div")
+            tipElement.className = "info random-tip"
+            tipElement.innerHTML = `💡 Совет: ${tips[Math.floor(Math.random() * tips.length)]}`
+            formContainer.appendChild(tipElement)
         }
 
         // Начать новую историю
         function startStory() {
-            currentStoryTitle = storySelect.value
+            currentStoryTitle = storySelect.value;
 
             if (currentStoryTitle.includes("СКОРО")) {
                 showModal("Немного терпения...", "Эта история ещё в разработке.")
@@ -577,33 +709,87 @@
             currentStoryId = titles.indexOf(currentStoryTitle)
 
             // Показать раздел с формой
-            formSection.style.display = 'block'
-            resultSection.style.display = 'none'
+            formSection.style.display = "block"
+            resultSection.style.display = "none"
 
             // Установить заголовок
             currentTitle.textContent = currentStoryTitle
 
-            // Очистить предыдущие поля формы
-            formContainer.innerHTML = ''
+            // Очистить предыдущие поля формы и прогресс-бар
+            formContainer.innerHTML = ""
+            progressSection.innerHTML = ""
+
+            // Добавить совет
+            showRandomTip()
+
+            // Добавить прогресс-бар
+            const progressContainer = document.createElement("div")
+            progressContainer.className = "progress-container"
+
+            const progressBar = document.createElement("div")
+            progressBar.className = "progress-bar"
+            progressBar.id = "progress-bar"
+
+            const progressText = document.createElement("div")
+            progressText.className = "progress-text"
+            progressText.id = "progress-text"
+
+            progressContainer.appendChild(progressBar)
+            progressSection.appendChild(progressContainer)
+            progressSection.appendChild(progressText)
 
             // Создать поля формы
             stories[currentStoryId].forEach((question, index) => {
-                const formGroup = document.createElement('div')
-                formGroup.className = 'form-group'
+                const formGroup = document.createElement("div")
+                formGroup.className = "form-group"
 
-                const label = document.createElement('label')
+                const label = document.createElement("label")
                 label.textContent = `${index + 1}. ${question}`
 
-                const input = document.createElement('input')
-                input.type = 'text'
+                const input = document.createElement("input")
+                input.type = "text"
                 input.id = `input-${index}`
-                input.placeholder = 'Введите ответ...'
-                input.autocomplete = 'off'
+                input.placeholder = "Введите ответ..."
+                input.autocomplete = "off"
+
+                // Добавить обработчик изменения для каждого поля
+                input.addEventListener("input", updateProgress)
 
                 formGroup.appendChild(label)
                 formGroup.appendChild(input)
                 formContainer.appendChild(formGroup)
             })
+
+            // Инициализировать прогресс
+            updateProgress()
+        }
+
+        // Функцию для обновления прогресса
+        function updateProgress() {
+            const totalFields = stories[currentStoryId].length
+            let filledFields = 0
+
+            // Посчитать заполненные поля
+            for (let i = 0; i < totalFields; i++) {
+                const input = document.getElementById(`input-${i}`)
+                if (input && input.value.trim() !== "") {
+                    filledFields++
+                }
+            }
+
+            // Рассчитать процент заполнения
+            const percent = Math.round((filledFields / totalFields) * 100)
+
+            // Обновить прогресс-бар
+            const progressBar = document.getElementById("progress-bar")
+            const progressText = document.getElementById("progress-text")
+
+            if (progressBar && progressText) {
+                progressBar.style.width = `${percent}%`
+                progressBar.textContent = `${percent}%`
+                progressText.textContent = `Заполнено ${filledFields} из ${totalFields} полей`
+                progressText.style.color = ""
+            }
         }
 
         // Показать результат истории
@@ -612,7 +798,7 @@
             // Собрать все ответы
             for (let i = 0; i < stories[currentStoryId].length; i++) {
                 const input = document.getElementById(`input-${i}`)
-                const word = input.value.trim() || '___'
+                const word = input.value.trim() || "___"
                 words.push(word)
             }
 
@@ -694,16 +880,16 @@
             }
 
             // Показать раздел с результатом
-            formSection.style.display = 'none'
-            resultSection.style.display = 'block'
+            formSection.style.display = "none"
+            resultSection.style.display = "block"
 
             // Установить содержимое результата
             resultTitle.textContent = currentStoryTitle
             // Разделяем историю на части и выделяем введённые слова
             let highlightedStory = story
             words.forEach(word => {
-                if (word !== '___') {
-                    const regex = new RegExp(escapeRegExp(word), 'g')
+                if (word !== "___") {
+                    const regex = new RegExp(escapeRegExp(word), "g")
                     highlightedStory = highlightedStory.replace(regex, `<span class="user-word">${word}</span>`)
                 }
             })
@@ -712,24 +898,24 @@
 
         // Вспомогательная функция для экранирования спецсимволов в регулярках
         function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+            return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
         }
 
         // Вернуться к выбору истории
         function goHome() {
-            formSection.style.display = 'none'
-            resultSection.style.display = 'none'
+            formSection.style.display = "none"
+            resultSection.style.display = "none"
         }
 
         // Обработчики событий
-        startBtn.addEventListener('click', startStory)
-        resultBtn.addEventListener('click', showResult)
-        homeBtn.addEventListener('click', goHome)
-        modalClose.addEventListener('click', hideModal)
-        modalConfirm.addEventListener('click', hideModal)
+        startBtn.addEventListener("click", startStory)
+        resultBtn.addEventListener("click", showResult)
+        homeBtn.addEventListener("click", goHome)
+        modalClose.addEventListener("click", hideModal)
+        modalConfirm.addEventListener("click", hideModal)
 
         // Закрытие модального окна при клике вне его
-        messageModal.addEventListener('click', (e) => {
+        messageModal.addEventListener("click", (e) => {
             if (e.target === messageModal) {
                 hideModal()
             }
@@ -739,11 +925,113 @@
         initDropdown()
 
         // Обработчик события выпадающего списка
-        storySelect.addEventListener('change', () => {
+        storySelect.addEventListener("change", () => {
             // Скрываем блок с формой и результатом при изменении выбора
-            formSection.style.display = 'none'
-            resultSection.style.display = 'none'
-        });        
+            formSection.style.display = "none"
+            resultSection.style.display = "none"
+        })
+
+        // Иконки для кнопок
+        function addIconsToButtons() {
+            const startBtn = document.getElementById("start-btn")
+            const resultBtn = document.getElementById("result-btn")
+            const homeBtn = document.getElementById("home-btn")
+            const modalConfirm = document.getElementById("modal-confirm")
+
+            startBtn.innerHTML = `<i>📖</i> ${startBtn.textContent}`
+            resultBtn.innerHTML = `<i>🪄</i> ${resultBtn.textContent}`
+            homeBtn.innerHTML = `<i>🏠</i> ${homeBtn.textContent}`
+            modalConfirm.innerHTML = `<i>👍</i> ${modalConfirm.textContent}`
+        }
+
+        // Темная тема
+        function toggleTheme() {
+            document.body.classList.toggle("dark-theme")
+            const isDark = document.body.classList.contains("dark-theme")
+            localStorage.setItem("dark-theme", isDark)
+            document.querySelector(".theme-icon").textContent = isDark ? "🌞" : "🌙"
+        }
+
+        // Проверка сохраненной темы
+        if (localStorage.getItem("dark-theme") === "true") {
+            document.body.classList.add("dark-theme")
+            document.querySelector(".theme-icon").textContent = "🌞"
+        }
+
+        // Количество историй
+        function updateStoriesCount() {
+            const countElement = document.getElementById("stories-count")
+            const activeStories = titles.filter(title => !title.includes("СКОРО")).length
+            countElement.textContent = activeStories
+        }
+
+        // Инициализация
+        document.getElementById("theme-toggle").addEventListener("click", toggleTheme)
+        updateStoriesCount()
+        addIconsToButtons()
+
+        // Пасхалка
+        let clickCount = 0;
+        const title = document.querySelector("h1");
+
+        title.addEventListener("click", () => {
+            clickCount++;
+            if (clickCount === 5) {
+                showEasterEgg();
+                clickCount = 0;
+            }
+        });
+
+        function showEasterEgg() {
+            // 1. Меняем заголовок
+            title.innerHTML = "Генератор смешных историй! <span style='font-size:0.8em'>🦄</span>";
+            title.classList.add("easter-egg-title");
+
+            // 2. Добавляем мигающий стиль
+            const style = document.createElement("style");
+            style.innerHTML = `
+        .easter-egg-title {
+            animation: rainbow 5s infinite, shake 3s infinite;
+        }
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            20% { color: #ffcc00; }
+            40% { color: #33cc33; }
+            60% { color: #3399ff; }
+            80% { color: #cc66ff; }
+            100% { color: #ff0066; }
+        }
+        @keyframes shake {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+    `;
+            document.head.appendChild(style);
+
+            // 3. Показываем сообщение
+            setTimeout(() => {
+                const msg = document.createElement("div");
+                msg.innerHTML = "Поздравляем, ты нашёл секретик!✨";
+                msg.style.position = "fixed";
+                msg.style.top = "20px";
+                msg.style.left = "0";
+                msg.style.width = "100%";
+                msg.style.padding = "10px";
+                msg.style.background = "rgba(108, 92, 231, 0.9)";
+                msg.style.color = "white";
+                msg.style.textAlign = "center";
+                msg.style.zIndex = "1000";
+                msg.style.fontWeight = "bold";
+                document.body.appendChild(msg);
+
+                // Убираем через 5 секунд
+                setTimeout(() => {
+                    msg.remove();
+                }, 5000);
+            }, 300);
+        }
+
     </script>
 </body>
 
