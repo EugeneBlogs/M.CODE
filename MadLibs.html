@@ -572,7 +572,8 @@
             "#НикомуНеГовори", "10 способов потратить зарплату за один день", "Кот, который правил миром",
             "Виртуальный конфликт", "Кто украл торт?", "Диета, или как я худел", "Конец света?",
             "По вашему запросу ничего не найдено... (СКОРО)", "On Air (В эфире) (СКОРО)",
-            "Бизнес-темка (СКОРО)", "Концерт (СКОРО)", "Короче, план такой! (СКОРО)"
+            "Бизнес-темка (СКОРО)", "Концерт (СКОРО)", "Короче, план такой! (СКОРО)",
+            "Маньяк из дома напротив (СКОРО)", "Зеркальное (СКОРО)",
         ]
         // Описания сюжетов
         const plots = [
@@ -1174,24 +1175,24 @@
         addIconsToButtons()
 
         // Пасхалка
-        let clickCount = 0;
-        const title = document.querySelector("h1");
+        let clickCount = 0
+        const title = document.querySelector("h1")
 
         title.addEventListener("click", () => {
-            clickCount++;
+            clickCount++
             if (clickCount === 5) {
-                showEasterEgg();
-                clickCount = 0;
+                showEasterEgg()
+                clickCount = 0
             }
-        });
+        })
 
         function showEasterEgg() {
             // 1. Меняем заголовок
-            title.innerHTML = "Генератор смешных историй! <span style='font-size:0.8em'>🦄</span>";
-            title.classList.add("easter-egg-title");
+            title.innerHTML = "Генератор смешных историй! <span style='font-size:0.8em'>🦄</span>"
+            title.classList.add("easter-egg-title")
 
             // 2. Добавляем мигающий стиль
-            const style = document.createElement("style");
+            const style = document.createElement("style")
             style.innerHTML = `
         .easter-egg-title {
             animation: rainbow 5s infinite, shake 3s infinite;
@@ -1210,29 +1211,29 @@
             100% { transform: rotate(-5deg); }
         }
     `;
-            document.head.appendChild(style);
+            document.head.appendChild(style)
 
             // 3. Показываем сообщение
             setTimeout(() => {
-                const msg = document.createElement("div");
-                msg.innerHTML = "Поздравляем, ты нашёл секретик!✨";
-                msg.style.position = "fixed";
-                msg.style.top = "20px";
-                msg.style.left = "0";
-                msg.style.width = "100%";
-                msg.style.padding = "10px";
-                msg.style.background = "rgba(108, 92, 231, 0.9)";
-                msg.style.color = "white";
-                msg.style.textAlign = "center";
-                msg.style.zIndex = "1000";
-                msg.style.fontWeight = "bold";
-                document.body.appendChild(msg);
+                const msg = document.createElement("div")
+                msg.innerHTML = "Поздравляем, ты нашёл секретик!✨"
+                msg.style.position = "fixed"
+                msg.style.top = "20px"
+                msg.style.left = "0"
+                msg.style.width = "100%"
+                msg.style.padding = "10px"
+                msg.style.background = "rgba(108, 92, 231, 0.9)"
+                msg.style.color = "white"
+                msg.style.textAlign = "center"
+                msg.style.zIndex = "1000"
+                msg.style.fontWeight = "bold"
+                document.body.appendChild(msg)
 
                 // Убираем через 5 секунд
                 setTimeout(() => {
-                    msg.remove();
-                }, 5000);
-            }, 300);
+                    msg.remove()
+                }, 5000)
+            }, 300)
         }
 
     </script>
