@@ -89,6 +89,71 @@
             background-color: #c0392b;
         }
 
+        /* Анимации для сердца */
+        @keyframes heartbeat {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            25% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            75% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes heartbreak {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0.5) rotate(45deg);
+                opacity: 0;
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+            }
+        }
+
+        .heart-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            z-index: 9999;
+            pointer-events: none;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .heartbeat {
+            animation: heartbeat 1s ease-out;
+        }
+
+        .heartbreak {
+            animation: heartbreak 0.8s ease-out forwards;
+        }
+
         /* Основная часть */
         .card {
             background-color: white;
@@ -436,6 +501,31 @@
             z-index: 100;
         }
 
+        /* Анимация перехода между темами */
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .card {
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .info,
+        .story-text,
+        .form-group input,
+        #stories-table {
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+
+        /* Плавное переключение иконки темы */
+        .theme-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-icon:hover {
+            transform: rotate(30deg) scale(1.1);
+        }
+
         /* Модальные окна */
         .modal {
             display: none;
@@ -650,27 +740,45 @@
         // Функция для заполнения таблицы
         function fillStoriesTable() {
             const tableBody = document.querySelector("#stories-table tbody")
+            const favorites = getFavorites()
 
+            // Сначала добавляем избранные истории
             titles.forEach((title, index) => {
-                const row = document.createElement("tr")
+                if (favorites.includes(title)) {
+                    const row = createTableRow(title, index, true)
+                    tableBody.appendChild(row)
+                }
+            })
 
-                // Название истории
-                const titleCell = document.createElement("td")
-                titleCell.textContent = title
-                row.appendChild(titleCell)
+            // Затем добавляем остальные истории
+            titles.forEach((title, index) => {
+                if (!favorites.includes(title)) {
+                    const row = createTableRow(title, index, false)
+                    tableBody.appendChild(row)
+                }
+            })
+        }
 
-                // Количество пропусков
-                const blanksCell = document.createElement("td")
-                blanksCell.textContent = stories[index] ? stories[index].length : 0
-                row.appendChild(blanksCell)
+        // Вспомогательная функция для создания строки таблицы
+        function createTableRow(title, index, isFavorite) {
+            const row = document.createElement("tr")
 
-                // Описание сюжета
-                const plotCell = document.createElement("td")
-                plotCell.textContent = plots[index] || "Описание отсутствует"
-                row.appendChild(plotCell)
+            // Название истории
+            const titleCell = document.createElement("td")
+            titleCell.textContent = isFavorite ? `❤️${title}❤️` : title
+            row.appendChild(titleCell)
 
-                tableBody.appendChild(row)
-            });
+            // Количество пропусков
+            const blanksCell = document.createElement("td")
+            blanksCell.textContent = stories[index] ? stories[index].length : 0
+            row.appendChild(blanksCell)
+
+            // Описание сюжета
+            const plotCell = document.createElement("td")
+            plotCell.textContent = plots[index] || "Описание отсутствует"
+            row.appendChild(plotCell)
+
+            return row
         }
 
         // Вызываем функцию заполнения таблицы при загрузке страницы
@@ -862,12 +970,7 @@
 
         // Инициализация выпадающего списка с историями
         function initDropdown() {
-            titles.forEach(title => {
-                const option = document.createElement("option")
-                option.value = title
-                option.textContent = title
-                storySelect.appendChild(option)
-            })
+            rebuildStoryDropdown()
 
             // Установка случайного начального значения (без "СКОРО")
             let randomTitle
@@ -876,11 +979,15 @@
             } while (randomTitle.includes("СКОРО"))
 
             storySelect.value = randomTitle
+            updateFavoriteButton()
+        }
 
-            storySelect.addEventListener("change", () => {
-                formSection.style.display = "none"
-                resultSection.style.display = "none"
-            });
+        // Вспомогательная функция для создания элемента option
+        function createOptionElement(title, isFavorite) {
+            const option = document.createElement("option")
+            option.value = title
+            option.textContent = isFavorite ? `❤️${title}❤️` : title
+            return option
         }
 
         // Показать модальное окно с сообщением
@@ -911,7 +1018,7 @@
 
         // Начать новую историю
         function startStory() {
-            currentStoryTitle = storySelect.value;
+            currentStoryTitle = storySelect.value
 
             if (currentStoryTitle.includes("СКОРО")) {
                 showModal("Немного терпения...", "Эта история ещё в разработке.")
@@ -1188,16 +1295,33 @@
 
         // Темная тема
         function toggleTheme() {
-            document.body.classList.toggle("dark-theme")
-            const isDark = document.body.classList.contains("dark-theme")
-            localStorage.setItem("dark-theme", isDark)
-            document.querySelector(".theme-icon").textContent = isDark ? "🌞" : "🌙"
+            document.body.style.transition = 'none' // Отключаем анимацию для мгновенного изменения
+            const isCurrentlyDark = document.body.classList.contains("dark-theme")
+
+            // Создаем эффект "моргания" при переключении
+            document.body.style.opacity = '0.7'
+            setTimeout(() => {
+                document.body.style.opacity = '1'
+                document.body.style.transition = 'opacity 0.3s ease, background-color 0.5s ease, color 0.5s ease'
+
+                document.body.classList.toggle("dark-theme")
+                const isDark = document.body.classList.contains("dark-theme")
+                localStorage.setItem("dark-theme", isDark)
+                document.querySelector(".theme-icon").textContent = isDark ? "🌞" : "🌙"
+            }, 100)
         }
 
         // Проверка сохраненной темы
         if (localStorage.getItem("dark-theme") === "true") {
+            document.body.style.opacity = '0'
             document.body.classList.add("dark-theme")
             document.querySelector(".theme-icon").textContent = "🌞"
+
+            // Плавное появление после применения темы
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease'
+                document.body.style.opacity = '1'
+            }, 10)
         }
 
         // Количество историй
@@ -1211,6 +1335,58 @@
         document.getElementById("theme-toggle").addEventListener("click", toggleTheme)
         updateStoriesCount()
         addIconsToButtons()
+
+        resultBtn.addEventListener("click", function () {
+            // Проверяем, есть ли запись о созданных историях
+            if (!localStorage.getItem('storiesCreated')) {
+                // Показываем уведомление
+                showFirstStoryCongratulation()
+                // Устанавливаем флаг, что хотя бы одна история создана
+                localStorage.setItem('storiesCreated', 'true')
+            }
+            // Остальная логика функции showResult...
+            showResult()
+        })
+
+        // Функция для показа поздравления
+        function showFirstStoryCongratulation() {
+            const congrats = document.createElement('div')
+            congrats.innerHTML = 'Поздравляем с созданием первой истории!🎉'
+            congrats.style.position = 'fixed'
+            congrats.style.bottom = '20px'
+            congrats.style.left = '20px'
+            congrats.style.padding = '15px'
+            congrats.style.background = 'linear-gradient(45deg, #6c5ce7, #a29bfe)'
+            congrats.style.color = 'white'
+            congrats.style.borderRadius = '10px'
+            congrats.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)'
+            congrats.style.zIndex = '1000'
+            congrats.style.animation = 'fadeIn 0.5s, bounce 2s infinite'
+
+            // Добавляем CSS анимации
+            const style = document.createElement('style')
+            style.innerHTML = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    `
+            document.head.appendChild(style)
+
+            document.body.appendChild(congrats)
+
+            // Убираем уведомление через 5 секунд
+            setTimeout(() => {
+                congrats.style.transition = 'opacity 0.5s'
+                congrats.style.opacity = '0'
+                setTimeout(() => congrats.remove(), 500)
+            }, 5000)
+        }
 
         // Функция для обновления состояния кнопки "Избранное"
         function updateFavoriteButton() {
@@ -1228,58 +1404,118 @@
             return favorites ? JSON.parse(favorites) : []
         }
 
+        // Функция для показа анимации сердца
+        function showHeartAnimation(isFavorite) {
+            const heart = document.createElement('div')
+            heart.className = 'heart-animation'
+            heart.innerHTML = '❤️'
+
+            if (isFavorite) {
+                heart.classList.add('heartbeat')
+            } else {
+                heart.classList.add('heartbreak')
+                // Добавляем эффект трещины
+                setTimeout(() => {
+                    heart.innerHTML = '💔'
+                    heart.style.fontSize = '80px'
+                }, 300)
+            }
+
+            document.body.appendChild(heart)
+
+            // Удаляем элемент после завершения анимации
+            setTimeout(() => {
+                heart.remove()
+            }, 1000)
+        }
+
         // Функция для добавления/удаления истории в избранное
         function toggleFavorite() {
             const currentTitle = storySelect.value
             let favorites = getFavorites()
+            const wasFavorite = favorites.includes(currentTitle)
 
-            if (favorites.includes(currentTitle)) {
-                // Удаляем из избранного
+            // Показываем соответствующую анимацию
+            showHeartAnimation(!wasFavorite)
+
+            if (wasFavorite) {
                 favorites = favorites.filter(title => title !== currentTitle)
             } else {
-                // Добавляем в избранное
                 favorites.push(currentTitle)
             }
 
             localStorage.setItem("favorites", JSON.stringify(favorites))
             updateFavoriteButton()
-            updateStoriesDropdown()
+
+            // Полностью перестраиваем выпадающий список
+            rebuildStoryDropdown()
             updateStoriesTable()
+        }
+
+        // Функция для полного перестроения выпадающего списка
+        function rebuildStoryDropdown() {
+            const currentValue = storySelect.value
+            const favorites = getFavorites()
+
+            // Сохраняем текущее значение
+            const scrollPosition = storySelect.scrollTop
+
+            // Очищаем и перестраиваем список
+            storySelect.innerHTML = ''
+
+            // Сначала избранные
+            titles.forEach(title => {
+                if (favorites.includes(title)) {
+                    const option = document.createElement("option")
+                    option.value = title
+                    option.textContent = `❤️${title}❤️`
+                    storySelect.appendChild(option)
+                }
+            })
+
+            // Затем остальные
+            titles.forEach(title => {
+                if (!favorites.includes(title)) {
+                    const option = document.createElement("option")
+                    option.value = title
+                    option.textContent = title
+                    storySelect.appendChild(option)
+                }
+            })
+
+            // Восстанавливаем значение и позицию прокрутки
+            if (titles.includes(currentValue)) {
+                storySelect.value = currentValue
+            }
+            storySelect.scrollTop = scrollPosition
+
+            updateFavoriteButton()
         }
 
         // Функция для обновления выпадающего списка историй с учетом избранных
         function updateStoriesDropdown() {
             const favorites = getFavorites()
-            const options = storySelect.options
+            const options = Array.from(storySelect.options)
 
-            for (let i = 0; i < options.length; i++) {
-                const title = options[i].value
-                const isFavorite = favorites.includes(title)
+            // Сортируем options - избранные сначала
+            options.sort((a, b) => {
+                const aIsFavorite = favorites.includes(a.value)
+                const bIsFavorite = favorites.includes(b.value)
+                return bIsFavorite - aIsFavorite
+            })
 
-                if (isFavorite) {
-                    options[i].textContent = `❤️${title}❤️`
-                } else {
-                    options[i].textContent = title
-                }
-            }
+            // Очищаем и добавляем отсортированные варианты
+            storySelect.innerHTML = ''
+            options.forEach(option => {
+                storySelect.appendChild(option)
+            })
         }
 
         // Функция для обновления таблицы историй с учетом избранных
         function updateStoriesTable() {
-            const favorites = getFavorites()
-            const rows = document.querySelectorAll("#stories-table tbody tr")
-
-            rows.forEach((row, index) => {
-                const titleCell = row.cells[0]
-                const title = titles[index]
-                const isFavorite = favorites.includes(title)
-
-                if (isFavorite) {
-                    titleCell.textContent = `❤️${title}❤️`
-                } else {
-                    titleCell.textContent = title
-                }
-            })
+            const tableBody = document.querySelector("#stories-table tbody")
+            tableBody.innerHTML = ''
+            fillStoriesTable() // Просто перезаполняем таблицу с новым порядком
         }
 
         // Инициализация кнопки "Избранное"
@@ -1329,7 +1565,7 @@
             50% { transform: rotate(5deg); }
             100% { transform: rotate(-5deg); }
         }
-    `;
+    `
             document.head.appendChild(style)
 
             // 3. Показываем сообщение
