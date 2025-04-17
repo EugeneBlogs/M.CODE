@@ -36,7 +36,7 @@
             padding: 20px;
         }
 
-        /* Кнопка Назад */
+        /* Кнопка "Назад" */
         .back-btn {
             display: inline-block;
             margin-bottom: 20px;
@@ -52,6 +52,41 @@
         .back-btn:hover {
             background-color: var(--primary-color);
             transform: translateY(-2px);
+        }
+
+        /* Кнопка "Избранное" */
+        .favorite-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .favorite-btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .favorite-btn.active {
+            background-color: var(--error-color);
+        }
+
+        .favorite-btn.active {
+            background-color: var(--error-color);
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active:hover {
+            background-color: #c0392b;
         }
 
         /* Основная часть */
@@ -136,6 +171,7 @@
 
         .btn-container {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 20px;
             margin: 40px 0;
@@ -499,6 +535,7 @@
 
             <div class="btn-container">
                 <button class="btn btn-primary" id="start-btn">Сочинить историю</button>
+                <button class="favorite-btn" id="favorite-btn">❤️</button>
             </div>
         </div>
 
@@ -1174,6 +1211,87 @@
         document.getElementById("theme-toggle").addEventListener("click", toggleTheme)
         updateStoriesCount()
         addIconsToButtons()
+
+        // Функция для обновления состояния кнопки "Избранное"
+        function updateFavoriteButton() {
+            const favoriteBtn = document.getElementById("favorite-btn")
+            const currentTitle = storySelect.value
+            const favorites = getFavorites()
+            const isFavorite = favorites.includes(currentTitle)
+
+            favoriteBtn.classList.toggle("active", isFavorite)
+        }
+
+        // Функция для получения списка избранных историй из localStorage
+        function getFavorites() {
+            const favorites = localStorage.getItem("favorites")
+            return favorites ? JSON.parse(favorites) : []
+        }
+
+        // Функция для добавления/удаления истории в избранное
+        function toggleFavorite() {
+            const currentTitle = storySelect.value
+            let favorites = getFavorites()
+
+            if (favorites.includes(currentTitle)) {
+                // Удаляем из избранного
+                favorites = favorites.filter(title => title !== currentTitle)
+            } else {
+                // Добавляем в избранное
+                favorites.push(currentTitle)
+            }
+
+            localStorage.setItem("favorites", JSON.stringify(favorites))
+            updateFavoriteButton()
+            updateStoriesDropdown()
+            updateStoriesTable()
+        }
+
+        // Функция для обновления выпадающего списка историй с учетом избранных
+        function updateStoriesDropdown() {
+            const favorites = getFavorites()
+            const options = storySelect.options
+
+            for (let i = 0; i < options.length; i++) {
+                const title = options[i].value
+                const isFavorite = favorites.includes(title)
+
+                if (isFavorite) {
+                    options[i].textContent = `❤️${title}❤️`
+                } else {
+                    options[i].textContent = title
+                }
+            }
+        }
+
+        // Функция для обновления таблицы историй с учетом избранных
+        function updateStoriesTable() {
+            const favorites = getFavorites()
+            const rows = document.querySelectorAll("#stories-table tbody tr")
+
+            rows.forEach((row, index) => {
+                const titleCell = row.cells[0]
+                const title = titles[index]
+                const isFavorite = favorites.includes(title)
+
+                if (isFavorite) {
+                    titleCell.textContent = `❤️${title}❤️`
+                } else {
+                    titleCell.textContent = title
+                }
+            })
+        }
+
+        // Инициализация кнопки "Избранное"
+        document.getElementById("favorite-btn").addEventListener("click", toggleFavorite)
+        storySelect.addEventListener("change", updateFavoriteButton)
+
+        // Обновляем кнопку при загрузке страницы
+        document.addEventListener("DOMContentLoaded", () => {
+            updateFavoriteButton()
+            updateStoriesDropdown()
+            updateStoriesTable()
+        })
 
         // Пасхалка
         let clickCount = 0
