@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Что было раньше? | Жуткая игра для Хэллоуина</title>
+    <style>
+        /* Основные настройки шрифтов */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;700&display=swap');
+
+        /* Цветовая палитра */
+        :root {
+            --blood-red: #8a0303;
+            --dark-red: #3a0000;
+            --black: #0a0a0a;
+            --gray: #1a1a1a;
+            --light-gray: #333;
+            --white: #e0e0e0;
+            --flicker: rgba(138, 3, 3, 0.3);
+        }
+
+        /* Сброс стандартных стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Основные стили страницы */
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        /* Фоновый узор в виде диагональных линий */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230a0a0a"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%231a1a1a" stroke-width="0.5"/></svg>');
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* Анимированные капли крови */
+        .blood-drop {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: var(--blood-red);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            z-index: -1;
+            animation: drip 5s infinite;
+        }
+
+        /* Анимация капель крови */
+        @keyframes drip {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            20% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+        }
+
+        /* Основной контейнер сайта */
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--dark-red);
+            box-shadow: 0 0 20px rgba(138, 3, 3, 0.2),
+                0 0 40px rgba(138, 3, 3, 0.1),
+                0 0 60px rgba(138, 3, 3, 0.05);
+            position: relative;
+            overflow: visible;
+            min-height: 400px;
+        }
+
+        /* Анимированная верхняя граница контейнера */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--blood-red), transparent);
+            animation: flicker 3s infinite alternate;
+        }
+
+        /* Анимация мерцания */
+        @keyframes flicker {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                box-shadow: 0 0 10px var(--flicker);
+            }
+
+            20%,
+            24%,
+            55% {
+                box-shadow: 0 0 15px var(--blood-red);
+            }
+        }
+
+        /* Заголовок страницы */
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--blood-red);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(138, 3, 3, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* Стили для вступительных экранов */
+        .intro-screen {
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 1.6;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            position: absolute;
+            width: calc(100% - 6rem);
+        }
+
+        /* Активный вступительный экран */
+        .intro-screen.active {
+            opacity: 1;
+        }
+
+        /* Главное меню */
+        .main-menu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* Показ главного меню */
+        .main-menu.show {
+            opacity: 1;
+            display: flex;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Блок с последним предложением истории */
+        .story-preview {
+            background-color: var(--gray);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--blood-red);
+            font-size: 1.3rem;
+            line-height: 1.6;
+            position: relative;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Декоративные кавычки */
+        .story-preview::after {
+            content: "\"";
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--blood-red);
+        }
+
+        /* Контейнер для кнопок */
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Стили кнопок */
+        button {
+            background-color: var(--dark-red);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--blood-red);
+        }
+
+        /* Эффекты при наведении на кнопку */
+        button:hover {
+            background-color: var(--blood-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 3, 3, 0.4);
+        }
+
+        /* Эффект нажатия кнопки */
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Анимация блика на кнопках */
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        /* Полный текст истории */
+        .full-story {
+            display: none;
+            background-color: var(--gray);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--blood-red);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Анимация появления полной истории */
+        .full-story.show {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Вспышка для скримера */
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            animation: flash 0.3s ease-out;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 0.9;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Анимация печатающего текста */
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--blood-red);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: var(--blood-red)
+            }
+        }
+
+        /* Внезапно появляющийся объект */
+        .jumpscare {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            opacity: 0;
+            z-index: 1001;
+            pointer-events: none;
+            animation: scare 0.5s ease-out;
+        }
+
+        @keyframes scare {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Блок с предупреждением */
+        .warning {
+            color: var(--blood-red);
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+            font-size: 2rem;
+            padding: 1rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Подвал сайта */
+        .credits {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--light-gray);
+        }
+
+        /* Декоративные черепа на фоне */
+        .skull {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+                min-height: 300px;
+            }
+
+            .intro-screen {
+                width: calc(100% - 3rem);
+                padding: 1rem;
+                min-height: 250px;
+                font-size: 1.3rem;
+            }
+
+            .warning {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Кровавые капли -->
+    <div class="blood-drop" style="left: 10%; animation-delay: 1s;"></div>
+    <div class="blood-drop" style="left: 30%; animation-delay: 3s;"></div>
+    <div class="blood-drop" style="left: 50%; animation-delay: 2s;"></div>
+    <div class="blood-drop" style="left: 70%; animation-delay: 4s;"></div>
+    <div class="blood-drop" style="left: 90%; animation-delay: 5s;"></div>
+
+    <!-- Черепа для фона -->
+    <div class="skull" style="top: 10%; left: 5%;">☠</div>
+    <div class="skull" style="top: 20%; right: 10%;">☠</div>
+    <div class="skull" style="bottom: 15%; left: 15%;">☠</div>
+    <div class="skull" style="bottom: 25%; right: 5%;">☠</div>
+
+    <div class="container">
+        <!-- Интро-экраны -->
+        <div class="intro-screen active" id="intro0">
+            <p class="warning">Осторожно! На сайте содержатся внезапные пугающие объекты и вспышки света!</p>
+        </div>
+
+        <div class="intro-screen" id="intro1">
+            <p>Советуем собраться небольшой компанией на Хэллоуин и выключить свет...</p>
+        </div>
+
+        <div class="intro-screen" id="intro2">
+            <p>Игра по мотивам Utopia Show<br>"До того как стало страшно".</p>
+        </div>
+
+        <div class="intro-screen" id="intro3">
+            <p>Правила игры:<br><br>Вам будет предложено последнее предложение истории. Ваша
+                компания должна попытаться угадать, что же было до этого момента.</p>
+        </div>
+
+        <div class="intro-screen" id="intro4">
+            <p>Разработка сайта и историй: DeepSeek.<br>Идея: MylnikCode.</p>
+        </div>
+
+        <!-- Главное меню -->
+        <div class="main-menu" id="mainMenu">
+            <h1>Что было раньше?</h1>
+
+            <div class="story-preview" id="storyPreview">
+                Нажмите "Сменить историю", чтобы начать...
+            </div>
+
+            <div class="buttons">
+                <button id="showFullStory">Прочитать историю целиком</button>
+                <button id="changeStory">Сменить историю</button>
+            </div>
+
+            <div class="full-story" id="fullStory"></div>
+
+            <div class="credits">
+                Жуткой ночи!
+            </div>
+        </div>
+    </div>
+
+    <!-- Элементы для скримеров -->
+    <div class="flash" id="flash"></div>
+    <div class="jumpscare" id="jumpscare">👻</div>
+
+    <script>
+        // Массив страшных историй
+        const horrorStories = [
+            {
+                lastSentence: "Когда полиция вскрыла стену, они нашли десятки таких же записок, все с моим почерком.",
+                fullStory: "Ремонтируя старую квартиру, я нашёл записку за обоями: «Не верь тому, что видишь в зеркале». Я подумал, что это чья-то шутка, и выбросил её. На следующий день за другой стеной я нашёл ещё одну: «Оно притворяется тобой». Я начал нервничать. Третью записку я обнаружил под полом: «Оно знает, что ты их нашёл». В тот же вечер я увидел своё отражение, которое не повторяло моих движений. Когда полиция вскрыла стену, они нашли десятки таких же записок, все с моим почерком."
+            },
+            {
+                lastSentence: "Когда я включил свет, я увидел, что сообщения приходили с моего собственного телефона.",
+                fullStory: "Всю ночь мой телефон разрывался от сообщений от незнакомого номера: «Ты спишь?», «Почему не отвечаешь?», «Я уже в твоей комнате». Я вжался в подушку, боясь пошевелиться, пока тихий скрежет раздавался из-под кровати. В темноте экран телефона вспыхнул снова: «Ты ведь чувствуешь мое дыхание?». Холодные пальцы коснулись моей ноги, и я с криком выбежал в коридор. Дрожащими руками я набрал 102, но звонок перенаправился… на мой собственный номер. Из спальни донесся звук падающего телефона, а в тишине зазвонил мой. Когда я включил свет, я увидел, что сообщения приходили с моего собственного телефона."
+            },
+            {
+                lastSentence: "Худшее было в том, что на всех фотографиях я улыбался и махал рукой.",
+                fullStory: "Я всегда ненавидел, когда меня фотографируют. Поэтому, когда я нашёл папку с сотнями своих фотографий на рабочем столе компьютера, мне стало не по себе. На них я был в разных местах: дома, на работе, в магазине, даже спящий в своей кровати. Но я не помнил, чтобы кто-то меня фотографировал. Я начал удалять их, но на следующий день папка снова была полна новых снимков. Я установил скрытую камеру, чтобы поймать злоумышленника. Камера зафиксировала, как ночью я сам встаю с кровати, беру фотоаппарат и начинаю фотографировать себя в разных позах. Худшее было в том, что на всех фотографиях я улыбался и махал рукой."
+            },
+            {
+                lastSentence: "И что-то липкое медленно выползало наружу, оставляя за собой след из детских зубов.",
+                fullStory: "Детство Лизы закончилось в тот миг, когда она поняла: шкаф в её комнате иногда открывается сам. Сначала это были щелчки замка по ночам. Потом - едва слышный стон, будто оттуда кто-то дышал, прижавшись к двери. Однажды утром она нашла на полу клочок волос - пепельных, как у её младшей сестры, пропавшей месяц назад. В ту ночь Лиза привязала ручку шкафа верёвкой к батарее. Проснулась от звука рвущейся ткани - верёвка была перегрызена. Дверь медленно распахнулась. Там не было полок. Там зияла тёмная, влажная шахта, стены которой пульсировали, как горло. И что-то липкое медленно выползало наружу, оставляя за собой след из детских зубов."
+            },
+            {
+                lastSentence: "А она наклоняется ко мне и шепчет: «Теперь ты везешь нас всех»...",
+                fullStory: "Гроза застала меня врасплох где-то на глухой лесной трассе. Ветер бил по стеклам, дождь превращал дорогу в мутную реку, а радио уже час выдавало только белый шум. Вдруг фары выхватили из тьмы фигуру - девушка в промокшем платье голосовала на обочине. Я притормозил. «Спасибо», - прошептала она, садясь в кресло. От неё пахло мокрой землёй. Я спросил, куда ехать. «Просто вперёд», - она не поворачивала головы, но в зеркале я видел, как её губы растягиваются в неестественно широкой улыбке. Через несколько километров навигатор завизжал и показал маршрут прямо в чащу. Я резко нажал на тормоз - но машина не остановилась. «Я же сказала... вперёд», - её пальцы впились в моё плечо, холодные, как лёд. Фары осветили заброшенное кладбище у дороги. На одной из могил лежало знакомое промокшее платье. А потом я увидел других. Они медленно поднимали руки, голосуя. Двигатель заглох. Двери заблокированы. А она наклоняется ко мне и шепчет: «Теперь ты везешь нас всех»..."
+            },
+            {
+                lastSentence: "Шёпот звучит уже в ухе: «Я нашёл тебя»...",
+                fullStory: "Туманный вечер, фонари мигают, как глаза чудовища. В переулке за спиной раздаются шаги - слишком ровные, слишком намеренные. Вы ускоряетесь, но и они учащаются, сливаясь с бешеным стуком сердца. Внезапно - детский смех. Откуда? Переулок пуст. Но когда вы оборачиваетесь, на мокром асфальте видите крошечные окровавленные следы. Они ведут к стене, где мелом нарисована кривая улыбка... твоя улыбка. Фонарь гаснет. Из темноты раздается шёпот: «Давай поиграем?». Вы бросаетесь бежать, но переулок тянется бесконечно. Вдруг перед вами - кукла с выколотыми глазами, её голова поворачивается со скрипом. Шёпот звучит уже в ухе: «Я нашёл тебя»..."
+            },
+            {
+                lastSentence: "А сзади скрипнули шаги...",
+                fullStory: "Старое зернохранилище на окраине деревни стояло заброшенным с тех пор, как в 1982 году там бесследно исчезла ночная смена. Местные обходили его стороной, но в ту ночь любопытство взяло верх - я вошёл внутрь с фонарём. Пыль висела в воздухе, как пепел, а на стенах кто-то углём вывел цифры: «3-2-1». Внезапно фонарь погас, и я услышал скрип - словно что-то тяжёлое волокли по полу этажом выше. Сердце бешено колотилось, когда я нащупал в темноте дверь, но она не открывалась... Будто её держали с другой стороны. Тогда раздался шёпот прямо в ухо: «Ты третий». Я рванул наверх, надеясь найти выход через чердак, но в проёме увидел лишь два силуэта - они стояли, неестественно вытянув шеи, и ждали. А сзади скрипнули шаги..."
+            },
+            {
+                lastSentence: "Но я-то знаю правду: это был звонок на урок.",
+                fullStory: "Заброшенная школа на окраине города была закрыта после того, как в 1993 году там заживо сгорел сторож — говорят, его крики до сих пор слышны по ночам. Я проник внутрь, чтобы снять видео для блога, но уже через пять минут фонарь начал мерцать, а в пустом коридоре раздались шаги — ровные, методичные, будто кто-то шёл за мной, повторяя каждый мой поворот. На третьем этаже я нашёл дневник с одной записью: «Он звонит в колокольчик — значит, урок начался». Внезапно из репродуктора над доской раздался дребезжащий звон, и все двери в классе захлопнулись. Последнее, что я увидел перед тем, как свет погас — тень в углу, которая медленно поднялась во весь рост и потянулась ко мне с тихим скрипом обугленных пальцев. Наутро меня нашли в подвале, прикованного цепью к трубе — полиция сказала, что я сам запер себя там. Но я-то знаю правду: это был звонок на урок."
+            },
+            {
+                lastSentence: "Агент по недвижимости оставил отзыв: «Новые владельцы оказались крайне неаккуратными».",
+                fullStory: "Старый дом купили за бесценок — риелтор нервно улыбался, говоря, что прежние хозяева съехали внезапно. Первую ночь мы услышали шёпот за стеной — будто кто-то вкрадчиво повторял моё имя. Наутро в гипсокартоне обнаружили трещину, а когда вскрыли её, внутри лежал чёрный зуб с кусочком плоти. Строители, побледнев, сказали, что в 80-х здесь жил стоматолог, чья жена пропала без вести. К вечеру стена начала пульсировать, как живая, а из щели вытекли капли тёмной слизи. Последнее, что я увидела перед тем, как свет погас — пальцы, медленно раздвигающие гипсокартон изнутри... Нас нашли через три дня — я сидела в углу, жующая что-то чёрное, а муж висел на балке, с вырванным языком. Агент по недвижимости оставил отзыв: «Новые владельцы оказались крайне неаккуратными»."
+            },
+            {
+                lastSentence: "Но иногда в полночь из-под земли доносится щелчок затвора.",
+                fullStory: "Мы нашли ту камеру на чердаке заброшенной дачи — старинную, с выцветшей надписью «Снимает правду». Первый кадр вышел смазанным, но на втором проявилось лишнее лицо — бледное, с вытянутыми чертами, будто кто-то стоял за нами, слишком близко. Решив, что это глюк, мы продолжили съёмку. На третьем фото у всех были зашитые глаза нитками, на четвёртом — отсутствовали рты. Плёнка заканчивалась одним кадром: мы сидели за столом, а наши трупы висели на потолке, будто спелёнутые в коконы. В этот момент затвор щёлкнул сам. На готовом снимке мы стояли в той же комнате, но теперь все стены были покрыты нашими фотографиями — сотнями, тысячами, одни и те же лица, снятые в разных позах, но всегда с одной деталью: с каждым кадром мы выглядели всё более... изношенными. Камера упала и разбилась. Мы побежали к выходу, но дверь вела обратно в комнату — ту самую, с фотографиями. Последнее, что я услышал перед тем, как свет погас — тихий звук перематываемой плёнки. Говорят, ту дачу снесли. Но иногда в полночь из-под земли доносится щелчок затвора."
+            },
+        ];
+
+        let currentStory = null // Текущая история
+        // DOM элементы
+        const intro0 = document.getElementById('intro0')
+        const intro1 = document.getElementById('intro1')
+        const intro2 = document.getElementById('intro2')
+        const intro3 = document.getElementById('intro3')
+        const intro4 = document.getElementById('intro4')
+        const mainMenu = document.getElementById('mainMenu')
+        const storyPreview = document.getElementById('storyPreview')
+        const fullStoryElement = document.getElementById('fullStory')
+        const showFullStoryBtn = document.getElementById('showFullStory')
+        const changeStoryBtn = document.getElementById('changeStory')
+        const flash = document.getElementById('flash')
+        const jumpscare = document.getElementById('jumpscare')
+
+        // Показать полную историю
+        showFullStoryBtn.addEventListener('click', () => {
+            if (currentStory && !showFullStoryBtn.disabled) {
+                fullStoryElement.innerHTML = ''
+                fullStoryElement.classList.add('show')
+                showFullStoryBtn.disabled = true
+                changeStoryBtn.disabled = true
+
+                // Запускаем посимвольный вывод текста
+                typeWriter(currentStory.fullStory, 0)
+
+                if (Math.random() > 0.6) { // Шанс визуального скримера - 40%
+                    const scares = ['👻', '💀', '👹', '😱', '🖤']
+                    const randomScare = scares[Math.floor(Math.random() * scares.length)]
+
+                    jumpscare.textContent = randomScare
+                    jumpscare.style.fontSize = `${5 + Math.random() * 5}rem`
+                    jumpscare.style.animation = 'none'
+                    void jumpscare.offsetWidth
+                    jumpscare.style.animation = 'scare 0.5s ease-out'
+
+                    flash.style.animation = 'none'
+                    void flash.offsetWidth
+                    flash.style.animation = 'flash 0.3s ease-out'
+                }
+            }
+        })
+
+        // Функция для посимвольного вывода текста
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                fullStoryElement.innerHTML += text.charAt(i)
+                showFullStoryBtn.disabled = true
+                changeStoryBtn.disabled = true
+                setTimeout(() => typeWriter(text, i + 1), Math.random() * 30 + 20)
+            } else {
+                fullStoryElement.innerHTML = text
+                showFullStoryBtn.disabled = false
+                changeStoryBtn.disabled = false
+            }
+        }
+
+        // Сменить историю
+        changeStoryBtn.addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * horrorStories.length)
+            currentStory = horrorStories[randomIndex]
+            storyPreview.textContent = currentStory.lastSentence
+            fullStoryElement.classList.remove('show')
+        })
+
+        // Последовательность интро-экранов
+        setTimeout(() => {
+            intro0.classList.remove('active')
+            intro1.classList.add('active')
+        }, 5000)
+
+        setTimeout(() => {
+            intro1.classList.remove('active')
+            intro2.classList.add('active')
+        }, 9000)
+
+        setTimeout(() => {
+            intro2.classList.remove('active')
+            intro3.classList.add('active')
+        }, 11000)
+
+        setTimeout(() => {
+            intro3.classList.remove('active')
+            intro4.classList.add('active')
+        }, 16000)
+
+        setTimeout(() => {
+            intro4.classList.remove('active')
+            mainMenu.classList.add('show')
+
+            changeStoryBtn.click() // Автоматически выбираем первую историю
+        }, 19000)
+
+        // Случайные вспышки в фоне
+        function randomFlash() {
+            if (Math.random() > 0.8) {  // Шанс вспышки на фоне - 20%
+                document.body.style.backgroundColor = '#3a0000'
+                setTimeout(() => {
+                    document.body.style.backgroundColor = '#0a0a0a'
+                }, 100 + Math.random() * 200)
+            }
+            setTimeout(randomFlash, 5000 + Math.random() * 15000)
+        }
+
+        // Запускаем случайные вспышки
+        setTimeout(randomFlash, 10000)
+
+        // Глюки в тексте заголовка
+        const titleElement = document.querySelector('h1')
+        const originalTitle = titleElement.textContent
+        let glitchInterval
+
+        function startGlitchEffect() {
+            glitchInterval = setInterval(() => {
+                if (Math.random() > 0.5) { // Шанс глитч-текста - 50%
+                    const glitchChars = '⍓⌇⍀⋔⟟⌖⍜⎅⟒⋏⎍⏁⎍⍀⟒⎐⟟⌰'
+                    let glitchedTitle = ''
+                    for (let i = 0; i < originalTitle.length; i++) {
+                        glitchedTitle += Math.random() > 0.7 ?
+                            glitchChars[Math.floor(Math.random() * glitchChars.length)] :
+                            originalTitle[i]
+                    }
+                    titleElement.textContent = glitchedTitle
+
+                    titleElement.style.textShadow = `0 0 ${Math.random() * 10}px rgba(${Math.random() * 255},0,0,0.8)`
+                    titleElement.style.transform = `translateX(${Math.random() * 5 - 2.5}px) translateY(${Math.random() * 5 - 2.5}px)`
+
+                    setTimeout(() => {
+                        titleElement.textContent = originalTitle
+                        titleElement.style.textShadow = ''
+                        titleElement.style.transform = ''
+                    }, 100 + Math.random() * 400)
+                }
+            }, 3000)
+        }
+
+        // Тень за курсором
+        const cursorShadow = document.createElement('div')
+        cursorShadow.style.position = 'fixed'
+        cursorShadow.style.width = '20px'
+        cursorShadow.style.height = '20px'
+        cursorShadow.style.background = 'rgba(138, 3, 3, 0.5)'
+        cursorShadow.style.borderRadius = '50%'
+        cursorShadow.style.pointerEvents = 'none'
+        cursorShadow.style.transform = 'translate(-50%, -50%)'
+        cursorShadow.style.zIndex = '9999'
+        cursorShadow.style.filter = 'blur(5px)'
+        cursorShadow.style.transition = 'transform 0.1s ease, width 0.3s ease, height 0.3s ease'
+        document.body.appendChild(cursorShadow)
+
+        document.addEventListener('mousemove', (e) => {
+            cursorShadow.style.left = `${e.clientX}px`
+            cursorShadow.style.top = `${e.clientY}px`
+
+            // Эффект при движении
+            cursorShadow.style.width = `${20 + Math.random() * 10}px`
+            cursorShadow.style.height = `${20 + Math.random() * 10}px`
+        })
+
+        document.addEventListener('mouseenter', () => {
+            cursorShadow.style.opacity = '1'
+        })
+
+        document.addEventListener('mouseleave', () => {
+            cursorShadow.style.opacity = '0'
+        })
+
+        // Запускаем эффекты после загрузки
+        window.addEventListener('load', () => {
+            startGlitchEffect()
+
+            // Случайные изменения формы тени
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    cursorShadow.style.borderRadius = Math.random() > 0.5 ? '50%' : '0'
+                    cursorShadow.style.background = `rgba(138, 3, 3, ${0.3 + Math.random() * 0.4})`
+                    cursorShadow.style.filter = `blur(${3 + Math.random() * 7}px)`
+                }
+            }, 2000)
+        })
+
+        // Добавляем страшные надписи
+        const scaryMessages = ['Обернись!', 'Беги!', 'Они уже рядом...', 'Ты не один!', 'Оно смотрит за тобой!']
+        const scaryTextElements = []
+
+        scaryMessages.forEach((msg, i) => {
+            const el = document.createElement('div')
+            el.textContent = msg
+            el.style.position = 'fixed'
+            el.style.color = 'rgba(138, 3, 3, 0.8)'
+            el.style.fontFamily = '\'Cinzel Decorative\', cursive'
+            el.style.fontSize = '1.5rem'
+            el.style.pointerEvents = 'none'
+            el.style.zIndex = '9997'
+            el.style.opacity = '0'
+            el.style.transition = 'opacity 0.3s'
+            el.style.textShadow = '0 0 5px rgba(0,0,0,0.5)'
+            document.body.appendChild(el)
+            scaryTextElements.push(el)
+        })
+
+        // Функция для показа страшных надписей
+        function showScaryText() {
+            if (Math.random() > 0.35) { // Шанс - 65%
+                const textEl = scaryTextElements[Math.floor(Math.random() * scaryTextElements.length)]
+
+                // Позиционируем в случайном месте у краев экрана
+                const positions = ['left', 'right', 'top', 'bottom']
+                const pos = positions[Math.floor(Math.random() * positions.length)]
+
+                switch (pos) {
+                    case 'left':
+                        textEl.style.left = '20px'
+                        textEl.style.top = `${50 + Math.random() * (window.innerHeight - 100)}px`
+                        break
+                    case 'right':
+                        textEl.style.right = '20px'
+                        textEl.style.top = `${50 + Math.random() * (window.innerHeight - 100)}px`
+                        break
+                    case 'top':
+                        textEl.style.top = '20px'
+                        textEl.style.left = `${50 + Math.random() * (window.innerWidth - 100)}px`
+                        break
+                    case 'bottom':
+                        textEl.style.bottom = '20px'
+                        textEl.style.left = `${50 + Math.random() * (window.innerWidth - 100)}px`
+                        break
+                }
+
+                textEl.style.opacity = '1'
+
+                setTimeout(() => {
+                    textEl.style.opacity = '0'
+                }, 1500 + Math.random() * 1500)
+            }
+        }
+        setInterval(showScaryText, 15000)
+    </script>
+</body>
+
+</html>
