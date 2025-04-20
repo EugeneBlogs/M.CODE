@@ -30,6 +30,7 @@ document.getElementById("load_header").innerHTML =
                             <li><a href="who-am-I.html">Кто я?</a></li>
                             <li><a href="big-word.html">Слова из слова</a></li>
                             <li><a href="MadLibs.html">Генератор смешных историй</a></li>
+                            <li><a href="scary-stories.html">Что было раньше?</a></li>
                         </ul>
                     </li>
                     <li><a href="text-analysis.html">Анализ текста</a></li>
