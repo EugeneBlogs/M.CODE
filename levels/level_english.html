@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>English level</title>
+</head>
+
+<body class="text-center">
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <a style="color: deeppink; font-size: 30px;" href="../big-word.html">Back</a>
+                    <h3 style="color: orangered" class="mt-5">English level</h3>
+                    <h6 class="text-secondary">Sorry for our bad English.</h6>
+                </div>
+                <div class="col-12 border border-info p-5 mt-5">
+                    <h3>Ghostbuster</h3>
+                    <h6><span class="text-primary">Guessed words:</span> <span id="correct_words">???</span>.</h6>
+                    <h6><span class="text-primary">Left:</span> <span id="count_words"></span> words.</h6>
+                    <div class="form-floating mt-5">
+                        <input style="background-color: black;" class="form-control text-primary" placeholder="Слово"
+                            id="user_word" />
+                        <label for="word">Word</label>
+                    </div>
+                    <a class="btn text-info mt-3" href="#" id="btn_1" onclick="Check()">Check the word</a>
+                    <a class="btn text-info mt-3" href="#" id="btn_2" onclick="Hint()">Hint</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        let words =
+            [
+                "SHUTTER",
+                "GUSHER",
+                "GUEST",
+                "GROUSE",
+                "BUTTER",
+                "BROGUE",
+                "BERTH",
+                "ROGUE",
+                "ROUGE",
+                "ROUTE",
+                "SHORE",
+                "SHORTS",
+                "SHOUT",
+                "SHRUB",
+                "SORBET",
+                "OUTSET",
+                "BURST",
+                "BROTH",
+                "BOUGH",
+                "BRUSH",
+                "HOUSE",
+                "HORSE",
+                "GHOST",
+                "BORE",
+                "BUSH",
+                "SHOE",
+                "HERO",
+                "HOST",
+                "HOSE",
+                "HERB",
+                "ROSE",
+                "TUBE",
+                "TEST",
+                "SORE",
+                "ROBE",
+                "BUG",
+                "BUS",
+                "EGO",
+                "HUB",
+                "ROT"
+            ]
+        document.getElementById("count_words").innerHTML = words.length
+
+        let correct = []
+
+        function Hint() {
+            alert(`Word «${words[Math.floor(Math.random() * words.length)]}»`)
+        }
+
+        function Check() {
+            let word = document.getElementById("user_word").value
+            word = word.toUpperCase()
+            if (words.includes(word)) {
+                correct.push(word)
+                let index = words.indexOf(word)
+                words.splice(index, 1)
+                alert("Correct!")
+            }
+            else {
+                alert("We didn't think of such a word!")
+            }
+            let str = ""
+            for (let i = 0; i < correct.length; i++) {
+                str += `${correct[i]}, `
+            }
+            str = str.substring(0, str.length - 2)
+            document.getElementById("correct_words").innerHTML = str
+            document.getElementById("count_words").innerHTML = words.length
+            document.getElementById("user_word").value = ""
+            if (words.length == 0) {
+                alert("Congratulations! You guessed all the words!")
+                document.getElementById("btn_1").style.display = "none"
+                document.getElementById("btn_2").style.display = "none"
+            }
+        }
+    </script>
+</body>
+
+</html>

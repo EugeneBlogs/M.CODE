@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Безумный уровень</title>
+</head>
+
+<body class="text-center">
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <a style="color: deeppink; font-size: 30px;" href="../big-word.html">Назад</a>
+                    <h3 style="color: mediumpurple" class="mt-5">Безумный уровень</h3>
+                    <h5 class="text-warning">Вариант <span id="number_level">0</span> из <span id="max_level">0</span>
+                    </h5>
+                    <h6><span class="text-secondary">Идея: уровень наоборот.</span><br>Из слов представленных ниже нужно
+                        составить одно большое существующее слово, из которого и были собраны данные слова.</h6>
+                </div>
+                <div class="col-12 border border-primary p-5 mt-5">
+                    <h3 id="list">Список слов</h3>
+                    <div class="form-floating mt-5">
+                        <input style="background-color: black;" class="form-control text-warning" placeholder="Слово"
+                            id="user_word" />
+                        <label for="word">Слово</label>
+                    </div>
+                    <a class="btn text-info mt-3" href="#" id="btn_1" onclick="Check()">Проверить слово</a>
+                    <h3 class="text-danger mt-3">Подсказки</h3>
+                    <a class="btn text-success" href="#" id="btn_2" onclick="Hint(1)">Количество букв</a>
+                    <a class="btn text-success" href="#" id="btn_3" onclick="Hint(2)">Другой список слов</a>
+                    <a class="btn text-success" href="#" id="btn_4" onclick="Hint(3)">Открыть любую букву</a>
+                    <a class="btn text-success" href="#" id="btn_5" onclick="Hint(4)">Количество конкретной буквы</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function RND(min, max) {
+            min = Math.ceil(min)
+            max = Math.floor(max)
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+
+        let max = 3
+        document.getElementById("max_level").innerHTML = max
+
+        let result = ""
+        let str_1 = ""
+        let str_2 = ""
+        let str_3 = ""
+
+        let lvl = RND(1, max + 1)
+        if (lvl == 1) {
+            document.getElementById("number_level").innerHTML = "1"
+            result = "ТРАНСЛЯЦИЯ"
+            str_1 = "Станция, рация, литр, сила"
+            str_2 = "Трясина, аист, нация, лиса"
+            str_3 = "Настил, трясца, тина, сани"
+        } else if (lvl == 2) {
+            document.getElementById("number_level").innerHTML = "2"
+            result = "ИНФОРМАТИКА"
+            str_1 = "Романтика, инфаркт, картина, марафон"
+            str_2 = "Фонарик, аромат, картон, фантом"
+            str_3 = "Комната, формат, фантик, комар"
+        } else if (lvl == 3) {
+            document.getElementById("number_level").innerHTML = "3"
+            result = "ИМПРОВИЗАЦИЯ"
+            str_1 = "Провизия, вампир, повар, рация"
+            str_2 = "Позиция, армия, зима, взор"
+            str_3 = "Порция, призма, право, заря"
+        }
+
+        document.getElementById("list").innerHTML = str_1
+
+        function Hint(number) {
+            if (number == 1) {
+                alert(`В слове ${result.length} букв.`)
+            } else if (number == 2) {
+                let current_text = document.getElementById("list").innerHTML
+                if (current_text == str_1) {
+                    document.getElementById("list").innerHTML = str_2
+                } else if (current_text == str_2) {
+                    document.getElementById("list").innerHTML = str_3
+                } else if (current_text == str_3) {
+                    document.getElementById("list").innerHTML = str_1
+                }
+            } else if (number == 3) {
+                let num = prompt("Введите номер буквы: ")
+                if (isNaN(num)) {
+                    alert("Введите корректное число!")
+                } else if (num > result.length || num < 1) {
+                    alert(`Введите число от 1 до ${result.length}!`)
+                } else {
+                    let word = ""
+                    let number = Number(num)
+                    let letter = result[number - 1]
+                    for (let i = 0; i < result.length; i++) {
+                        if (i == number - 1) {
+                            word += letter
+                        } else {
+                            word += "#"
+                        }
+                    }
+                    alert(`Буква №${number} это «${letter}».\n${word}`)
+                }
+            } else if (number == 4) {
+                let letter = prompt("Введите букву: ")
+                if (letter.length != 1) {
+                    alert("Введите 1 символ!")
+                } else {
+                    letter = letter.toUpperCase()
+                    let num = result.split(letter).length - 1
+                    alert(`«${letter}» встречается в слове ${num} раз.`)
+                }
+            }
+        }
+
+        function Check() {
+            let word = document.getElementById("user_word").value
+            word = word.toUpperCase()
+            document.getElementById("user_word").value = ""
+            if (word == result) {
+                alert("Поздравляем! Вы угадали!")
+                document.getElementById("btn_1").style.display = "none"
+                document.getElementById("btn_2").style.display = "none"
+                document.getElementById("btn_3").style.display = "none"
+                document.getElementById("btn_4").style.display = "none"
+                document.getElementById("btn_5").style.display = "none"
+            } else {
+                alert("Неверно!")
+            }
+        }
+    </script>
+</body>
+
+</html>
