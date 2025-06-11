@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Крокомист</title>
+    <style>
+        img {
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3><span class="text-success">Кроко</span>дил <span class="text-warning">+</span> Програм<span
+                            class="text-danger">мист</span> <span class="text-warning">=</span> <span
+                            class="text-success">Кроко</span><span class="text-danger">мист</span></h3>
+                    <p>Данная игра является одной из версий знаменитой игры «Крокодил».<br>
+                        Ранее наша компания не создавала настольные игры. Это наш первый опыт. Надеемся вам понравится!
+                        Мы старались :)<br>
+                        <span class="text-primary">Правила игры:</span> в нашем наборе всего 30 карточек (10 карточек
+                        для объяснения, 10 для показа, 10
+                        для рисунка). Все слова на карточках связаны с тематикой компьютером и программирования. Но даже
+                        если вы не знаете некоторые термины - посмотрите значение слова в нашем словаре ниже.<br>
+                        <span class="text-primary">Предлагаем вам поиграть так:</span> игра рассчитана на 3+ человека.
+                        Вы можете распечать наши карточку или же нажать на кнопку «Выбрать случайную карту». Человек
+                        выполняет задание, а кто из других участников отгадает быстрее - тот и забирает карту. Побеждает
+                        тот, кто набрал больше всех карт (т.е. угадал больше всех раз).<br>
+                        <span class="text-primary">Примечание:</span> постарайтесь угадывать слова так, как они написаны
+                        на карточке. Но если вдруг, человек так и не смог угадать слово на карточке, но назвал
+                        слово-синоним - результат можно засчитать.<br>
+                        <img style="width: 20%;" class="mt-3" src="img/Крокомист/Обложка.JPEG" alt="Обложка"><br>
+                        <a class="btn text-info mt-3" href="#" onclick="GenerateCard()">Выбрать случайную карту</a>
+                        <a class="btn text-success mt-3" href="files/Крокомист.zip" download="">Скачать архив
+                            карточек</a>
+                    </p>
+                </div>
+                <div class="col-12">
+                    <h4 class="text-danger">Словарик:</h4>
+                    <h5 class="text-warning">Объясни:</h5>
+                    <p><b><u>Апрув</u></b> - <i>одобрение или подтверждение</i>.</p>
+                    <p><b><u>Брутфорс</u></b> - <i>метод атаки или взлома путём перебора всех возможных вариантов
+                            пароля</i>.</p>
+                    <p><b><u>Грумить</u></b> - <i>приводить в порядок, «причесывать»</i>.</p>
+                    <p><b><u>Деанон</u></b> - <i>публикация реальных данных пользователя в сети</i>.</p>
+                    <p><b><u>Итерация</u></b> - <i>одно повторение чего-либо</i>.</p>
+                    <p><b><u>Коммит</u></b> - <i>пакет изменений, хранящий информацию с добавленными, отредактированными
+                            или удалёнными
+                            файлами кода</i>.</p>
+                    <p><b><u>Митап</u></b> - <i>неформальное собрание специалистов для обсуждения вопросов и передачи
+                            знаний</i>.</p>
+                    <p><b><u>Патч</u></b> - <i>набор изменений в компьютерной программе или ее вспомогательных данных,
+                            предназначенных
+                            для ее обновления, исправления или улучшения</i>.</p>
+                    <p><b><u>Фидбэк</u></b> - <i>обратная связь, отзыв на что-либо</i>.</p>
+                    <p><b><u>Юзабилити</u></b> - <i>способность продукта быть понимаемым, изучаемым, используемым и
+                            привлекательным для
+                            пользователя в заданных условиях</i>.</p>
+                    <h5 class="text-warning">Покажи:</h5>
+                    <p><b><u>Баг</u></b> - <i>ошибка в программе или в системе, из-за которой программа выдает
+                            неожиданное поведение</i>.</p>
+                    <p><b><u>Бот</u></b> - <i>программа, которая создана, чтобы выполнять однотипные и повторяемые
+                            задачи по
+                            определенному алгоритму</i>.</p>
+                    <p><b><u>Дезигнер</u></b> - <i>презрительно-снисходительное название дизайнера</i>.</p>
+                    <p><b><u>Дропдаун</u></b> - <i>выпадающий список – элемент интерфейса, обычно представляющий собой
+                            некоторое меню,
+                            которое показывается только после того, как пользователь нажал на некоторый элемент или
+                            навёл на
+                            него курсор</i>.</p>
+                    <p><b><u>Залить</u></b> - <i>загрузить</i>.</p>
+                    <p><b><u>Копипастер</u></b> - <i>человек, который копирует откуда-то код и вставляет в свой
+                            проект</i>.</p>
+                    <p><b><u>Меншить</u></b> - <i>упоминанать в чатах или соцсетях</i>.</p>
+                    <p><b><u>Собес</u></b> - <i>собеседование</i>.</p>
+                    <p><b><u>Тестировщик</u></b> - <i>специалист по тестированию программного обеспечения</i>.</p>
+                    <p><b><u>Тимлид</u></b> - <i>руководитель команды, координатор группы программистов</i>.</p>
+                    <h5 class="text-warning">Нарисуй:</h5>
+                    <p><b><u>DDOS-атака</u></b> - <i>нарушение работоспособности инфраструктуры компании и клиентских
+                            сервисов</i>.</p>
+                    <p><b><u>БД</u></b> - <i>база данных - программа, которая позволяет хранить и обрабатывать
+                            информацию в
+                            структурированном виде</i>.</p>
+                    <p><b><u>Градиент</u></b> - <i>плавный переход из одного цвета в другой</i>.</p>
+                    <p><b><u>Дедлайн</u></b> - <i>крайний срок выполнения задачи или работы, определённый момент
+                            времени, к которому
+                            должна быть достигнута цель или задача</i>.</p>
+                    <p><b><u>Конфа</u></b> - <i>конференция</i>.</p>
+                    <p><b><u>Мидл-разработчик</u></b> - <i>второй уровень разработчика, следующий за джуниором</i>.</p>
+                    <p><b><u>Опенсорс</u></b> - <i>программное обеспечение с открытым исходным кодом</i>.</p>
+                    <p><b><u>Подвал</u></b> - <i>элемент структуры страницы, который находится в нижней части и содержит
+                            служебную
+                            информацию — контакты, ссылки на соцсети, публичная оферта и т.д.</i></p>
+                    <p><b><u>Удалённый сервер</u></b> - <i>программный веб-сервер, к которому можно получить доступ
+                            через интернет</i>.</p>
+                    <p><b><u>Файервол</u></b> - <i>программа, которая защищает компьютер от атак из сети</i>.</p>
+                </div>
+                <div class="col-12">
+                    <h4 class="text-danger">Набор карт:</h4>
+                </div>
+                <div class="col-12">
+                    <h5 class="text-warning">Объясни:</h5>
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-1.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-2.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-3.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-4.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-5.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-6.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-7.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-8.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-9.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/О-10.JPEG" alt="Карта">
+                </div>
+                <div class="col-12">
+                    <h5 class="text-warning">Покажи:</h5>
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-1.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-2.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-3.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-4.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-5.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-6.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-7.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-8.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-9.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/П-10.JPEG" alt="Карта">
+                </div>
+                <div class="col-12">
+                    <h5 class="text-warning">Нарисуй:</h5>
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-1.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-2.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-3.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-4.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-5.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-6.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-7.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-8.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-9.JPEG" alt="Карта">
+                </div>
+                <div class="col-xl-4 col-md-12 col-sm-12 mt-3">
+                    <img src="img/Крокомист/Н-10.JPEG" alt="Карта">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="position-fixed bottom-50 start-50 translate-middle-x p-3 toast-container" style="z-index: 11;">
+        <div id="toast" class="toast" role="alert">
+            <div class="toast-body bg-dark text-light">
+                <h6><span class="text-danger">Действие: </span><span id="action"></span>.</h6>
+                <h6><span class="text-success">Слово: </span><span id="word"></span>.</h6>
+            </div>
+        </div>
+    </div>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let words = [
+            ["Апрув", "Объясни"],
+            ["Брутфорс", "Объясни"],
+            ["Грумить", "Объясни"],
+            ["Деанон", "Объясни"],
+            ["Итерация", "Объясни"],
+            ["Коммит", "Объясни"],
+            ["Митап", "Объясни"],
+            ["Патч", "Объясни"],
+            ["Фидбэк", "Объясни"],
+            ["Юзабилити", "Объясни"],
+            ["Баг", "Покажи"],
+            ["Бот", "Покажи"],
+            ["Дезигнер", "Покажи"],
+            ["Дропдаун", "Покажи"],
+            ["Залить", "Покажи"],
+            ["Копипастер", "Покажи"],
+            ["Меншить", "Покажи"],
+            ["Собес", "Покажи"],
+            ["Тестировщик", "Покажи"],
+            ["Тимлид", "Покажи"],
+            ["DDOS-атака", "Нарисуй"],
+            ["БД", "Нарисуй"],
+            ["Градиент", "Нарисуй"],
+            ["Дедлайн", "Нарисуй"],
+            ["Конфа", "Нарисуй"],
+            ["Мидл-разработчик", "Нарисуй"],
+            ["Опенсорс", "Нарисуй"],
+            ["Подвал", "Нарисуй"],
+            ["Удалённый сервер", "Нарисуй"],
+            ["Файервол", "Нарисуй"]
+        ]
+        function GenerateCard() {
+            let random = Math.floor(Math.random() * words.length)
+            document.getElementById("word").innerHTML = words[random][0]
+            document.getElementById("action").innerHTML = words[random][1]
+            var toast = new bootstrap.Toast(document.getElementById("toast"))
+            toast.show()
+        }
+    </script>
+</body>
+
+</html>

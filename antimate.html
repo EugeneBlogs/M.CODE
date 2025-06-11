@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>JS-библитека "!МАТ"</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-primary">!МАТ</h3>
+                    <h6 class="text-info">1500+ матных слов</h6>
+                    <p>Данная библиотека - это фильтр нецензурный выражений. Она поможет добавить цензуру на ваш
+                        сайт.<br>
+                        Всё, что вам необходимо сделать:<br>
+                        1. Подключить нашу библиотеку (файлом или по ссылке ниже).<br>
+                        2. Добавить класс '<span class="text-warning">antimate</span>' вашему INPUT или TEXTAREA.<br>
+                        3. Добавить вашему INPUT или TEXTAREA свойство '<span
+                            class="text-warning">onblur="CheckMate()"</span>' и всё готово!<br>
+                        Протестируйте ниже!<br></p>
+                    <p class="text-danger">Примечание: библиотека убирает только русский мат и в дальнейшем будет
+                        пополняться!</p>
+                    <p class="text-success">Ссылка на библиотеку (50 КБ): <a
+                            href="https://eugeneblogs.github.io/M.CODE/files/AntiMate/antimate.js">https://eugeneblogs.github.io/M.CODE/files/AntiMate/antimate.js</a>
+                    </p>
+                    <p class="text-success">Ссылка на MIN-версию библиотеки (35 КБ): <a
+                            href="https://eugeneblogs.github.io/M.CODE/files/AntiMate/antimate.min.js">https://eugeneblogs.github.io/M.CODE/files/AntiMate/antimate.min.js</a>
+                    </p>
+                    <textarea class="bg-dark text-light antimate" cols="30" rows="10" onblur="CheckMate()"></textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="files/AntiMate/antimate.js"></script>
+    <script src="js/basic_elements.js"></script>
+</body>
+
+</html>

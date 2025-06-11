@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .num {
+            font-size: 25px;
+        }
+    </style>
+    <title>1-12</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-warning">1-12</h3>
+                    <h6 class="text-info">Идея: шоу "Тейбл Тайм".</h6>
+                    <p><span class="text-danger">Количество игроков:</span> 2-∞.<br>
+                        <span class="text-danger">Правила игры:</span> у каждого участника есть таблица с числами от 1
+                        до 12. Игрок делает виртуальный бросок игральными костями. Затем, у него есть выбор: закрыть два
+                        разных числа или одну сумму (например, если выпало <span class="text-success">3</span> и <span
+                            class="text-success">6</span>, игрок может закрыть <span class="text-success">3</span> и
+                        <span class="text-success">6</span> ИЛИ только
+                        <span class="text-success">9</span>). Если одно из чисел уже закрыто (например, <span
+                            class="text-success">3</span> закрыта, а <span class="text-success">6</span> открыта),
+                        участник может закрыть
+                        только сумму, но если сумма тоже закрыта, участник ничего не может закрыть.<br>
+                        <span class="text-primary">Побеждает тот, кто закрыл все числа быстрее других
+                            игроков.</span><br>
+                        <span class="text-danger">ВАЖНО! Необходимо полностью закончить круг (дойти до того игрока, с
+                            которого игра начиналась), даже если уже есть победитель. Возможно, их будет несколько
+                            :)</span><br>
+                        <br>
+                        <span class="text-info">Как играть?</span> Каждый игрок открывает на своём устройстве данную
+                        страницу. Участники по очереди нажимают на кнопку «Бросить кубики», затем делают выбор, нажав на
+                        кнопку «Закрыть *число* и *число*» или «Закрыть сумму *число*». Если человеку недоступен данный
+                        ход, кнопка станет неактивной. Закрытые числа помечаются <span
+                            class="text-success">зелёным</span> цветом, а незакрытые -
+                        <span class="text-danger">красным</span>. Вам нужно только следить за тем, кто сейчас ходит.<br>
+                    </p>
+                    <h4 class="text-warning mt-5">Ход: <span id="step">0</span>.</h4>
+                    <h4 class="text-info mt-3">Выпали числа: <span id="gen_num_1">0</span> и <span
+                            id="gen_num_2">0</span>.</h4>
+                    <br>
+                    <a class="btn text-primary mt-3" id="btn_brosok" onclick="RollDice()">Бросить кубики</a>
+                    <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
+                    <br>
+                    <a class="btn text-secondary mt-3" id="btn_numbers" onclick="CloseTwoNumber()">Закрыть
+                        числа</a>
+                    <a class="btn text-secondary mt-3" id="btn_summa" onclick="CloseSumNumbers()">Закрыть
+                        сумму</a>
+                    <br>
+                    <table class="table table-bordered text-center mt-5">
+                        <tbody>
+                            <tr>
+                                <th class="num text-danger" id="number1">1</th>
+                                <th class="num text-danger" id="number2">2</th>
+                                <th class="num text-danger" id="number3">3</th>
+                                <th class="num text-danger" id="number4">4</th>
+                                <th class="num text-danger" id="number5">5</th>
+                                <th class="num text-danger" id="number6">6</th>
+                            </tr>
+                            <tr>
+                                <th class="num text-danger" id="number7">7</th>
+                                <th class="num text-danger" id="number8">8</th>
+                                <th class="num text-danger" id="number9">9</th>
+                                <th class="num text-danger" id="number10">10</th>
+                                <th class="num text-danger" id="number11">11</th>
+                                <th class="num text-danger" id="number12">12</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let step = 0
+        let gen_num_1 = 0
+        let gen_num_2 = 0
+        let gen_summa = 0
+        let numbers = [false, false, false, false, false, false, false, false, false, false, false, false]
+
+        let bool_hod = true
+        let bool_numbers = false
+        let bool_summa = false
+
+        function RND(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function RollDice() {
+            if (bool_hod) {
+                gen_num_1 = RND(1, 7)
+                gen_num_2 = RND(1, 7)
+                gen_summa = gen_num_1 + gen_num_2
+                step++
+                document.getElementById("step").innerHTML = step
+                document.getElementById("gen_num_1").innerHTML = gen_num_1
+                document.getElementById("gen_num_2").innerHTML = gen_num_2
+
+                BanHod()
+
+                document.getElementById("btn_numbers").innerHTML = `Закрыть ${gen_num_1} и ${gen_num_2}`
+                document.getElementById("btn_summa").innerHTML = `Закрыть сумму ${gen_summa}`
+
+                if (numbers[gen_num_1 - 1] == false && numbers[gen_num_2 - 1] == false) {
+                    AllowNumbers()
+                } else {
+                    BanNumbers()
+                }
+
+                if (numbers[gen_summa - 1] == false) {
+                    AllowSumma()
+                } else {
+                    BanSumma()
+                }
+
+                if (bool_numbers == false && bool_summa == false) {
+                    AllowHod()
+                }
+            }
+        }
+
+        function CloseTwoNumber() {
+            if (bool_numbers) {
+                MarkNumber(gen_num_1)
+                MarkNumber(gen_num_2)
+
+                BanNumbers()
+                BanSumma()
+                AllowHod()
+
+                ChechWinner()
+            }
+        }
+
+        function CloseSumNumbers() {
+            if (bool_summa) {
+                MarkNumber(gen_summa)
+
+                BanNumbers()
+                BanSumma()
+                AllowHod()
+
+                ChechWinner()
+            }
+        }
+
+        function ChechWinner() {
+            let checker = numbers => numbers.every(n => n === true)
+            if (checker(numbers)) {
+                alert("Поздравляем! Вы выиграли! Все числа закрыты!")
+                BanNumbers()
+                BanSumma()
+                BanHod()
+            }
+        }
+
+        function MarkNumber(num) {
+            numbers[num - 1] = true
+            document.getElementById(`number${num}`).classList.remove("text-danger")
+            document.getElementById(`number${num}`).classList.add("text-success")
+        }
+
+        function AllowHod() {
+            document.getElementById("btn_brosok").classList.add("text-primary")
+            document.getElementById("btn_brosok").classList.remove("text-secondary")
+            bool_hod = true
+        }
+
+        function BanHod() {
+            document.getElementById("btn_brosok").classList.remove("text-primary")
+            document.getElementById("btn_brosok").classList.add("text-secondary")
+            bool_hod = false
+        }
+
+        function AllowNumbers() {
+            document.getElementById("btn_numbers").classList.remove("text-secondary")
+            document.getElementById("btn_numbers").classList.add("text-success")
+            bool_numbers = true
+        }
+
+        function BanNumbers() {
+            document.getElementById("btn_numbers").classList.add("text-secondary")
+            document.getElementById("btn_numbers").classList.remove("text-success")
+            bool_numbers = false
+        }
+
+        function AllowSumma() {
+            document.getElementById("btn_summa").classList.remove("text-secondary")
+            document.getElementById("btn_summa").classList.add("text-danger")
+            bool_summa = true
+        }
+
+        function BanSumma() {
+            document.getElementById("btn_summa").classList.add("text-secondary")
+            document.getElementById("btn_summa").classList.remove("text-danger")
+            bool_summa = false
+        }
+    </script>
+</body>
+
+</html>

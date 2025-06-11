@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>От и До (18+)</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-danger">От и До (18+)</h3>
+                    <h6 class="text-info">Идея: шоу "ОТЫДО".</h6>
+                    <p><span class="text-warning">Количество игроков:</span> 2-6 (можно больше).<br><br>
+                        <span class="text-success">Мы предлагаем вам 2 версии игры!</span><br>
+                        <span class="text-warning">Общая информация:</span> по нажатию на кнопку "Сгенерировать шкалу"
+                        компьютер выдаёт шкалу от 0 до 100, то есть, что принять за минимум и что принять за максимум
+                        (будет дан пример ассоциации либо реакция).
+                        Также генерируется случайное число от 0 до 100.<br>
+                        <span class="text-primary">1 версия игры:</span> один игрок называет ассоциацию на заданное
+                        число (остальные игроки не должны видеть число), а остальные игроки стараются угадать какое было
+                        число. Выигрывает то, кто был ближе к правильному ответу.<br>
+                        <span class="text-primary">2 версия игры:</span> все игроки называют свои ассоциации на заданную
+                        тему. Выигрывает тот, чья ассоциация была смешнее.<br><br>
+                        <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
+                            class="text-danger" id="max_levels_span">0</span>.
+                    </p>
+                    <a class="btn text-primary mt-3" onclick="GenerateScale()">Сгенерировать шкалу</a>
+                    <a class="btn text-info mt-3" onclick="location.reload()">Начать сначала</a>
+                    <div class="mt-5">
+                        <h6 class="text-secondary">Раунд: <span class="text-info" id="number_text"></span></h6>
+                        <h4 class="text-primary">Общая тема: <span class="text-info" id="theme_text"></span></h4>
+                        <h5 class="text-danger">Минимум (0): <span class="text-info" id="min_text"></span></h5>
+                        <h5 class="text-success">Максимум (100): <span class="text-info" id="max_text"></span></h5>
+                        <h3 class="text-warning mt-3">Текущее число: <span class="text-info" id="gen_num"></span></h3>
+                        <div class="progress" role="progressbar">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"
+                                id="progress_bar"></div>
+                        </div>
+                        <a class="btn text-info mt-3" id="visible_btn" onclick="VisibleScale()">Скрыть шкалу</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        function Redirect() {
+            let str = String(window.location)
+            str = str.replace("from-to.html", "index.html")
+            window.location.href = str
+        }
+
+        function getAge(date) {
+            var today = new Date()
+            var birthDate = new Date(date)
+            var age = today.getFullYear() - birthDate.getFullYear()
+            var m = today.getMonth() - birthDate.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--
+            }
+            return age
+        }
+
+        if (sessionStorage.getItem("login") == "Yes") {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            if (getAge(account[2]) >= 18) {
+                if (btoa(prompt("Для получения доступа введите пароль: ")) != "R29aYUdhU2g=") {
+                    alert("Неверный пароль! Доступ запрещён!")
+                    Redirect()
+                }
+            } else {
+                alert("Недоступно для лиц младше 18 лет, так как на странице присутствует нецензурная лексика.")
+                Redirect()
+            }
+        } else {
+            alert("Необходимо быть авторизованным пользователем.")
+            Redirect()
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min)
+            max = Math.floor(max)
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+
+        let scales =
+            [
+                ["Поступок партнёра во время с$кса", "Ну, норм <sub class='text-secondary'>(вполне обычный)</sub>", "Что за х*йnя? <sub class='text-secondary'>(непредсказуемый)</sub>"],
+                ["Испуг человека", "И чё? <sub class='text-secondary'>(вообще не страшно)</sub>", "Бл%ть, у меня инфаркт! <sub class='text-secondary'>(мегастрашно)</sub>"],
+                ["Поступок водителя такси", "Обычная ситуация <sub class='text-secondary'>(стандартный)</sub>", "Ты чё творишь, €блан? <sub class='text-secondary'>(что-то странное)</sub>"],
+                ["Выходной", "Я не плачу, это просто дощь <sub class='text-secondary'>(ужасный)</sub>", "Сегодня мы стобой кайфуем <sub class='text-secondary'>(наилучший)</sub>"],
+                ["Комплимент девушке", "Ты чё, тварь? <sub class='text-secondary'>(очень плохой)</sub>", "Я тебя обожаю ♥ <sub class='text-secondary'>(прекрасный)</sub>"],
+                ["Подарок другу", "Хр€нь полная <sub class='text-secondary'>(какой-то мусор)</sub>", "Ох&еть просто <sub class='text-secondary'>(идеальный и дорогой)</sub>"],
+                ["Идея для стартапа", "Банкротство <sub class='text-secondary'>(полная фигня)</sub>", "Мы открывем бизнес, мы будем делать бабки <sub class='text-secondary'>(реально полезный продукт)</sub>"],
+                ["Наряд на вечеринке", "Абсолютно не привлекаю внимание <sub class='text-secondary'>(скромный)</sub>", "\"Абсолютно не привлекаю внимание\", Филипп Киркоров завидует <sub class='text-secondary'>(сверхяркий и пышный)</sub>"],
+                ["Звук 0ргазма", "Беззвучный режим <sub class='text-secondary'>(обычный тихий или вообще нет)</sub>", "Что же думают соседи? <sub class='text-secondary'>(странная фраза)</sub>"],
+                ["Ник в компьютерной игре", "Имя Фамилия <sub class='text-secondary'>(простой)</sub>", "СуперМегаПроГеймер <sub class='text-secondary'>(очень сложный или странный)</sub>"],
+                ["Новость в интернете", "Стандартный криминал <sub class='text-secondary'>(такое видим каждый день)</sub>", "Них@я себе! <sub class='text-secondary'>(редкая необычная новость)</sub>"],
+                ["Имя для мальчика", "Иван Дурак <sub class='text-secondary'>(простое русское имя)</sub>", "Абдурахм...да в пи3дY! <sub class='text-secondary'>(невыговариваемое)</sub>"],
+                ["Повод устроить вечеринку", "День Рождения <sub class='text-secondary'>(стандартный праздник/событие)</sub>", "День мизинца на правой ноге <sub class='text-secondary'>(такое вообще существует?)</sub>"],
+                ["Отмазка для опоздания", "Я проспал <sub class='text-secondary'>(банально)</sub>", "Я помогал корове жевать траву <sub class='text-secondary'>(ты серьёзно?)</sub>"],
+                ["Имя друга в телефонной книге", "Саня, верни косарь <sub class='text-secondary'>(это база)</sub>", "Какой-то долба%б <sub class='text-secondary'>(это не база)</sub>"],
+                ["Ситуация про высокий рост", "Как же тесно в купе! <sub class='text-secondary'>(не помогает от слова \"совсем\")</sub>", "Как легко п*здить яблоки с дерева <sub class='text-secondary'>(очень полезен)</sub>"],
+                ["Запросы в браузере", "П@рн0 <sub class='text-secondary'>(у каждого было)</sub>", "Как правильно целовать воздух? <sub class='text-secondary'>(чего бл*ть?)</sub>"],
+                ["Начинка пиццы", "Пеперони <sub class='text-secondary'>(есть в каждой пиццерии)</sub>", "Хлеб + Макароны <sub class='text-secondary'>(фирменный рецепт из г0вна)</sub>"],
+                ["Место для с$кса", "Кровать <sub class='text-secondary'>(тут каждый может)</sub>", "Автобус <sub class='text-secondary'>(публичное и неудобное)</sub>"],
+                ["Анекдот (шутка)", "Можно в детский сад <sub class='text-secondary'>(шутки за 300)</sub>", "Можно на стендап <sub class='text-secondary'>(полнейший угар)</sub>"],
+                ["Причёска", "Лысина <sub class='text-secondary'>(у каждого третьего человека)</sub>", "30 литров краски на голове <sub class='text-secondary'>(что-то необычное и несуразное)</sub>"],
+                ["Чем заняться одному дома?", "Др@ч&ть <sub class='text-secondary'>(логично)</sub>", "Играть в игру для большой компании <sub class='text-secondary'>(как-то не логично)</sub>"],
+                ["Способ потратить 10 млн рублей", "Вода на все деньги <sub class='text-secondary'>(бесполезно либо смешно)</sub>", "Дом <sub class='text-secondary'>(полезно)</sub>"],
+                ["Профессия", "Программист <sub class='text-secondary'>(адекватная)</sub>", "Сортировщик пыли <sub class='text-secondary'>(бред сумасшедшего)</sub>"],
+                ["Травма", "Перелом <sub class='text-secondary'>(ну, бывает...)</sub>", "Растяжение кончика языка <sub class='text-secondary'>(как это возможно?)</sub>"],
+                ["Вид спорта", "Баскетбол с воображаемым мячом в темноте без зрителей <sub class='text-secondary'>(скукота)</sub>", "Футбол: 11 Роналду VS 11 Месси <sub class='text-secondary'>(€бать зрелищно)</sub>"],
+                ["Поздравление с ДР", "Счастья, здоровья <sub class='text-secondary'>(мало уважения)</sub>", "Мой самый дорогой друг, ... <sub class='text-secondary'>(перебор с уважением)</sub>"],
+                ["Блюдо на свидании", "Кошачий корм <sub class='text-secondary'>(фу, бл%ть)</sub>", "Чек на 100000₽ <sub class='text-secondary'>(них*я себе)</sub>"],
+                ["Стыдный поступок", "Пукнул в лифте <sub class='text-secondary'>(какой стыд?)</sub>", "Навалил в лифте <sub class='text-secondary'>(какой стыд...)</sub>"],
+                ["Граффити на улице", "Х&й <sub class='text-secondary'>(бездарно)</sub>", "Чёрный квадрат Малевича <sub class='text-secondary'>(шедевр из Третьяковской галереи)</sub>"],
+                ["Супруг/Супруга", "Бомж/Бомжиха <sub class='text-secondary'>(есть варианты получше)</sub>", "Кто-то знаменитый <sub class='text-secondary'>(это идеал!)</sub>"],
+                ["Бесполезная часть тела", "Ноготь <sub class='text-secondary'>(без этого можно жить)</sub>", "Мозг <sub class='text-secondary'>(ну вряд ли проживёшь)</sub>"],
+                ["Причина развода", "Разбитая машина <sub class='text-secondary'>(пффф, фигня)</sub>", "Не сошлись в выборе обоев <sub class='text-secondary'>(вот же, сYк@!)</sub>"],
+                ["Вещь в сумке", "Кошелёк <sub class='text-secondary'>(ничего необычного)</sub>", "ФаLл0имит@т0р <sub class='text-secondary'>(как-то странновато)</sub>"],
+                ["Оскорбление", "Глупый <sub class='text-secondary'>(необидно)</sub>", "Дурак <sub class='text-secondary'>(плачу третий день)</sub>"],
+                ["Поступок друга", "Лишится работы из-за него <sub class='text-secondary'>(Забуду через секунду)</sub>", "Не вернул 100 рублей <sub class='text-secondary'>(Никогда не прощу)</sub>"]
+            ]
+        document.getElementById("max_levels_span").innerHTML = scales.length
+
+        let current_theme = 1
+        let hidden = false
+        let current = 0
+
+        function GenerateScale() {
+            if (scales.length != 0) {
+                if (hidden) VisibleScale()
+                document.getElementById("number_text").innerHTML = current_theme
+                scale_number = RND(0, scales.length)
+                document.getElementById("theme_text").innerHTML = scales[scale_number][0]
+                document.getElementById("min_text").innerHTML = scales[scale_number][1]
+                document.getElementById("max_text").innerHTML = scales[scale_number][2]
+                scales.splice(scale_number, 1)
+                let rand = RND(0, 101)
+                current = rand
+                document.getElementById("gen_num").innerHTML = current
+                document.getElementById("progress_bar").innerHTML = current
+                document.getElementById("progress_bar").style.width = `${current}%`
+                document.getElementById("progress_bar").classList.remove("bg-danger")
+                document.getElementById("progress_bar").classList.remove("bg-warning")
+                document.getElementById("progress_bar").classList.remove("bg-success")
+                if (current <= 40) {
+                    document.getElementById("progress_bar").classList.add("bg-danger")
+                } else if (current >= 70) {
+                    document.getElementById("progress_bar").classList.add("bg-success")
+                } else if (40 < current < 70) {
+                    document.getElementById("progress_bar").classList.add("bg-warning")
+                }
+                current_theme++
+            } else {
+                alert("Игра окончена. Тем больше нет.")
+            }
+        }
+
+        function VisibleScale() {
+            if (hidden) {
+                document.getElementById("gen_num").innerHTML = current
+                document.getElementById("progress_bar").style.width = `${current}%`
+                document.getElementById("visible_btn").innerHTML = "скрыть шкалу"
+                hidden = false
+            } else {
+                document.getElementById("gen_num").innerHTML = "?"
+                document.getElementById("progress_bar").style.width = `0%`
+                document.getElementById("visible_btn").innerHTML = "Показать шкалу"
+                hidden = true
+            }
+        }
+    </script>
+</body>
+
+</html>
