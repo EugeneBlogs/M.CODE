@@ -1,0 +1,669 @@
+/* Снежинки */
+.fixed-snow span::after {
+    position: fixed;
+    color: #BFE2FF;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.fixed-snow span:nth-child(even)::after {
+    content: "\2744";
+}
+
+.fixed-snow span:nth-child(odd)::after {
+    content: "\2745";
+}
+
+.fixed-snow span:nth-child(1)::after {
+    font-size: 40px;
+    bottom: 4%;
+    left: 4%;
+    animation: snowzoom 2s linear infinite;
+}
+
+.fixed-snow span:nth-child(2)::after {
+    font-size: 48px;
+    bottom: 6%;
+    right: 6%;
+    animation: snowzoom 3s ease-in infinite;
+}
+
+.fixed-snow span:nth-child(3)::after {
+    font-size: 32px;
+    bottom: 10%;
+    left: 45%;
+    animation: snowzoom 4s linear infinite;
+}
+
+.fixed-snow span:nth-child(4)::after {
+    font-size: 44px;
+    bottom: 40%;
+    left: 20%;
+    animation: snowzoom 3s ease-in-out infinite;
+}
+
+.fixed-snow span:nth-child(5)::after {
+    font-size: 42px;
+    top: 16%;
+    left: 8%;
+    animation: snowzoom 3.2s ease-out infinite;
+}
+
+.fixed-snow span:nth-child(6)::after {
+    font-size: 30px;
+    top: 20%;
+    right: 8%;
+    animation: snowzoom 2.2s ease infinite;
+}
+
+.fixed-snow span:nth-child(7)::after {
+    font-size: 50px;
+    top: 50%;
+    left: 50%;
+    animation: snowzoom 2.4s linear infinite;
+}
+
+.fixed-snow span:nth-child(8)::after {
+    font-size: 32px;
+    top: 26%;
+    right: 28%;
+    animation: snowzoom 1.8s ease-in-out infinite;
+}
+
+.fixed-snow span:nth-child(9)::after {
+    font-size: 42px;
+    top: 12%;
+    left: 58%;
+    animation: snowzoom 3.2s linear infinite;
+}
+
+.fixed-snow span:nth-child(10)::after {
+    font-size: 46px;
+    bottom: 30%;
+    right: 24%;
+    animation: snowzoom 2s ease infinite;
+}
+
+.fixed-snow span:nth-child(11)::after {
+    font-size: 38px;
+    bottom: 22%;
+    left: 14%;
+    animation: snowzoom 3s ease-in infinite;
+}
+
+.fixed-snow span:nth-child(12)::after {
+    font-size: 28px;
+    bottom: 28%;
+    left: 40%;
+    animation: snowzoom 2.8s ease-out infinite;
+}
+
+.fixed-snow span:nth-child(13)::after {
+    font-size: 22px;
+    top: 24%;
+    left: 20%;
+    animation: snowzoom 2.4s ease infinite;
+}
+
+.fixed-snow span:nth-child(14)::after {
+    font-size: 42px;
+    top: 30%;
+    left: 38%;
+    animation: snowzoom 2.4s ease-in infinite;
+}
+
+@keyframes snowzoom {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Общее */
+@font-face {
+    font-family: "Disket-Mono";
+    src: url("../fonts/Disket-Mono.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: "Disket-Mono";
+    padding-bottom: 150px;
+}
+
+/* Полоса прокрутки */
+body::-webkit-scrollbar {
+    /* Ширина ScrollBar */
+    width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+    /* Цвет дорожки */
+    background: #4caf7d;
+}
+
+body::-webkit-scrollbar-thumb {
+    /* Цвет плашки */
+    background-color: black;
+    /* Padding вокруг плашки */
+    border: 3px solid #1e1e1e;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+section {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Компьютерное меню */
+nav {
+    background: #1e1e1e;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav ul:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+nav a {
+    display: block;
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    transition: 2s;
+}
+
+nav a:hover {
+    background-color: #3c3cff;
+}
+
+.active {
+    background-color: #4caf7d;
+}
+
+.profile {
+    background-color: #af4c4c;
+}
+
+.topmenu>li {
+    float: left;
+    position: relative;
+    border-right: 1px dashed red;
+}
+
+.topmenu>li:first-child {
+    border-left: 0;
+}
+
+.topmenu>li:last-child {
+    border-right: 0;
+}
+
+.topmenu>li>a {
+    padding: 20px 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #FEFDFD;
+}
+
+.submenu {
+    position: absolute;
+    z-index: 5;
+    min-width: 200px;
+    background: gray;
+    border: 1px solid yellow;
+    visibility: hidden;
+    opacity: 0;
+    transition: .5s linear;
+}
+
+.submenu li {
+    position: relative;
+}
+
+.submenu li a {
+    padding: 10px 20px;
+    border-bottom: 1px solid yellow;
+    color: black;
+}
+
+.submenu li a:hover {
+    background-color: #ff2f2f;
+    color: #3c3cff;
+}
+
+.submenu .submenu {
+    position: absolute;
+    left: 100%;
+    top: -1px;
+    transition: .3s linear;
+}
+
+nav li:hover>.submenu {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Мобильное меню */
+#mobile-menu {
+    display: none;
+}
+
+.burger {
+    width: 50px;
+    height: 50px;
+    z-index: 1000;
+    cursor: pointer;
+    padding: 0;
+    background-color: #4400ff;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 2s;
+}
+
+.burger__line {
+    display: block;
+    width: 21px;
+    height: 3px;
+    background-color: #fff;
+    margin-bottom: 4px;
+}
+
+.burger__line:last-child {
+    margin-bottom: 0;
+}
+
+.burger:hover {
+    background-color: blue;
+    transform: rotate(90deg);
+}
+
+/* Цитата */
+.quote {
+    position: relative;
+    padding: 16px 24px;
+    border-top: 2px solid blue;
+    border-bottom: 2px solid blue;
+}
+
+.quote::after {
+    position: absolute;
+    content: "”";
+    font-family: Times, sans-serif;
+    font-weight: bold;
+    color: blueviolet;
+    font-size: 160px;
+    line-height: 0;
+    bottom: -22px;
+    right: 30px;
+    text-shadow: 2px 0 0 mediumpurple, -2px 0 0 mediumpurple, 0 2px 0 mediumpurple, 0 -2px 0 mediumpurple, 1px 1px mediumpurple, -1px -1px 0 mediumpurple, 1px -1px 0 mediumpurple, -1px 1px 0 mediumpurple;
+}
+
+.quote cite {
+    display: block;
+    padding-top: 20px;
+    color: cornflowerblue;
+}
+
+/* Галерея фотографий */
+.panel-container {
+    display: flex;
+    height: 1000px;
+}
+
+.panel {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50px;
+    color: #fff;
+    flex: 0.5;
+    cursor: pointer;
+    position: relative;
+    margin: 0 8px;
+    transition: flex 0.7s cubic-bezier(0.05, 0.6, 0.4, 0.9);
+}
+
+.panel div {
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.7);
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+    opacity: 0;
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    margin: 0;
+    transition: opacity 0s ease-in 0s;
+}
+
+.panel.active {
+    flex: 5;
+}
+
+.panel.active div {
+    opacity: 1;
+    transition: opacity 0.3s ease-in 0.4s;
+}
+
+@media screen and (max-width: 480px) {
+    .panel-container {
+        position: relative;
+        height: 500px;
+    }
+
+    .panel {
+        width: 10%;
+        position: relative;
+        height: 80px;
+        top: 0;
+        border: 4px solid #FFF;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.2);
+        flex: 1;
+    }
+
+    .panel.active {
+        flex: 1;
+        width: 100%;
+        position: absolute;
+        height: 360px;
+        left: 0;
+        margin: 40px 0 0;
+        z-index: -1;
+        box-shadow: none;
+    }
+}
+
+/* Диаграммы */
+.pie text {
+    fill: currentColor;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font: bold 7px sans-serif;
+}
+
+.pie circle {
+    stroke-width: 5;
+}
+
+.pie circle:nth-child(2) {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center center;
+}
+
+.html-css {
+    color: yellow;
+}
+
+.html-css circle:nth-child(2) {
+    stroke-dasharray: 80 100;
+}
+
+.cpp {
+    color: red;
+}
+
+.cpp circle:nth-child(2) {
+    stroke-dasharray: 60 100;
+}
+
+.cs {
+    color: lawngreen;
+}
+
+.cs circle:nth-child(2) {
+    stroke-dasharray: 70 100;
+}
+
+.sql {
+    color: cyan;
+}
+
+.sql circle:nth-child(2) {
+    stroke-dasharray: 55 100;
+}
+
+.py {
+    color: blue;
+}
+
+.py circle:nth-child(2) {
+    stroke-dasharray: 85 100;
+}
+
+.unity {
+    color: gray;
+}
+
+.unity circle:nth-child(2) {
+    stroke-dasharray: 30 100;
+}
+
+/* Достижения */
+.image-wrapper {
+    position: relative;
+    padding: 15px;
+    background: #4caf7d;
+}
+
+.image-inner {
+    position: relative;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+}
+
+.image-wrapper:before,
+.image-wrapper:after,
+.image-inner:before,
+.image-inner:after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+}
+
+.image-wrapper:before {
+    bottom: 0;
+    left: 0;
+    border-left: 6px double red;
+    border-bottom: 6px double red;
+}
+
+.image-wrapper:after {
+    right: 0;
+    top: 0;
+    border-right: 6px double red;
+    border-top: 6px double red;
+}
+
+.image-inner:before {
+    bottom: -15px;
+    right: -15px;
+    border-right: 6px dotted red;
+    border-bottom: 6px dotted red;
+}
+
+.image-inner:after {
+    top: -15px;
+    left: -15px;
+    border-left: 6px dotted red;
+    border-top: 6px dotted red;
+}
+
+/* Афиша квеста */
+.cursor {
+    display: none;
+    position: fixed;
+    left: -100px;
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    background-position: center;
+    background-size: 0 0;
+    z-index: -1;
+    pointer-events: none;
+    border: 4px solid black;
+    transition: all 500ms ease-out;
+}
+
+.section-row:hover .cursor {
+    display: block;
+}
+
+.cursor.hover {
+    height: 350px;
+    width: 250px;
+    background-size: cover;
+    z-index: 1;
+    box-shadow: 0 5px 12px rgba(255, 255, 255, 0.4);
+}
+
+.hover-img {
+    position: relative;
+    color: green;
+    text-decoration: none;
+    transition: 2s;
+}
+
+.hover-img:hover {
+    color: lawngreen;
+}
+
+/* Крестики-нолики */
+.table-xo {
+    margin: 0 auto;
+}
+
+.table-xo td {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.table-xo td:hover {
+    background-color: #1e1e1e;
+}
+
+.x {
+    color: red;
+    font-size: 50px;
+}
+
+.o {
+    color: blue;
+    font-size: 50px;
+}
+
+.win {
+    background-color: yellow;
+}
+
+.container-xo {
+    flex-direction: column;
+}
+
+/* Генератор паролей */
+#generate_password {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    word-break: break-all;
+}
+
+/* Загрузка */
+.loading {
+    display: block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 30px auto;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: red;
+    animation: loading-spin 2s linear infinite;
+}
+
+.loading:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: yellow;
+    animation: loading-spin 3s linear infinite;
+}
+
+.loading:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: lawngreen;
+    animation: loading-spin 1.5s linear infinite;
+}
+
+@keyframes loading-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Футер */
+#load_footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #4caf7d;
+    opacity: 0.5;
+    z-index: -1000;
+}
