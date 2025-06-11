@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Анализ текста</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-primary">Анализ текста</h3>
+                    <p>Вставьте текст в поле ниже, алгоритм разберёт его и выведет общее количество слов и количество
+                        каждого слова.</p>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-5">
+                    <textarea style="background-color: black; color: white; border: 2px solid red;" class="form-control"
+                        id="user-text" rows="10" oninput="Analysis()" onblur="AnimationOff()"></textarea>
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="limitations">
+                        <label class="form-check-label" for="limitations">
+                            Проверить текст на ограничения
+                        </label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input type="number" style="background-color: black;" class="form-control text-info"
+                            placeholder="Минимум" id="min_text" />
+                        <label for="min_text">Минимум слов</label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input type="number" style="background-color: black;" class="form-control text-info"
+                            placeholder="Максимум" id="max_text" />
+                        <label for="max_text">Максимум слов</label>
+                    </div>
+                    <div class="loading" style="display: none;"></div>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12 mt-5">
+                    <h6 class="text-success">Результат:</h6>
+                    <p class="text-warning" id="all_words">Общее количество слов: 0.</p>
+                    <p class="text-warning" id="all_unique_words">Количество уникальных слов: 0.</p>
+                    <p class="text-warning" id="all_symbols">Общее количество символов: 0.</p>
+                    <p class="text-warning" id="all_symbols_without_space">Количество символов без пробелов: 0.</p>
+                    <p class="text-warning" id="limitations_result">Ограничения: ?.</p>
+                    <table class="table text-center text-light" id="table">
+                        <thead style="cursor: pointer;">
+                            <tr>
+                                <th scope="col" data-type="string">Слово</th>
+                                <th scope="col" data-type="number">Количество</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        table.onclick = function (e) {
+            if (e.target.tagName != 'TH') return
+            let th = e.target
+            sortTable(th.cellIndex, th.dataset.type, 'table')
+        }
+        function sortTable(colNum, type, id) {
+            let elem = document.getElementById(id)
+            let tbody = elem.querySelector('tbody')
+            let rowsArray = Array.from(tbody.rows)
+            let compare
+            switch (type) {
+                case 'number':
+                    compare = function (rowA, rowB) {
+                        return rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML
+                    }
+                    break
+                case 'string':
+                    compare = function (rowA, rowB) {
+                        return rowA.cells[colNum].innerHTML > rowB.cells[colNum].innerHTML ? 1 : -1
+                    }
+                    break
+            }
+            rowsArray.sort(compare)
+            tbody.append(...rowsArray)
+        }
+
+        function Analysis() {
+            $(".loading").fadeIn()
+            let s = document.getElementById("user-text").value.toUpperCase()
+            let punctuationless = s.replace(/[.,\/#!?$%\^&\*;:{}"=_`~()]/g, "")
+            let finalString = punctuationless.replace(/ +/g, ' ')
+            let result = finalString.split(' ')
+            document.getElementById("all_words").innerHTML = `Общее количество слов: ${result.length}.`
+            document.getElementById("all_symbols").innerHTML = `Общее количество символов: ${s.length}.`
+            document.getElementById("all_symbols_without_space").innerHTML = `Количество символов без пробелов: ${s.replace(/\s/g, "").length}.`
+            document.getElementById("table-body").innerHTML = ""
+            if (document.getElementById("limitations").checked) {
+                if (Number(result.length) < Number(document.getElementById("min_text").value)) {
+                    document.getElementById("limitations_result").innerHTML = `В вашем тексте слов меньше на ${eval(Number(document.getElementById("min_text").value) - Number(result.length))}, чем нужно.`
+                } else if (Number(result.length) > Number(document.getElementById("max_text").value)) {
+                    document.getElementById("limitations_result").innerHTML = `В вашем тексте слов больше на ${eval(Number(result.length) - Number(document.getElementById("max_text").value))}, чем нужно.`
+                } else {
+                    document.getElementById("limitations_result").innerHTML = "Ваш текст проходит по ограничениям!"
+                }
+            } else {
+                document.getElementById("limitations_result").innerHTML = "Ограничения: ?."
+            }
+            let words = []
+            let counts = []
+            for (let i = 0; i < result.length; i++) {
+                if (array_contains(words, result[i])) {
+                    counts[result[i]]++;
+                } else {
+                    words.push(result[i]);
+                    counts[result[i]] = 1;
+                }
+            }
+            for (let i = 0; i < words.length; i++) {
+                document.getElementById("table-body").insertAdjacentHTML('beforeend',
+                    `
+            <tr>
+            <td>${words[i]}</td>
+            <td>${counts[words[i]]}</td>
+            </tr>
+            `
+                )
+            }
+            document.getElementById("all_unique_words").innerHTML = `Количество уникальных слов: ${words.length}.`
+        }
+        function array_contains(array, value) {
+            for (let i = 0; i < array.length; i++)
+                if (array[i] == value)
+                    return true;
+            return false;
+        }
+        function AnimationOff() {
+            $(".loading").fadeOut()
+        }
+    </script>
+</body>
+
+</html>

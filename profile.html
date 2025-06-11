@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .field {
+            background-color: black;
+            color: white;
+            border: #e5e5e5 dashed 1px;
+            margin-top: 15px;
+        }
+
+        .center-block {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            overflow: auto;
+        }
+
+        .font {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+    <title>Профиль</title>
+</head>
+
+<body class="text-center"> 
+    <div id="load_header"></div>
+    <section class="pt-5" id="login">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="center-block">
+                        <div class="border border-danger p-5">
+                            <h3 class="text-primary">Вход</h3>
+                            <div class="mt-3">
+                                <input type="email" class="field font form-control" id="user_login"
+                                    placeholder="Логин/Почта">
+                                <input type="password" id="user_password" class="field font form-control mb-3"
+                                    placeholder="Пароль">
+                                <a class="text-success" href="#" onclick="Enter()">Войти</a>
+                                <br>
+                                <div class="mb-3"></div>
+                                <a class="text-info" href="#" onclick="Forgot()">Забыли
+                                    пароль?</a>
+                                <a class="text-warning" href="#"
+                                    onclick="ChangeScenes('login', 'registration')">Регистрация</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="display: none;" class="pt-5" id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="center-block">
+                        <div class="border border-warning p-5">
+                            <h3 class="text-primary">Регистрация</h3>
+                            <div class="mt-3">
+                                <input type="text" class="field font form-control" id="reg_name" placeholder="Имя">
+                                <input type="date" class="field font form-control" id="reg_birthday"
+                                    placeholder="Дата рождения">
+                                <input type="text" class="field font form-control" id="reg_login" placeholder="Логин">
+                                <input type="email" class="field font form-control" id="reg_email" placeholder="Почта">
+                                <input type="password" id="reg_password" class="field font form-control"
+                                    placeholder="Пароль">
+                                <input type="password" id="reg_password_check" class="field font form-control mb-3"
+                                    placeholder="Подтвердите пароль">
+                                <p class="form-text mb-3">Пароль должен содержать минимум 6 символов.</p>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="privacy_policy">
+                                    <label class="form-check-label" for="privacy_policy">Соглашаюсь с <a href="#"
+                                            data-bs-toggle="modal" data-bs-target="#modal_privacy_policy">политикой
+                                            конфиденциальности</a></label>
+                                </div>
+                                <a class="text-success" href="#" onclick="Registrate()">Зарегистрироваться</a>
+                                <br>
+                                <div class="mb-3"></div>
+                                <a class="text-info" href="#" onclick="CreatePassword()">Придумать пароль</a>
+                                <a class="text-danger" href="#" onclick="ChangeScenes('registration', 'login')">Вход</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="display: none;" class="pt-5" id="profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="center-block">
+                        <div class="border border-success p-5">
+                            <a class="text-secondary" href="#" onclick="ExitProfile()">Выход</a>
+                            <br>
+                            <a class="text-info" href="#" onclick="Soon()">Список друзей</a>
+                            <h3 class="text-primary mt-5">Профиль</h3>
+                            <div class="mt-3">
+                                <h6>ID: <span class="text-danger" id="profile_id"></span></h6>
+                                <h6>Имя пользователя: <span class="text-danger font" id="profile_name"></span></h6>
+                                <h6>Дата рождения: <span class="text-danger font" id="profile_birthday"></span></h6>
+                                <h6>Логин: <span class="text-danger font" id="profile_login"></span></h6>
+                                <h6>Email: <span class="text-danger font" id="profile_email"></span></h6>
+                                <h6>Пароль: <span class="text-danger font" id="profile_password"></span></h6>
+                                <p class="text-secondary mb-3">Данная опция ("Профиль") находится в
+                                    бета-тестировании.<br>
+                                    Пока он даёт вам мало возможностей,<br>но в будущем мы обязательно его улучшим :)
+                                </p>
+                                <a class="text-info" id="password_btn" href="#" onclick="VisiblePassword()">Показать
+                                    пароль</a>
+                                <br>
+                                <a class="text-warning" href="#" onclick="ChangeScenes('profile', 'edit')">Редактировать
+                                    данные</a>
+                                <a class="text-danger" href="#" onclick="DeleteProfile()">Удалить профиль</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="display: none;" class="pt-5" id="edit">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="center-block">
+                        <div class="border border-warning p-5">
+                            <a class="text-secondary" href="#" onclick="ChangeScenes('edit', 'profile')">Отмена</a>
+                            <h3 class="text-primary mt-5">Редактирование</h3>
+                            <div class="mt-3">
+                                <input type="text" class="field font form-control" id="edit_name" placeholder="Имя">
+                                <input type="date" class="field font form-control" id="edit_birthday"
+                                    placeholder="Дата рождения">
+                                <input type="text" class="field font form-control" id="edit_login" placeholder="Логин">
+                                <input type="email" class="field font form-control" id="edit_email" placeholder="Почта">
+                                <input type="password" id="edit_password" class="field font form-control"
+                                    placeholder="Пароль">
+                                <input type="password" id="edit_password_check" class="field font form-control mb-3"
+                                    placeholder="Подтвердите пароль">
+                                <p class="form-text mb-3">Пароль должен содержать минимум 6 символов.</p>
+                                <a class="text-success" href="#" onclick="Save()">Сохранить</a>
+                                <br>
+                                <div class="mb-3"></div>
+                                <a class="text-info" href="#" onclick="CreatePassword()">Придумать пароль</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" tabindex="-1" id="modal_password" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger">Восстановление доступа</h4>
+                </div>
+                <div class="modal-body">
+                    <h6 class="text-primary">Введите код, отправленный на почту «<span id="email_secret"></span>»:</h6>
+                    <p class="text-secondary">Внимание! Функция отправки писем находится в разработке, поэтому введите
+                        пароль "<span id="password_text">00000000</span>".</p>
+                    <input type="text" class="field font form-control" id="forgot_code" placeholder="Код восстановления"
+                        maxlength="8">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                        onclick="SendCode()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="modal_notification" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger" id="modal_head"></h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-primary font" id="modal_text">
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Понятно</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="modal_question" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger" id="modal_head_q"></h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-warning" id="modal_text_q"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-success" id="btn_exit" data-bs-dismiss="modal"
+                        onclick="Exit()">Да</button>
+                    <button type="button" class="btn btn-success" id="btn_delete" data-bs-dismiss="modal"
+                        onclick="Delete()">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="modal_privacy_policy" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-warning">Политика конфиденциальности</h4>
+                </div>
+                <div class="modal-body">
+                    <h6 class="text-danger">Неужели ты правда хочешь это читать???<br>У нас просто нет политики
+                        конфиденциальности, но давайте представим, что ниже написано что-то умное :)</h6>
+                    <p class="text-light">
+                        Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Рот деревни
+                        выйти города! Взобравшись вершину знаках сих силуэт маленький грустный текст пунктуация инициал
+                        текста залетают! Текст решила они он, щеке даже, взобравшись силуэт запятых проектах
+                        безорфографичный его заглавных журчит свой всемогущая? Предупредила, образ точках. Меня проектах
+                        гор языком языкового, рыбного точках скатился реторический подзаголовок но текстов послушавшись
+                        о лучше по всей, правилами щеке себя инициал жизни деревни всеми, запятой живет коварный
+                        необходимыми бросил. Однажды домах силуэт ведущими если, ты коварный предупредила напоивший
+                        оксмокс несколько рыбными злых запятых путь жаренные то рукопись жизни но встретил инициал,
+                        текста парадигматическая. Скатился вскоре использовало родного моей продолжил которое lorem
+                        диких? Если взгляд мир, родного сбить буквоград, предупредила рукописи своего правилами свой
+                        снова великий но рот пор ведущими рыбного силуэт языком текстами, щеке свою это инициал
+                        рекламных грамматики? Она буквоград приставка подпоясал, свою текста имеет деревни, реторический
+                        несколько его на берегу безорфографичный рот моей пояс рыбными своего домах. Которой что
+                        последний переписывается решила использовало языкового своего. Злых рот он, осталось предложения
+                        прямо мир приставка семантика последний своего заманивший безопасную пор океана живет текстов
+                        сих продолжил. Домах коварный, переулка решила текстов, переписали заманивший взгляд прямо
+                        безорфографичный единственное своего необходимыми сбить оксмокс дорогу, lorem жаренные. Деревни
+                        города даль букв себя рукопись, использовало пустился выйти которой. Подпоясал заглавных даже
+                        прямо путь послушавшись вскоре алфавит снова толку всеми буквоград ему, это живет! Использовало
+                        букв бросил его, предложения грустный рыбного большого до он, не даже семантика коварный
+                        агентство первую предупредила, все сих языкового живет имеет которой? Переписывается алфавит
+                        жаренные вдали злых букв имеет языкового она знаках имени предложения за снова там реторический
+                        повстречался, языком, подзаголовок толку рекламных использовало lorem города рыбными агентство!
+                        Запятых если ipsum гор выйти семантика ему последний над текста, имеет продолжил даль ты они
+                        текстов меня заманивший заглавных рекламных переписывается использовало маленький. Маленький
+                        моей вершину там семантика? Составитель, вопрос то, лучше снова над свой пустился оксмокс океана
+                        скатился пунктуация, речью семь сбить дороге первую коварный заманивший! Текстами переписывается
+                        пояс парадигматическая живет собрал необходимыми текст букв даже использовало дороге агентство
+                        великий мир города несколько однажды деревни там, языкового пустился но над большой вопрос
+                        предупредила своих взобравшись! Назад над знаках коварный имеет правилами предупредила строчка
+                        предупреждал заглавных злых? Своего осталось диких над живет большого что рот однажды рыбного
+                        первую правилами, грамматики подпоясал великий за, проектах это переулка дорогу рукопись
+                        необходимыми запятой скатился безорфографичный рыбными предупредила. Необходимыми они там
+                        однажды эта, живет, собрал родного толку рукопись семантика свое сих путь вопроса предупреждал
+                        от всех буквоград lorem маленькая бросил диких жаренные всеми переулка букв рыбными всемогущая
+                        предупредила! Его диких текстов они толку возвращайся маленькая, залетают большого она грустный
+                        если раз снова себя назад ему переписывается свой которое бросил! Дороге подпоясал предупредила
+                        не ручеек коварных рекламных взгляд моей свою предупреждал даль, образ, что до подзаголовок
+                        продолжил большого использовало страну, вскоре грустный если? Даль грамматики последний толку
+                        своего продолжил имени, первую семь прямо даже, деревни вопроса взобравшись. Предупредила
+                        буквенных домах, рыбными семь запятой повстречался щеке даже о даль языком, сих предупреждал
+                        океана продолжил образ своих напоивший решила ipsum. Маленькая подпоясал, своих щеке раз от всех
+                        меня проектах точках свой даже эта дорогу себя сбить алфавит большого использовало, текст
+                        жаренные решила вершину инициал ipsum, журчит которое великий! Переписали переулка журчит имеет
+                        до диких дал что. Рукопись власти образ вопрос, грамматики на берегу меня сбить языкового языком
+                        за страна вершину переулка жаренные пустился великий злых напоивший даль. Пустился семантика
+                        первую за. Рекламных подпоясал собрал меня, выйти своего агентство подзаголовок мир курсивных
+                        речью последний наш сбить там инициал дорогу рот ручеек путь имени ты всемогущая злых страна
+                        lorem возвращайся снова вершину. Пор, предупредила! Безопасную снова запятых заглавных знаках,
+                        журчит до залетают то грустный переулка мир рыбного! Оксмокс единственное ipsum маленькая моей
+                        за. Своего буквенных эта от всех за наш грустный. Первую текста города инициал пустился. Наш
+                        коварный lorem океана, грамматики он домах жаренные ты ему взгляд первую даль своего рукописи ее
+                        одна ipsum? Речью, обеспечивает lorem одна наш парадигматическая над грамматики но безопасную
+                        заглавных? Деревни, строчка коварных дороге ему эта дал рукописи за злых предупредила своих,
+                        использовало несколько вопроса? Наш реторический ipsum подзаголовок, заглавных злых сих дороге
+                        рекламных журчит, имени имеет послушавшись ты буквенных переулка страну? Которое
+                        безорфографичный на берегу дал жаренные, коварный рыбного однажды, ipsum взобравшись живет
+                        пустился первую сбить необходимыми предложения вскоре пояс бросил осталось своих переулка lorem.
+                        Напоивший буквоград которое рекламных! Решила ведущими жизни семь языком первую страна,
+                        курсивных сих речью злых свой его рот, осталось безорфографичный он языкового! Вскоре
+                        подзаголовок по всей текстов вершину? Свой все, своего эта речью домах родного парадигматическая
+                        она это своих большого власти грустный точках напоивший буквоград бросил грамматики то,
+                        заголовок себя силуэт, снова одна большой заглавных журчит всеми! Необходимыми, диких от всех.
+                        Себя ручеек проектах несколько маленький если последний даль, текстов сбить назад злых большой
+                        вопроса текст точках коварных снова знаках он возвращайся запятых. Переулка собрал буквенных
+                        обеспечивает вопрос реторический залетают. Инициал страну своего власти текст решила рыбными,
+                        несколько коварный наш. Раз дал повстречался всемогущая единственное имеет рыбного текстами
+                        несколько, грустный рукопись. Своих первую парадигматическая запятых напоивший буквенных запятой
+                        необходимыми там все пор ему строчка до ручеек вопроса единственное осталось, рекламных эта сих
+                        коварный свой ведущими сбить? Раз наш приставка, собрал лучше последний решила назад безопасную
+                        гор вдали рекламных первую предупреждал, моей себя залетают. Lorem взгляд встретил, языком
+                        ведущими, там свое жизни, от всех большого заголовок прямо сих обеспечивает переписали! Сих щеке
+                        всеми от всех силуэт несколько дал, грустный прямо безорфографичный то, предупреждал одна,
+                        знаках своих рекламных решила первую журчит последний языкового речью свой вопрос подзаголовок!
+                        Журчит первую жаренные собрал бросил меня это, встретил предупреждал грамматики семантика вопрос
+                        подпоясал! Единственное пунктуация, даже если над заманивший гор то его переулка, жизни мир
+                        прямо семантика продолжил! Решила заглавных гор обеспечивает жаренные свою коварных прямо
+                        необходимыми дороге, заманивший собрал возвращайся одна напоивший рукописи первую маленькая
+                        которой за силуэт рукопись. То, использовало строчка заманивший вскоре маленькая осталось букв
+                        на берегу пустился заголовок по всей эта инициал о, текстов всемогущая. Точках ведущими
+                        напоивший однажды, которое раз маленький продолжил, языкового ручеек текст пор свой текста они
+                        силуэт родного дороге, диких знаках буквенных последний агентство имеет. Силуэт даже страну
+                        проектах запятых что несколько путь последний обеспечивает однажды семантика маленькая за там,
+                        они, маленький имени переписывается! Все?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Я ознакомился</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let modal = new bootstrap.Modal(document.getElementById("modal_notification"))
+        let head = document.getElementById("modal_head")
+        let text = document.getElementById("modal_text")
+
+        let modal_q = new bootstrap.Modal(document.getElementById("modal_question"))
+        let head_q = document.getElementById("modal_head_q")
+        let text_q = document.getElementById("modal_text_q")
+
+        if (sessionStorage.getItem("login") == "Yes") {
+            ChangeScenes('login', 'profile')
+            LoadData()
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        function EmailValidation(mail) {
+            let regular = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i
+            let valid = regular.test(mail)
+            return valid
+        }
+
+        function GenerateID() {
+            let numbers = []
+            for (let i = 0; i < 7; i++) {
+                let num = RND(0, 10)
+                numbers.push(num)
+            }
+            let ID = ""
+            for (let i = 0; i < numbers.length; i++) {
+                ID += `${numbers[i]}`
+            }
+            return ID
+        }
+
+        let english = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        function CreatePassword() {
+            let result = ""
+            do {
+                let a = RND(1, 3)
+                if (a == 1) {
+                    let ch = english[RND(0, english.length)]
+                    let upORlow = RND(1, 3)
+                    if (upORlow == 1) {
+                        result += ch
+                    } else {
+                        result += ch.toLowerCase()
+                    }
+                }
+                if (a == 2) {
+                    let ch = RND(0, 10)
+                    result += `${ch}`
+                }
+            } while (result.length != 8)
+            head.innerHTML = "Сгенерированный пароль"
+            text.innerHTML = `${result}`
+            modal.show()
+        }
+
+        function ClearFields() {
+            document.getElementById("forgot_code").value = ""
+
+            document.getElementById("user_login").value = ""
+            document.getElementById("user_password").value = ""
+
+            document.getElementById("reg_name").value = ""
+            document.getElementById("reg_birthday").value = ""
+            document.getElementById("reg_login").value = ""
+            document.getElementById("reg_email").value = ""
+            document.getElementById("reg_password").value = ""
+            document.getElementById("reg_password_check").value = ""
+
+            document.getElementById("edit_password").value = ""
+            document.getElementById("edit_password_check").value = ""
+        }
+
+        function ChangeScenes(hide, show) {
+            document.getElementById(hide).style.display = "none"
+            document.getElementById(show).style.display = "block"
+            ClearFields()
+        }
+
+        function Soon() {
+            head.innerHTML = "Скоро..."
+            text.innerHTML = "Функция в разработке."
+            modal.show()
+        }
+
+        let attempt_login = 3
+        function Enter() {
+            if (sessionStorage.getItem("block_login") != "Yes") {
+                let login = document.getElementById("user_login").value
+                let password = document.getElementById("user_password").value
+                let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+                if (account != null) {
+                    if ((login == account[3] || login == account[4]) && password == atob(account[5])) {
+                        sessionStorage.setItem('login', "Yes")
+                        document.getElementById("profile_tag_pc").innerHTML = account[1]
+                        document.getElementById("profile_tag_mobile").innerHTML = account[1]
+                        LoadData()
+                        ClearFields()
+                        ChangeScenes('login', 'profile')
+                    } else {
+                        attempt_login--
+                        head.innerHTML = "Ошибка!"
+                        text.innerHTML = `Неверный логин или пароль.\nОсталось ${attempt_login} попыток.`
+                        modal.show()
+                        if (attempt_login == 0) {
+                            sessionStorage.setItem("block_login", "Yes")
+                        }
+                    }
+                } else {
+                    head.innerHTML = "Ошибка!"
+                    text.innerHTML = "У вас нет созданного профиля."
+                    modal.show()
+                    ClearFields()
+                }
+            } else {
+                head.innerHTML = "Доступ ограничен!"
+                text.innerHTML = `Вы потратили все попытки. Попробуйте в следующий раз.`
+                modal.show()
+            }
+        }
+
+        function Registrate() {
+            let name = document.getElementById("reg_name").value
+            let birthday = document.getElementById("reg_birthday").value
+            let login = document.getElementById("reg_login").value
+            let email = document.getElementById("reg_email").value
+            let password = document.getElementById("reg_password").value
+            let password_check = document.getElementById("reg_password_check").value
+            let privacy_policy = document.getElementById("privacy_policy").checked
+            if (localStorage.getItem("profile_mcode_profile") == null) {
+                if (name != "" && birthday != "" && login != "" && email != "" && password != "" && password_check != "" && privacy_policy) {
+                    if (password == password_check) {
+                        if (password.length >= 6) {
+                            if (EmailValidation(email)) {
+                                let ID = GenerateID()
+                                let account = [`${ID}`, name, birthday, login, email, btoa(password)]
+                                localStorage.setItem("profile_mcode_profile", JSON.stringify(account))
+                                head.innerHTML = `Добро пожаловать, ${name}!`
+                                text.innerHTML = "Вы успешно зарегистрировались на сайте MylnikCode."
+                                modal.show()
+                                ClearFields()
+                                ChangeScenes('registration', 'login')
+
+                            } else {
+                                head.innerHTML = "Ошибка!"
+                                text.innerHTML = "Введите корректный Email."
+                                modal.show()
+                            }
+                        } else {
+                            head.innerHTML = "Ошибка!"
+                            text.innerHTML = "Пароль должен содержать минимум 6 символов."
+                            modal.show()
+                        }
+                    } else {
+                        head.innerHTML = "Ошибка!"
+                        text.innerHTML = "Пароли не совпадают."
+                        modal.show()
+                    }
+                } else {
+                    head.innerHTML = "Ошибка!"
+                    text.innerHTML = "Необходимо заполнить все поля."
+                    modal.show()
+                }
+            } else {
+                head.innerHTML = "Ошибка!"
+                text.innerHTML = "У вас уже есть созданный профиль."
+                modal.show()
+                ClearFields()
+            }
+        }
+
+        function getAge(date) {
+            let today = new Date()
+            let birthDate = new Date(date)
+            let age = today.getFullYear() - birthDate.getFullYear()
+            let m = today.getMonth() - birthDate.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--
+            }
+            return age
+        }
+        function LoadData() {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            let password = atob(account[5])
+            let str = ""
+            for (let i = 0; i < password.length; i++) {
+                str += "*"
+            }
+            document.getElementById("profile_id").innerHTML = account[0]
+            document.getElementById("profile_name").innerHTML = account[1]
+            document.getElementById("profile_birthday").innerHTML = `${account[2]} (${getAge(account[2])} лет)`
+            document.getElementById("profile_login").innerHTML = account[3]
+            document.getElementById("profile_email").innerHTML = account[4]
+            document.getElementById("profile_password").innerHTML = str
+
+            document.getElementById("edit_name").value = account[1]
+            document.getElementById("edit_birthday").value = account[2]
+            document.getElementById("edit_login").value = account[3]
+            document.getElementById("edit_email").value = account[4]
+            document.getElementById("edit_password").value = ""
+            document.getElementById("edit_password_check").value = ""
+
+            document.getElementById("profile_tag_pc").innerHTML = account[1]
+            document.getElementById("profile_tag_mobile").innerHTML = account[1]
+        }
+
+        let show_pass = false
+        function VisiblePassword() {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            let password = atob(account[5])
+            let str = ""
+            for (let i = 0; i < password.length; i++) {
+                str += "*"
+            }
+            if (show_pass) {
+                show_pass = false
+                document.getElementById("profile_password").innerHTML = str
+                document.getElementById("password_btn").innerHTML = "Показать пароль"
+            } else {
+                show_pass = true
+                document.getElementById("profile_password").innerHTML = password
+                document.getElementById("password_btn").innerHTML = "Скрыть пароль"
+            }
+        }
+
+        let choose = ""
+        function CloseModal(select) {
+            choose = select
+        }
+
+        function ExitProfile() {
+            head_q.innerHTML = "Подтвердите действие"
+            text_q.innerHTML = "Вы действительно хотите выйти из профиля?"
+            document.getElementById("btn_exit").style.display = "block"
+            document.getElementById("btn_delete").style.display = "none"
+            modal_q.show()
+        }
+        function Exit() {
+            sessionStorage.setItem('login', "No")
+            let name = document.getElementById("profile_tag_pc").innerHTML
+            document.getElementById("profile_tag_pc").innerHTML = "Вход"
+            document.getElementById("profile_tag_mobile").innerHTML = "Вход"
+            ChangeScenes('profile', 'login')
+            head.innerHTML = `${name}, до свидания!`
+            text.innerHTML = "Вы вышли из профиля."
+            modal.show()
+        }
+
+        function DeleteProfile() {
+            head_q.innerHTML = "Подтвердите действие"
+            text_q.innerHTML = "Вы действительно удалить профиль?"
+            document.getElementById("btn_exit").style.display = "none"
+            document.getElementById("btn_delete").style.display = "block"
+            modal_q.show()
+        }
+        function Delete() {
+            localStorage.removeItem("profile_mcode_profile")
+            sessionStorage.setItem('login', "No")
+            let name = document.getElementById("profile_tag_pc").innerHTML
+            document.getElementById("profile_tag_pc").innerHTML = "Вход"
+            document.getElementById("profile_tag_mobile").innerHTML = "Вход"
+            ChangeScenes('profile', 'registration')
+            head.innerHTML = `Прощайте, ${name}!`
+            text.innerHTML = "Вы удалили свой профиль."
+            modal.show()
+        }
+
+        function Save() {
+            let name = document.getElementById("edit_name").value
+            let birthday = document.getElementById("edit_birthday").value
+            let login = document.getElementById("edit_login").value
+            let email = document.getElementById("edit_email").value
+            let password = document.getElementById("edit_password").value
+            let password_check = document.getElementById("edit_password_check").value
+            if (name != "" && birthday != "" && login != "" && email != "" && password != "" && password_check != "") {
+                if (password == password_check) {
+                    if (password.length >= 6) {
+                        if (EmailValidation(email)) {
+                            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+                            let ID = account[0]
+                            let new_account = [`${ID}`, name, birthday, login, email, btoa(password)]
+                            localStorage.setItem("profile_mcode_profile", JSON.stringify(new_account))
+                            head.innerHTML = "Успешно"
+                            text.innerHTML = "Данные изменены."
+                            modal.show()
+                            LoadData()
+                            ClearFields()
+                            ChangeScenes('edit', 'profile')
+
+                        } else {
+                            head.innerHTML = "Ошибка!"
+                            text.innerHTML = "Введите корректный Email."
+                            modal.show()
+                        }
+                    } else {
+                        head.innerHTML = "Ошибка!"
+                        text.innerHTML = "Пароль должен содержать минимум 6 символов."
+                        modal.show()
+                    }
+                } else {
+                    head.innerHTML = "Ошибка!"
+                    text.innerHTML = "Пароли не совпадают."
+                    modal.show()
+                }
+            } else {
+                head.innerHTML = "Ошибка!"
+                text.innerHTML = "Необходимо заполнить все поля."
+                modal.show()
+            }
+        }
+
+        let code = ""
+        let attempt_forgot = 3
+        function Forgot() {
+            if (sessionStorage.getItem("block_forgot") != "Yes") {
+                let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+                if (account != null) {
+                    let email = account[4]
+                    let words = email.split("@")
+                    let str = `${words[0][0]}${words[0][1]}${words[0][2]}`
+                    for (let i = 2; i < words[0].length; i++) {
+                        str += "*"
+                    }
+                    str += `@${words[1]}`
+                    document.getElementById("email_secret").innerHTML = str
+                    code = `${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}${RND(0, 10)}`
+                    document.getElementById("password_text").innerHTML = code
+                    let modal_p = new bootstrap.Modal(document.getElementById("modal_password"))
+                    modal_p.show()
+                } else {
+                    head.innerHTML = "Ошибка!"
+                    text.innerHTML = "У вас нет созданного профиля."
+                    modal.show()
+                }
+            } else {
+                head.innerHTML = "Доступ ограничен!"
+                text.innerHTML = `Вы потратили все попытки. Попробуйте в следующий раз.`
+                modal.show()
+            }
+        }
+        function SendCode() {
+            let account = JSON.parse(localStorage.getItem("profile_mcode_profile"))
+            let user_code = document.getElementById("forgot_code").value
+            if (user_code == code) {
+                sessionStorage.setItem('login', "Yes")
+                document.getElementById("profile_tag_pc").innerHTML = account[1]
+                document.getElementById("profile_tag_mobile").innerHTML = account[1]
+                LoadData()
+                ClearFields()
+                ChangeScenes('login', 'profile')
+            } else {
+                attempt_forgot--
+                head.innerHTML = "Ошибка!"
+                text.innerHTML = `Неверный код восстановления.\nОсталось ${attempt_forgot} попыток.`
+                modal.show()
+            }
+            if (attempt_forgot == 0) {
+                sessionStorage.setItem("block_forgot", "Yes")
+            }
+        }
+    </script>
+</body>
+
+</html>

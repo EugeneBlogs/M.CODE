@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Словарный запас</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-success">Словарный запас</h3>
+                    <h6 class="text-info">Идея: шоу "Тейбл Тайм".</h6>
+                    <p><span class="text-primary">Количество игроков:</span> 2-∞.<br>
+                        <span class="text-primary">Правила игры:</span> компьютер генерирует одну букву русского
+                        алфавита (исключения: «Ы», «Ь», «Ъ») и запускает таймер на 1 минуту (когда время закончится,
+                        будет воспроизведён звуковой сигнал). За это время каждый игрок
+                        должен на бумажке написать наибольшее количество слов на данную букву. Тот, у кого слов будет
+                        больше всего, получает 1 балл.<br>
+                        <span class="text-warning">Побеждает тот, кто набрал большее количество баллов.</span><br>
+                        <span class="text-danger">ВНИМАНИЕ! «Е» и «Ё» - разные буквы. Формы одного слова (например:
+                            стол, столы, стола) считаются одним словом, а однокоренные слова (например: снег, снеговик,
+                            снежинка) считаются разными. Можно писать только нарицательные существительные (нельзя
+                            писать имена собственные, названия городов и т.д), нельзя писать прилагатльеные, глаголы и
+                            другие части речи, кроме существительных.</span><br>
+                    </p>
+                    <h6 class="text-warning mt-5">Раунд: <span id="round">0</span>.</h6>
+                    <h5 class="text-primary">Таймер: <span id="timer">0</span>.</h5>
+                    <h3 class="text-info">Буква: <span id="gen_letter">?</span>.</h3>
+                    <button style="background: transparent; border: none !important;" id="btn_audio"
+                        onclick="Sound()"></button>
+                    <br>
+                    <a class="btn text-success mt-3" id="btn_gen" onclick="GenerateLetter()">Сгенерировать букву</a>
+                    <a class="btn text-danger mt-3" onclick="location.reload()">Начать сначала</a>
+                    <h5 class="text-info mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
+                    <h6 class="text-primary">Цвета: <span class="text-warning">Побеждает</span> <span
+                            class="text-danger">Проигрывает</span></h6>
+                    <a class="btn text-warning mt-3" onclick="AddPlayer()">Добавить игрока</a>
+                    <table class="table table-bordered text-light text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Игрок</th>
+                                <th scope="col">Баллы</th>
+                                <th scope="col">Изменить баллы</th>
+                                <th scope="col">Удалить</th>
+                            </tr>
+                        </thead>
+                        <tbody id="players">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let number = 1
+        let players = []
+
+        function AddPlayer() {
+            let name = prompt("Введите имя игрока:")
+            if (typeof name !== 'undefined' && name !== null) {
+                let table = document.getElementById("players")
+                let tr = document.createElement("tr")
+                tr.id = `player${number}`
+                tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><input style="display: inline; background-color: black; width: 150px;" class="form-control text-primary" type="number" id="number${number}" placeholder="Число" /><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 25px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 25px;">-</a></td><td><a class="btn text-warning" onclick="DeletePlayer(${number})">Удалить</a></td>`
+                table.appendChild(tr)
+                players.push(number)
+                number++
+            }
+        }
+        function DeletePlayer(num) {
+            let name = document.getElementById(`name${num}`).innerHTML
+            if (confirm(`Удалить игрока «${name}»?`)) {
+                document.getElementById(`player${num}`).remove()
+                let num_index = 0
+                for (let i = 0; i < players.length; i++) {
+                    if (players[i] == num)
+                        num_index = i
+                }
+                players.splice(num_index, 1)
+            }
+        }
+        function Operation(oper, num) {
+            let now_score = document.getElementById(`score${num}`).innerHTML
+            let edit_score = document.getElementById(`number${num}`).value
+            if (isNaN(edit_score)) {
+                edit_score = 0
+            } else if (Number(edit_score) < 0) {
+                edit_score = 0
+            }
+            let result_score = 0
+            if (oper == "+") {
+                result_score = Number(now_score) + Number(edit_score)
+            } else if (oper == "-") {
+                result_score = Number(now_score) - Number(edit_score)
+                if (result_score < 0) {
+                    result_score = 0
+                }
+            }
+            document.getElementById(`score${num}`).innerHTML = result_score
+            let scores = []
+            let zero = 0
+            for (let i = 0; i < players.length; i++) {
+                document.getElementById(`name${players[i]}`).classList.add("text-light")
+                document.getElementById(`name${players[i]}`).classList.remove("text-warning")
+                document.getElementById(`name${players[i]}`).classList.remove("text-danger")
+                scores.push(document.getElementById(`score${players[i]}`).innerHTML)
+                if (Number(document.getElementById(`score${players[i]}`).innerHTML) == 0) zero++
+            }
+            let max = Math.max.apply(null, scores)
+            let min = Math.min.apply(null, scores)
+            for (let i = 0; i < players.length; i++) {
+                let now_score = Number(document.getElementById(`score${players[i]}`).innerHTML)
+                if (scores.length == zero) {
+                    document.getElementById(`name${players[i]}`).classList.add("text-light")
+                } else if (now_score == max) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-warning")
+                } else if (now_score == min) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light")
+                    document.getElementById(`name${players[i]}`).classList.add("text-danger")
+                }
+            }
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        let letters = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Э", "Ю", "Я"]
+
+        let max_levels = 30
+        let count_levels = 1
+        let bool_gen = true
+        let time = 59
+
+        function GenerateLetter() {
+            if (bool_gen) {
+                if (count_levels <= max_levels) {
+                    rnd_num = RND(0, letters.length)
+                    gen_letter = letters[rnd_num]
+                    letters.splice(rnd_num, 1)
+                    document.getElementById("gen_letter").innerHTML = gen_letter
+                    document.getElementById("round").innerHTML = count_levels
+                    count_levels++
+                    StartTimer()
+                    document.getElementById("timer").innerHTML = "60"
+                }
+                else {
+                    alert("Игра окончена! Буквы закончились.")
+                }
+            }
+        }
+
+        function StartTimer() {
+            bool_gen = false
+            document.getElementById("btn_gen").classList.add("text-secondary")
+            document.getElementById("btn_gen").classList.remove("text-success")
+            Countdown()
+        }
+
+        function Countdown() {
+            const timer = setInterval(() => {
+                document.getElementById("timer").innerHTML = time
+                if (time <= 0) {
+                    clearInterval(timer)
+                    StopTimer()
+                } else {
+                    time--
+                }
+            }, 1000)
+        }
+
+        function StopTimer() {
+            document.getElementById("timer").innerHTML = "Время вышло!"
+            bool_gen = true
+            document.getElementById("btn_gen").classList.remove("text-secondary")
+            document.getElementById("btn_gen").classList.add("text-success")
+            time = 59
+            document.getElementById("btn_audio").click()
+            setTimeout(() => alert("Время вышло!"), 1000)
+        }
+
+        function Sound() {
+            let sound = new Audio("files/timer.mp3")
+            sound.load()
+            sound.play()
+        }
+    </script>
+</body>
+
+</html>

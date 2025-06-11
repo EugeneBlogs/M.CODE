@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Локальное хранилище M.Storage</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" id="main" style="display: none;">
+                    <h3 class="text-danger">Добро пожаловать!</h3>
+                    <p>На данный момент в хранилище загружено <span class="text-warning" id="files_count">0</span>
+                        файлов.</p>
+                    <p>Дата последнего обновления: <span class="text-primary" id="date_update">дд/мм/гггг
+                            чч:мм:сс</span>.</p>
+                    <div id="loading">
+                        <h6 class="text-secondary">Внимание! Загрузка файлов может занять некоторое время, потому что
+                            информация получается с сервера.</h6>
+                        <h5 class="text-success">Загрузка файлов: <span class="text-info" id="now_files">0/0</span>.
+                        </h5>
+                        <div class="progress mb-5" role="progressbar">
+                            <div class="progress-bar bg-info text-dark" style="width: 0%" id="progress_bar">0%</div>
+                        </div>
+                    </div>
+                    <table class="table table-dark table-hover" id="table-files">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Название файла</th>
+                                <th scope="col">Тип файла</th>
+                                <th scope="col">Размер файла</th>
+                                <th scope="col">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody id="files_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let months = new Map()
+        months.set("Jan", "01")
+        months.set("Feb", "02")
+        months.set("Mar", "03")
+        months.set("Apr", "04")
+        months.set("May", "05")
+        months.set("Jun", "06")
+        months.set("Jul", "07")
+        months.set("Aug", "08")
+        months.set("Sep", "09")
+        months.set("Oct", "10")
+        months.set("Nov", "11")
+        months.set("Dec", "12")
+        function GetInfo(url, type) {
+            let req = new XMLHttpRequest()
+            req.open("GET", url, false)
+            req.send()
+            if (req.status == 200) {
+                if (type == "Size") {
+                    let bytes = req.getResponseHeader('content-length')
+                    if (!+bytes) return '0 Б'
+                    const decimals = 2
+                    const k = 1024
+                    const dm = decimals < 0 ? 0 : decimals
+                    const sizes = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ЙБ']
+                    const i = Math.floor(Math.log(bytes) / Math.log(k))
+                    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+                } else if (type == "Date") {
+                    let date = req.getResponseHeader('last-modified')
+                    let words = date.split(" ")
+                    let month = months.get(words[2])
+                    let result = `${words[1]}/${month}/${words[3]} ${words[4]}`
+                    return result
+                }
+            } else {
+                return "Ошибка"
+            }
+        }
+
+        let formats = new Map()
+        formats.set("doc", "Документ Word")
+        formats.set("docx", "Документ Word")
+        formats.set("txt", "Текстовый файл")
+        formats.set("ppt", "Презентаця PowerPoint")
+        formats.set("pptx", "Презентаця PowerPoint")
+        formats.set("pdf", "Документ PDF")
+        formats.set("mp3", "Аудио")
+        formats.set("wav", "Аудио")
+        formats.set("mp4", "Видео")
+        formats.set("mkv", "Видео")
+        formats.set("avi", "Видео")
+        formats.set("jpeg", "Фото")
+        formats.set("jpg", "Фото")
+        formats.set("png", "Фото")
+        formats.set("gif", "Анимация")
+        formats.set("svg", "Векторное изображение")
+        formats.set("zip", "Архив")
+        formats.set("rar", "Архив")
+        formats.set("7z", "Архив")
+        function GetFormat(type) {
+            let result = ""
+            if (formats.has(type)) {
+                let text = formats.get(type)
+                result = `${text} (.${type})`
+            } else {
+                result = `Файл (.${type})`
+            }
+            return result
+        }
+
+        const path = "https://eugeneblogs.github.io/M.CODE/FilesStorage/"
+        let files = [
+            "Геометрия. Теория.docx",
+            "Русский язык. Теория.pdf",
+            "Физика 8 класс. Тепловые явления.pptx",
+            "Физика 8 класс. Электромагнитные явления.pptx",
+            "Физика 9 класс. Кинематика.pptx",
+            "Физика 9 класс. Динамика.pptx",
+            "Физика 9 класс. Законы Ньютона и Силы в природе.docx",
+            "Физика 9 класс. Законы сохранения в механике.docx",
+            "Физика 9 класс. Оптика.docx",
+            "Физика 9 класс. Магнитное поле и ЭМИ.pptx",
+            "Физика 9 класс. Звуковые колебания, Источники и Характеристики звука.mp4",
+            "Физика 9 класс. Распространение звука, Звуковые волны и Скорость звука.mp4"
+        ]
+
+        let count = 1
+        function UpdateLoad() {
+            document.getElementById("now_files").innerHTML = `${count}/${files.length}`
+            let percent = count / Number(files.length) * 100
+            percent = Math.round(percent)
+            document.getElementById("progress_bar").style.width = `${percent}%`
+            document.getElementById("progress_bar").innerHTML = `${percent}%`
+        }
+        function Delay() {
+            return new Promise(resolve => setTimeout(resolve, 500))
+        }
+        async function DelayAsync() {
+            await Delay()
+            UpdateLoad()
+        }
+        async function LoadFiles() {
+            document.getElementById("files_count").innerHTML = files.length
+            document.getElementById("date_update").innerHTML = GetInfo(`${path}/${files[0]}`, "Date")
+            UpdateLoad()
+            for (const item of files) {
+                let str = path + item
+                let words = str.split('.')
+                let format = words[words.length - 1]
+                let name = item.replace(`.${format}`, "")
+
+                let table = document.getElementById("files_list")
+                let tr = document.createElement("tr")
+                tr.innerHTML =
+                    `
+                <th scope="row">${count}</th>
+                <td>${name}</td>
+                <td>${GetFormat(format)}</td>
+                <td>${GetInfo(str, "Size")}</td>
+                <td><a href="${str}">Открыть</a></td>
+            `
+                table.appendChild(tr)
+                count++
+                await DelayAsync()
+            }
+            document.getElementById("loading").style.display = "none"
+        }
+
+        function Redirect() {
+            let str = String(window.location)
+            str = str.replace("storage.html", "index.html")
+            window.location.href = str
+        }
+        if (btoa(prompt("Для получения доступа к хранилищу введите пароль: ")) == "MjkwMzIwMjM=") {
+            document.getElementById("main").style.display = "block"
+            LoadFiles()
+        } else {
+            alert("Неверный пароль! Доступ запрещён!")
+            Redirect()
+        }
+    </script>
+</body>
+
+</html>

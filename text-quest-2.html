@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Операция "Борьба за жизнь"</title>
+    <style>
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        #save {
+            transition: all 1s ease-in-out;
+            animation: blink normal 2s infinite ease-in-out;
+        }
+
+        .animation {
+            animation: pulse 3s 0s both infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            50% {
+                transform: scale3d(1.25, 1.25, 1.25);
+            }
+
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5" id="timer" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div style="color: red;" class="col-12">
+                    <h1 style="color: lawngreen;">До релиза:</h1>
+                    <div class="clock">
+                        <h1 style="display: inline-block;" class="days">00</h1> :
+                        <h1 style="display: inline-block;" class="hours">00</h1> :
+                        <h1 style="display: inline-block;" class="minutes">00</h1> :
+                        <h1 style="display: inline-block;" class="seconds">00</h1>
+                    </div>
+                    <p>ДНИ : ЧАСЫ : МИНУТЫ : СЕКУНДЫ</p>
+                    <h6 style="color: yellow;">Выход игры запланирован на 1 июня 2023 года 12:00.</h6>
+                    <p style="color: mediumpurple;">P.S. Страницу можно не обновлять, по истечении времени таймер
+                        пропадёт сам :)</p>
+                    <a style="color: blue;" class="btn mt-3" id="btn-early" href="#" onclick="EarlyAccess()">Получить
+                        ранний доступ</a>
+                    <h2 style="color: blue;" id="end"></h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5" id="start">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 style="color: crimson;">Текстовый квест 2.0</h3>
+                    <p style="color: blueviolet;">Обновлённый сюжет (более длинный, захватывающий и расходящийся),
+                        новые герои, невероятные локации
+                        и новые возможности.</p>
+                    <h6 style="color: gold;">M.CODE ORIGINAL</h6>
+                    <h6 style="color: aquamarine;">Основано на нереальных событиях. Все совпадения случайны.</h6>
+                    <img style="width: 25%;" src="img/Квесты/Текстовый квест 2.0.JPG" alt="Иллюстрация">
+                    <p class="text-start"><span style="color: blue;">Жанр:</span> фантастический психологический
+                        триллер-хоррор <sub>с элементами юмора</sub>.</p>
+                    <p class="text-start"><span style="color: blue;">Возрастное ограничение:</span> 18+.</p>
+                    <p class="text-start"><span style="color: blue;">Сюжет:</span> Мы не помним, как это произошло и что
+                        случилось на самом деле. Но это не главное. Важно то, что вам теперь необходимо выжить в мире,
+                        окружённом зомби. Ищите убежища, сражайтесь с зомби и принимайте трудные решения для выживания.
+                        Действия, которые вы сделаете, повлияют на количество выживших. Сможете ли вы преодолеть все
+                        испытания и выжить в этом новом, опасном мире? <span style="color: orangered;">Атмосферный экшен
+                            от создателей «(НЕ)выживши(Е/Й)»</span>. <span style="color: olive;">(By ChatGPT)</span></p>
+                    <p class="text-start"><span style="color: blue;">Инстуркция:</span> Вы будете делать выбор за
+                        главного героя (Егор). В ваших руках жизнь каждого человека!</p>
+                    <p class="text-start"><span style="color: blue;">Герои:</span> Егор, Александр, Андрей, Илья и
+                        Николай (5).</p>
+                    <p class="text-start"><span style="color: blue;">Время прохождения:</span> 10-15 минут.</p>
+                    <p style="color: yellow;" class="text-start">Игра содержит сохранения после каждого выбора!<br>Не
+                        чистите кэш и история браузера, если не хотите потерять сохранения!<br>Не закрывайте игру, когда
+                        видете этот значок!</p>
+                    <img src="img/favicon.ico" alt="Сохранение">
+                    <br>
+                    <a style="color: limegreen;" class="btn mt-3" href="#" onclick="StartGame()">Начать новую игру</a>
+                    <br>
+                    <a style="color: limegreen;" class="btn mt-3" href="#" id="btn-save"
+                        onclick="ContinueGame()">Загрузить сохранения и продолжить игру</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5" id="game" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" id="save" style="display: none;">
+                    <img src="img/favicon.ico" alt="Сохранение">
+                </div>
+                <div class="col-12 border p-5 mt-5">
+                    <p id="message"><span style="color: lawngreen;">Имя:</span> Реплика.</p>
+                </div>
+                <div id="variants">
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6 col-sm-12 mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="choose" id="variant1" checked>
+                                <label class="form-check-label" for="variant1" id="text-variant1"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6 col-sm-12 mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="choose" id="variant2">
+                                <label class="form-check-label" for="variant2" id="text-variant2"></label>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <a style="color: red;" class="btn mt-3" href="#" onclick="Continue()">Продолжить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5" id="ending" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 p-5 border border-info">
+                    <h3 style="color: yellow;">Концовка</h3>
+                    <div class="mt-3 text-start">
+                        <p style="color: khaki;">Егор - <span id="life_egor"></span></p>
+                        <p style="color: khaki;">Александр - <span id="life_alexandr"></span></p>
+                        <p style="color: khaki;">Андрей - <span id="life_andrey"></span></p>
+                        <p style="color: khaki;">Илья - <span id="life_ilya"></span></p>
+                        <p style="color: khaki;">Николай - <span id="life_nikolay"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <a style="color: darkorchid;" class="btn mt-3" onclick="Read()">Прочитать историю создания</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5" id="article" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 style="color: orange;">Статья "История создания квеста"</h3>
+                    <h6 style="color: lightcoral;" class="mt-3">Вступление</h6>
+                    <p class="text-start">Всем привет! На связи Евгений, разработчик компании M.CODE. Сейчас я расскажу
+                        вам о том, как создавался данный квест, с чем нам пришлось столкнуться и много интересных
+                        историй!<br>Приятного прочтения!</p>
+                    <h6 style="color: lightcoral;" class="mt-3">Как появилась идея?</h6>
+                    <p class="text-start">Идея создания текстового квеста у нас появилась практически с момента
+                        основания
+                        компании. Но мы постоянно это откладывали.<br>Во-первых, мы не могли настроиться на такой
+                        масштабный проект. Во-вторых, мы не могли придумать хороший сценарий.<br>Но недавно, мы
+                        собрались с
+                        силами и создали свой первый текстовый квест с креативным названием "(НЕ)выживши(Й/Е)". Суть
+                        названия, кстати, если правильно раскрыть скобки, то можно получить финалы квеста (т.е.
+                        "Невыжившие", "Выживший", "Выжившие"). Квест получился короткий, поэтому идея создания более
+                        крутого квеста у нас не пропадала.<br>И тогда мы придумали данный сценарий. Наверное, вам
+                        покажется, что сценарии довольно примитивные, что квесты короткие и скучные. Возможно, вы в
+                        чём-то правы. Но для нас - это невероятные проекты. Вы просто не представляете, как сложно, но в
+                        тоже время интересно создавать это!</p>
+                    <h6 style="color: lightcoral;" class="mt-3">На что опирались при написании сценария?</h6>
+                    <p class="text-start">Оба сценарии были написаны, опираясь на наш жизненный опыт. Конечно, таких
+                        ситуаций с нами не происходило, но мы встречали их в фильмах и книгах, поэтому их было легко
+                        представить и воплотить!</p>
+                    <h6 style="color: lightcoral;" class="mt-3">Немного о героях.</h6>
+                    <p class="text-start">На главной странице написано, что все совпадения случайны. От части, да. Но в
+                        тоже время, герои были придуманы не с нуля. За их основу я взял своих друзей, поэтому, возможно,
+                        где-то проскакивает их манера общения, характер и чувство юмора. На самом деле, даже имена
+                        вымешленных персонажей начинаются на ту же букву, что и имя человека, с которым я сравнивал
+                        созданного персонажа.<br>Но в некоторых моментах, я понимал, что в реальной жизни этот человек
+                        так бы себя не повёл. Но мне нужны были эти действия для развития сюжета.</p>
+                    <h6 style="color: lightcoral;" class="mt-3">Какие были трудности?</h6>
+                    <p class="text-start">Трудности были везде.<br>1. Сценарий: сам сценарий нужно писать очень долго,
+                        представлять в голове ситуацию и что можно было бы сделать в ней, а также очень сложно писать
+                        разветвление сюжета,
+                        то есть, когда человек выбирает, куда ему пойти или что сделать. Ты пишешь, что в этот момент у
+                        человека есть выбор, потом ты описываешь то, что будет происходить в первом случае, но самое
+                        сложное заключается в том, что тебе теперь нужно это связать со вторым случаем! То есть если
+                        персонаж в каком-то выборе погибает - тебе нужно не забыть про этом потом!<br>2. Реализация
+                        кода: естественно написать код такого квеста - это тоже непросто. Необходимо также соблюдать все
+                        цепочки сюжета и одновременно следить за малейшими деталями, так как если ты пропустишь один
+                        символ - тебе нужно будет найти эту маленькую ошибочку в 500 строках кода или весь проект
+                        придётся переписывать.</p>
+                    <h6 style="color: lightcoral;" class="mt-3">Будет ли продолжения?</h6>
+                    <p class="text-start">На самом деле, у нас давно была идея создать игру-трилогию или квадрологию
+                        (состоящую из 3 или 4 частей), создать квест по фильму или по сценарию друзей. Но мы понимаем,
+                        то что жить на одних квестах невозможно.<br>1. Это отнимает много времени, которое мы могли
+                        потратить на развитие других навыков.<br>2. Мы достаточно плохо сочиняем прям интересные
+                        и захватывающие сценарии, поэтому квесты получаются короткими.<br>В ближайшее время вряд ли
+                        выйдут
+                        ещё такие квесты.</p>
+                    <h6 style="color: lightcoral;" class="mt-3">Заключение</h6>
+                    <p class="text-start">Создание текстового квеста - задача не из лёгких. На это уходят недели, но в
+                        тоже время это очень увлекательное занятие.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/text-quest-2.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        function EarlyAccess() {
+            let data = new Date()
+            let day = data.getDate()
+	    if (day < 10) {
+                day = "0" + day
+            }
+            let month = eval(Number(data.getMonth()) + 1)
+            if (month < 10) {
+                month = "0" + month
+            }
+            let year = data.getFullYear()
+            let password = String(day) + String(month) + String(year)
+            if (prompt("Для доступа к игре введите пароль: ") != password) {
+                alert("Неверный пароль! Доступ запрещён!")
+            } else {
+                document.getElementById("timer").style.display = "none"
+                document.getElementById("start").style.display = "block"
+            }
+        }
+        // Таймер
+        let now_date = new Date()
+        let reliz = new Date(2023, 05, 01, 12, 00, 00)
+        if (now_date < reliz) {
+            document.getElementById("start").style.display = "none"
+            document.getElementById("timer").style.display = "block"
+        }
+        function getTimeRemaining(endtime) {
+            let t = Date.parse(endtime) - Date.parse(new Date());
+            let seconds = Math.floor((t / 1000) % 60);
+            let minutes = Math.floor((t / 1000 / 60) % 60);
+            let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            let days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                total: t,
+                days: days,
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds
+            };
+        }
+        function initializeClock() {
+            let deadline = "June 01 2023 12:00:00";
+            function updateClock() {
+                let t = getTimeRemaining(deadline);
+                document.querySelector(".days").innerHTML = ("0" + t.days).slice(-2);
+                document.querySelector(".hours").innerHTML = ("0" + t.hours).slice(-2);
+                document.querySelector(".minutes").innerHTML = ("0" + t.minutes).slice(-2);
+                document.querySelector(".seconds").innerHTML = ("0" + t.seconds).slice(-2);
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00") {
+                    document.getElementById("btn-early").style.display = "none"
+                    document.querySelector(".clock").classList.add("animation")
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "10") {
+                    document.getElementById("end").innerHTML = "ДЕСЯТЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "09") {
+                    document.getElementById("end").innerHTML = "ДЕВЯТЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "08") {
+                    document.getElementById("end").innerHTML = "ВОСЕМЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "07") {
+                    document.getElementById("end").innerHTML = "СЕМЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "06") {
+                    document.getElementById("end").innerHTML = "ШЕСТЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "05") {
+                    document.getElementById("end").innerHTML = "ПЯТЬ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "04") {
+                    document.getElementById("end").innerHTML = "ЧЕТЫРЕ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "03") {
+                    document.getElementById("end").innerHTML = "ТРИ!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "02") {
+                    document.getElementById("end").innerHTML = "ДВА!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "01") {
+                    document.getElementById("end").innerHTML = "ОДИН!"
+                }
+                if (document.querySelector(".days").innerHTML == "00" && document.querySelector(".hours").innerHTML == "00" && document.querySelector(".minutes").innerHTML == "00" && document.querySelector(".seconds").innerHTML == "00") {
+                    document.getElementById("end").innerHTML = "НОЛЬ!"
+                    setTimeout(function () {
+                        location.reload()
+                    }, 500);
+                }
+            }
+            let timeinterval = setInterval(updateClock, 1000);
+        }
+        initializeClock();
+    </script>
+</body>
+
+</html>

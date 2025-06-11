@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Крестики-нолики</title>
+</head>
+
+<body class="text-center">
+    <div id="load_header"></div>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-success">Крестики-нолики</h3>
+                    <p>Самая известная игра, рассчитанная на двух человек.</p>
+                </div>
+                <div class="col-12">
+                    <h6 class="text-info">Текущий ход: <span id="progress">XO</span>.</h6>
+                </div>
+                <div class="container-xo">
+                    <table class="table-xo">
+                        <tr>
+                            <td id="1"></td>
+                            <td id="2"></td>
+                            <td id="3"></td>
+                        </tr>
+                        <tr>
+                            <td id="4"></td>
+                            <td id="5"></td>
+                            <td id="6"></td>
+                        </tr>
+                        <tr>
+                            <td id="7"></td>
+                            <td id="8"></td>
+                            <td id="9"></td>
+                        </tr>
+                    </table>
+                    <a class="btn text-warning mt-3" href="#" onclick="location.reload()">Перезапуск</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="load_footer"></div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.bubble.text.min.js"></script>
+    <script src="js/basic_elements.js"></script>
+    <script>
+        let playerSymbol = "X";
+        document.getElementById("progress").innerHTML = "X"
+        document.getElementById("progress").style.color = "red"
+        let gameEnded = false
+
+        let winPos = [
+            [1, 2, 3], [4, 5, 6],
+            [7, 8, 9], [1, 4, 7],
+            [2, 5, 8], [3, 6, 9],
+            [1, 5, 9], [3, 5, 7]
+        ];
+
+        for (let i = 1; i <= 9; i++) {
+            document.getElementById(i.toString()).addEventListener("click", function () {
+                if (this.innerHTML === "" && !gameEnded) {
+                    this.innerHTML = playerSymbol;
+                    this.classList.add(playerSymbol.toLowerCase())
+                    checkWin()
+                    if (!gameEnded) {
+                        if (playerSymbol === "X") {
+                            playerSymbol = "O"
+                            document.getElementById("progress").innerHTML = "O"
+                            document.getElementById("progress").style.color = "blue"
+                        } else {
+                            playerSymbol = "X"
+                            document.getElementById("progress").innerHTML = "X"
+                            document.getElementById("progress").style.color = "red"
+                        }
+                    }
+                }
+            }
+            );
+        }
+
+        function checkWin() {
+            for (let i = 0; i < winPos.length; i++) {
+                if (document.getElementById(winPos[i][0]).innerHTML === playerSymbol && document.getElementById(winPos[i][1]).innerHTML === playerSymbol && document.getElementById(winPos[i][2]).innerHTML === playerSymbol) {
+                    document.getElementById(winPos[i][0]).classList.add("win")
+                    document.getElementById(winPos[i][1]).classList.add("win")
+                    document.getElementById(winPos[i][2]).classList.add("win")
+                    gameEnded = true;
+                    setTimeout(function () {
+                        alert(playerSymbol + " выиграли!")
+                        location.reload()
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
