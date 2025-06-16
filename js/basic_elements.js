@@ -37,6 +37,7 @@ document.getElementById("load_header").innerHTML =
                     <li><a href="encryption.html">Шифрование текста</a></li>
                     <li><a href="password-generator.html">Генератор паролей</a></li>
                     <li><a href="antimate.html">JS-библиотека "!МАТ"</a></li>
+                    <li><a href="film-expert.html">Киноэксперт</a></li>
                 </ul>
             </li>
             <li><a href="storage.html">M.Storage</a></li>
