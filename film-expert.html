@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киноэксперт | Оценка фильмов</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+            --primary: #ffd700;
+            --green: #4ade80;
+            --yellow: #facc15;
+            --red: #f87171;
+            --border: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            z-index: -1;
+            border-radius: 1rem;
+            opacity: 0.1;
+        }
+
+        .rating-category {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .category-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .category-weight {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .star {
+            cursor: pointer;
+            color: #333333;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
+
+        .star.active {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .star.active.glow {
+            animation: glow 0.5s ease-out;
+        }
+
+        @keyframes glow {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), #e6c200);
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            background: linear-gradient(90deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .final-score::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            border-radius: 3px;
+        }
+
+        .score-stars {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .score-star {
+            font-size: 2rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .score-comment {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid var(--primary);
+        }
+
+        .film-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .film-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+            z-index: 1000;
+        }
+
+        .dislike {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0;
+            animation: dislike-fall 3s ease-in forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes dislike-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .score-color {
+            transition: color 0.5s ease;
+        }
+
+        .green {
+            color: var(--green);
+        }
+
+        .yellow {
+            color: var(--yellow);
+        }
+
+        .red {
+            color: var(--red);
+        }
+
+        .credits {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>КИНОЭКСПЕРТ</h1>
+
+        <input type="text" class="film-input" placeholder="Введите название фильма или сериала..." id="filmName">
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Сюжет и сценарий <span class="category-weight">(важность: 30%)</span></span>
+                <span id="plotValue">0</span>
+            </div>
+            <div class="stars" id="plotStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Актерская игра <span class="category-weight">(важность: 25%)</span></span>
+                <span id="actingValue">0</span>
+            </div>
+            <div class="stars" id="actingStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Режиссура <span class="category-weight">(важность: 20%)</span></span>
+                <span id="directionValue">0</span>
+            </div>
+            <div class="stars" id="directionStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Визуальные эффекты и операторская работа <span class="category-weight">(важность:
+                        10%)</span></span>
+                <span id="visualsValue">0</span>
+            </div>
+            <div class="stars" id="visualsStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Саундтрек и звуковое оформление <span class="category-weight">(важность: 5%)</span></span>
+                <span id="soundValue">0</span>
+            </div>
+            <div class="stars" id="soundStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Оригинальность и новизна <span class="category-weight">(важность: 5%)</span></span>
+                <span id="originalityValue">0</span>
+            </div>
+            <div class="stars" id="originalityStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Эмоциональное воздействие <span class="category-weight">(важность: 5%)</span></span>
+                <span id="emotionValue">0</span>
+            </div>
+            <div class="stars" id="emotionStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <button id="calculateBtn">РАССЧИТАТЬ ОЦЕНКУ</button>
+
+        <div class="result" id="result">
+            <div>Итоговая оценка для <span id="resultFilmName" style="color: var(--primary); font-weight: 600;"></span>:
+            </div>
+            <div class="final-score" id="finalScore">0</div>
+
+            <div class="score-stars" id="scoreStars">
+                <!-- Звезды будут добавлены через JS -->
+            </div>
+
+            <div class="score-comment" id="scoreComment"></div>
+        </div>
+
+        <div class="credits">
+            Режиссёр-постановщик: DeepSeek<br>
+            Креативный продюсер: MylnikCode
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Веса категорий (в процентах)
+            const categoryWeights = {
+                plot: 30,
+                acting: 25,
+                direction: 20,
+                visuals: 10,
+                sound: 5,
+                originality: 5,
+                emotion: 5
+            };
+
+            // Инициализация звезд для всех категорий
+            Object.keys(categoryWeights).forEach(category => {
+                const stars = document.querySelectorAll(`#${category}Stars .star`);
+                const valueElement = document.getElementById(`${category}Value`);
+
+                stars.forEach(star => {
+                    star.addEventListener('click', function () {
+                        const value = parseInt(this.getAttribute('data-value'));
+                        valueElement.textContent = value;
+
+                        // Обновляем отображение звезд с анимацией
+                        stars.forEach((s, index) => {
+                            if (index < value) {
+                                s.classList.add('active');
+                                setTimeout(() => {
+                                    s.classList.add('glow');
+                                    setTimeout(() => s.classList.remove('glow'), 500);
+                                }, index * 100);
+                            } else {
+                                s.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            });
+
+            // Расчет итоговой оценки
+            document.getElementById('calculateBtn').addEventListener('click', function () {
+                const filmName = document.getElementById('filmName').value || 'этого фильма';
+                let totalScore = 0;
+                let totalWeight = 0;
+                let count = 0;
+
+                // Собираем оценки по всем категориям с учетом весов
+                Object.keys(categoryWeights).forEach(category => {
+                    const value = parseInt(document.getElementById(`${category}Value`).textContent);
+                    if (value > 0) {
+                        totalScore += value * categoryWeights[category];
+                        totalWeight += categoryWeights[category];
+                        count++;
+                    }
+                });
+
+                if (count === 0) {
+                    alert('Пожалуйста, оцените хотя бы одну категорию');
+                    return;
+                }
+
+                // Расчет взвешенной оценки
+                let finalScore = Math.round((totalScore / totalWeight) * 10) / 10;
+                let roundedScore = Math.round(finalScore);
+
+                // Показываем результат
+                document.getElementById('resultFilmName').textContent = filmName;
+                const finalScoreElement = document.getElementById('finalScore');
+                finalScoreElement.textContent = finalScore;
+
+                // Определяем цвет оценки
+                let scoreColorClass = '';
+                if (finalScore >= 7) {
+                    scoreColorClass = 'green';
+                } else if (finalScore >= 5) {
+                    scoreColorClass = 'yellow';
+                } else {
+                    scoreColorClass = 'red';
+                }
+
+                // Устанавливаем цвет числовой оценки
+                finalScoreElement.classList.remove('green', 'yellow', 'red');
+                finalScoreElement.classList.add(scoreColorClass);
+
+                // Отображаем звезды итоговой оценки с тем же цветом
+                const scoreStarsContainer = document.getElementById('scoreStars');
+                scoreStarsContainer.innerHTML = '';
+                for (let i = 1; i <= 10; i++) {
+                    const star = document.createElement('span');
+                    star.className = 'score-star';
+                    star.textContent = '★';
+                    if (i <= roundedScore) {
+                        star.classList.add(scoreColorClass);
+                        star.style.textShadow = `0 0 10px var(--${scoreColorClass})`;
+                    } else {
+                        star.style.color = '#333333';
+                    }
+                    scoreStarsContainer.appendChild(star);
+                }
+
+                // Добавляем комментарий к оценке
+                const commentElement = document.getElementById('scoreComment');
+                if (finalScore >= 9) {
+                    commentElement.textContent = 'Шедевр!';
+                    createConfetti(50);
+                } else if (finalScore >= 8) {
+                    commentElement.textContent = 'Отличный фильм!';
+                } else if (finalScore >= 6) {
+                    commentElement.textContent = 'Хороший фильм.';
+                } else if (finalScore >= 4) {
+                    commentElement.textContent = 'Неплохой фильм.';
+                } else {
+                    commentElement.textContent = 'Слабый фильм.';
+                    if (finalScore <= 2) {
+                        createDislikes(20);
+                    }
+                }
+
+                // Показываем блок с результатом
+                document.getElementById('result').style.display = 'block';
+
+                // Прокручиваем к результату
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Функция создания конфетти
+            function createConfetti(count) {
+                for (let i = 0; i < count; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+
+                    // Случайный цвет
+                    const colors = ['#ffd700', '#ff8c00', '#ff0080', '#00ffcc', '#cc00ff'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = randomColor;
+
+                    // Случайный размер
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+
+                    // Случайная форма
+                    if (Math.random() > 0.5) {
+                        confetti.style.borderRadius = '50%';
+                    }
+
+                    // Случайная позиция
+                    const startX = Math.random() * window.innerWidth;
+                    confetti.style.left = `${startX}px`;
+
+                    // Случайная задержка
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+
+                    document.body.appendChild(confetti);
+
+                    // Удаляем конфетти после анимации
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }
+            }
+
+            // Функция создания дизлайков
+            function createDislikes(count) {
+                for (let i = 0; i < count; i++) {
+                    const dislike = document.createElement('div');
+                    dislike.className = 'dislike';
+                    dislike.textContent = '💩';
+                    dislike.style.fontSize = `${Math.random() * 2 + 2}rem`;
+
+                    // Случайная позиция
+                    const startX = Math.random() * window.innerWidth;
+                    dislike.style.left = `${startX}px`;
+
+                    // Случайная задержка
+                    dislike.style.animationDelay = `${Math.random() * 2}s`;
+
+                    document.body.appendChild(dislike);
+
+                    // Удаляем дизлайк после анимации
+                    setTimeout(() => {
+                        dislike.remove();
+                    }, 3000);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
