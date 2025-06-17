@@ -5,25 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Киноэксперт | Оценка фильмов</title>
+    <!-- Подключение шрифта Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Иконка сайта -->
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <style>
+        /* CSS переменные для цветов */
         :root {
             --bg: #0f0f0f;
+            /* Фон страницы */
             --card-bg: #1a1a1a;
+            /* Фон карточки */
             --text: #e0e0e0;
+            /* Основной текст */
             --text-light: #a0a0a0;
+            /* Светлый текст */
             --primary: #ffd700;
+            /* Основной цвет (золотой) */
             --green: #4ade80;
+            /* Зеленый для хороших оценок */
             --yellow: #facc15;
+            /* Желтый для средних оценок */
             --red: #f87171;
+            /* Красный для плохих оценок */
             --border: #333333;
+            /* Цвет границ */
         }
 
+        /* Базовые стили */
         * {
             box-sizing: border-box;
         }
 
+        /* Стили для body */
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg);
@@ -37,6 +51,7 @@
             align-items: center;
         }
 
+        /* Стили для заголовка */
         h1 {
             font-weight: 700;
             font-size: 2.2rem;
@@ -49,6 +64,7 @@
             position: relative;
         }
 
+        /* Подчеркивание заголовка */
         h1::after {
             content: "";
             position: absolute;
@@ -61,6 +77,7 @@
             border-radius: 3px;
         }
 
+        /* Стили для карточки */
         .card {
             background: var(--card-bg);
             border-radius: 1rem;
@@ -74,6 +91,7 @@
             overflow: hidden;
         }
 
+        /* Градиентная обводка для карточки */
         .card::before {
             content: "";
             position: absolute;
@@ -87,11 +105,13 @@
             opacity: 0.1;
         }
 
+        /* Стили для категории оценки */
         .rating-category {
             margin-bottom: 2rem;
             position: relative;
         }
 
+        /* Стили для названия категории */
         .category-name {
             display: flex;
             justify-content: space-between;
@@ -100,17 +120,20 @@
             font-size: 1.1rem;
         }
 
+        /* Стили для веса категории */
         .category-weight {
             color: var(--primary);
             font-size: 0.9rem;
             font-weight: 400;
         }
 
+        /* Контейнер для звезд */
         .stars {
             display: flex;
             gap: 0.5rem;
         }
 
+        /* Стили для звезды */
         .star {
             cursor: pointer;
             color: #333333;
@@ -120,19 +143,23 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
+        /* Эффект при наведении на звезду */
         .star:hover {
             transform: scale(1.2);
         }
 
+        /* Стиль активной звезды */
         .star.active {
             color: var(--primary);
             text-shadow: 0 0 10px var(--primary);
         }
 
+        /* Анимация свечения для активной звезды */
         .star.active.glow {
             animation: glow 0.5s ease-out;
         }
 
+        /* Ключевые кадры анимации свечения */
         @keyframes glow {
             0% {
                 transform: scale(1);
@@ -147,6 +174,7 @@
             }
         }
 
+        /* Стили для кнопки */
         button {
             background: linear-gradient(135deg, var(--primary), #e6c200);
             color: #000;
@@ -164,15 +192,18 @@
             letter-spacing: 1px;
         }
 
+        /* Эффекты при наведении на кнопку */
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
         }
 
+        /* Эффект при нажатии кнопки */
         button:active {
             transform: translateY(0);
         }
 
+        /* Стили для блока с результатом */
         .result {
             text-align: center;
             margin-top: 2rem;
@@ -180,6 +211,7 @@
             animation: fadeIn 0.5s ease-out;
         }
 
+        /* Анимация появления результата */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -192,6 +224,7 @@
             }
         }
 
+        /* Стили для итоговой оценки */
         .final-score {
             font-size: 3.5rem;
             font-weight: 700;
@@ -204,6 +237,7 @@
             display: inline-block;
         }
 
+        /* Подчеркивание итоговой оценки */
         .final-score::after {
             content: "";
             position: absolute;
@@ -215,6 +249,7 @@
             border-radius: 3px;
         }
 
+        /* Контейнер для звезд итоговой оценки */
         .score-stars {
             display: flex;
             justify-content: center;
@@ -222,12 +257,14 @@
             margin: 1.5rem 0;
         }
 
+        /* Стили для звезды итоговой оценки */
         .score-star {
             font-size: 2rem;
             color: var(--primary);
             transition: all 0.3s ease;
         }
 
+        /* Стили для комментария к оценке */
         .score-comment {
             font-size: 1.2rem;
             margin-top: 1rem;
@@ -237,6 +274,7 @@
             border-left: 3px solid var(--primary);
         }
 
+        /* Стили для поля ввода названия фильма */
         .film-input {
             width: 100%;
             padding: 1rem;
@@ -249,12 +287,14 @@
             transition: all 0.3s ease;
         }
 
+        /* Стили для активного поля ввода */
         .film-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
         }
 
+        /* Стили для конфетти */
         .confetti {
             position: fixed;
             width: 10px;
@@ -265,6 +305,7 @@
             z-index: 1000;
         }
 
+        /* Стили для дизлайков */
         .dislike {
             position: fixed;
             font-size: 2rem;
@@ -273,6 +314,7 @@
             z-index: 1000;
         }
 
+        /* Анимация падения конфетти */
         @keyframes confetti-fall {
             0% {
                 transform: translateY(-100px) rotate(0deg);
@@ -285,6 +327,7 @@
             }
         }
 
+        /* Анимация падения дизлайков */
         @keyframes dislike-fall {
             0% {
                 transform: translateY(-100px) rotate(0deg);
@@ -297,22 +340,27 @@
             }
         }
 
+        /* Класс для изменения цвета оценки */
         .score-color {
             transition: color 0.5s ease;
         }
 
+        /* Зеленый цвет */
         .green {
             color: var(--green);
         }
 
+        /* Желтый цвет */
         .yellow {
             color: var(--yellow);
         }
 
+        /* Красный цвет */
         .red {
             color: var(--red);
         }
 
+        /* Стили для блока с кредитами */
         .credits {
             margin-top: 2rem;
             text-align: center;
@@ -321,7 +369,108 @@
             line-height: 1.8;
         }
 
-        /* Мобильная адаптация */
+        /* Стили для блока с ссылкой на Кинопоиск */
+        .kinopoisk-link {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background-color: rgba(255, 51, 0, 0.1);
+            border-radius: 0.5rem;
+            border-left: 3px solid #ff3300;
+        }
+
+        /* Стили для ссылки на Кинопоиск */
+        .kinopoisk-link a {
+            color: #ff3300;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        /* Эффект при наведении на ссылку */
+        .kinopoisk-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Стили для оверлея с анимацией 10 баллов */
+        .perfect-score-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Контейнер для анимации 10 баллов */
+        .perfect-score-container {
+            position: relative;
+            text-align: center;
+        }
+
+        /* Стили для текста "10⭐" */
+        .perfect-score {
+            font-size: 10rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 30px var(--primary);
+            transform: scale(0);
+            animation: perfectScoreAppear 1s ease-out forwards;
+        }
+
+        /* Анимация появления текста "10⭐" */
+        @keyframes perfectScoreAppear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Стили для элемента фейерверка */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px var(--primary);
+            animation: fireworkExplode 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Анимация взрыва фейерверка */
+        @keyframes fireworkExplode {
+            0% {
+                transform: translate(0, 0);
+                width: 5px;
+                height: 5px;
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                width: 0;
+                height: 0;
+                opacity: 0;
+            }
+        }
+
+        /* Медиазапросы для адаптации под мобильные устройства */
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -387,8 +536,13 @@
             .credits {
                 font-size: 0.8rem;
             }
+
+            .perfect-score {
+                font-size: 6rem;
+            }
         }
 
+        /* Медиазапросы для очень маленьких экранов */
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.5rem;
@@ -409,16 +563,23 @@
             .score-star {
                 font-size: 1.2rem;
             }
+
+            .perfect-score {
+                font-size: 4rem;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Основная карточка приложения -->
     <div class="card">
         <h1>КИНОЭКСПЕРТ</h1>
 
+        <!-- Поле для ввода названия фильма -->
         <input type="text" class="film-input" placeholder="Введите название фильма или сериала..." id="filmName">
 
+        <!-- Категории для оценки -->
         <div class="rating-category">
             <div class="category-name">
                 <span>Сюжет и сценарий <span class="category-weight">(важность: 30%)</span></span>
@@ -553,8 +714,10 @@
             </div>
         </div>
 
+        <!-- Кнопка для расчета оценки -->
         <button id="calculateBtn">РАССЧИТАТЬ ОЦЕНКУ</button>
 
+        <!-- Блок с результатом оценки -->
         <div class="result" id="result">
             <div>Итоговая оценка для <span id="resultFilmName" style="color: var(--primary); font-weight: 600;"></span>:
             </div>
@@ -565,25 +728,40 @@
             </div>
 
             <div class="score-comment" id="scoreComment"></div>
+
+            <!-- Блок с ссылкой на Кинопоиск -->
+            <div class="kinopoisk-link" id="kinopoiskLink" style="display: none;">
+                Предлагаем поставить данную оценку на сервисе <a href="#" target="_blank"
+                    id="kinopoiskLinkAnchor">Кинопоиск</a>
+            </div>
         </div>
 
+        <!-- Блок с кредитами -->
         <div class="credits">
             Режиссёр-постановщик: DeepSeek<br>
             Креативный продюсер: MylnikCode
         </div>
     </div>
 
+    <!-- Оверлей для анимации 10 баллов -->
+    <div class="perfect-score-overlay" id="perfectScoreOverlay">
+        <div class="perfect-score-container">
+            <div class="perfect-score">10⭐</div>
+        </div>
+    </div>
+
     <script>
+        // Ожидаем полной загрузки DOM
         document.addEventListener('DOMContentLoaded', function () {
             // Веса категорий (в процентах)
             const categoryWeights = {
-                plot: 30,
-                acting: 25,
-                direction: 20,
-                visuals: 10,
-                sound: 5,
-                originality: 5,
-                emotion: 5
+                plot: 30,    // Сюжет и сценарий
+                acting: 25,  // Актерская игра
+                direction: 20, // Режиссура
+                visuals: 10,  // Визуальные эффекты
+                sound: 5,    // Саундтрек
+                originality: 5, // Оригинальность
+                emotion: 5    // Эмоциональное воздействие
             };
 
             // Инициализация звезд для всех категорий
@@ -591,8 +769,10 @@
                 const stars = document.querySelectorAll(`#${category}Stars .star`);
                 const valueElement = document.getElementById(`${category}Value`);
 
+                // Добавляем обработчик клика для каждой звезды
                 stars.forEach(star => {
                     star.addEventListener('click', function () {
+                        // Получаем значение звезды
                         const value = parseInt(this.getAttribute('data-value'));
                         valueElement.textContent = value;
 
@@ -600,6 +780,7 @@
                         stars.forEach((s, index) => {
                             if (index < value) {
                                 s.classList.add('active');
+                                // Добавляем анимацию с задержкой
                                 setTimeout(() => {
                                     s.classList.add('glow');
                                     setTimeout(() => s.classList.remove('glow'), 500);
@@ -612,7 +793,7 @@
                 });
             });
 
-            // Расчет итоговой оценки
+            // Обработчик клика на кнопку расчета оценки
             document.getElementById('calculateBtn').addEventListener('click', function () {
                 const filmName = document.getElementById('filmName').value || 'этого фильма';
                 let totalScore = 0;
@@ -629,35 +810,36 @@
                     }
                 });
 
+                // Проверяем, что хотя бы одна категория оценена
                 if (count === 0) {
                     alert('Пожалуйста, оцените хотя бы одну категорию');
                     return;
                 }
 
-                // Расчет взвешенной оценки
+                // Расчет взвешенной оценки (округление до 1 знака после запятой)
                 let finalScore = Math.round((totalScore / totalWeight) * 10) / 10;
                 let roundedScore = Math.round(finalScore);
 
-                // Показываем результат
+                // Отображаем название фильма и оценку
                 document.getElementById('resultFilmName').textContent = filmName;
                 const finalScoreElement = document.getElementById('finalScore');
                 finalScoreElement.textContent = finalScore;
 
-                // Определяем цвет оценки
+                // Определяем цвет оценки в зависимости от значения
                 let scoreColorClass = '';
                 if (finalScore >= 7) {
-                    scoreColorClass = 'green';
+                    scoreColorClass = 'green'; // Высокая оценка
                 } else if (finalScore >= 5) {
-                    scoreColorClass = 'yellow';
+                    scoreColorClass = 'yellow'; // Средняя оценка
                 } else {
-                    scoreColorClass = 'red';
+                    scoreColorClass = 'red'; // Низкая оценка
                 }
 
                 // Устанавливаем цвет числовой оценки
                 finalScoreElement.classList.remove('green', 'yellow', 'red');
                 finalScoreElement.classList.add(scoreColorClass);
 
-                // Отображаем звезды итоговой оценки с тем же цветом
+                // Отображаем звезды итоговой оценки
                 const scoreStarsContainer = document.getElementById('scoreStars');
                 scoreStarsContainer.innerHTML = '';
                 for (let i = 1; i <= 10; i++) {
@@ -673,11 +855,11 @@
                     scoreStarsContainer.appendChild(star);
                 }
 
-                // Добавляем комментарий к оценке
+                // Добавляем текстовый комментарий к оценке
                 const commentElement = document.getElementById('scoreComment');
                 if (finalScore >= 9) {
                     commentElement.textContent = 'Шедевр!';
-                    createConfetti(50);
+                    createConfetti(50); // Создаем конфетти для высоких оценок
                 } else if (finalScore >= 8) {
                     commentElement.textContent = 'Отличный фильм!';
                 } else if (finalScore >= 6) {
@@ -687,18 +869,38 @@
                 } else {
                     commentElement.textContent = 'Слабый фильм.';
                     if (finalScore <= 2) {
-                        createDislikes(20);
+                        createDislikes(20); // Создаем дизлайки для очень низких оценок
                     }
+                }
+
+                // Обновляем ссылку на Кинопоиск
+                const kinopoiskLink = document.getElementById('kinopoiskLink');
+                const kinopoiskAnchor = document.getElementById('kinopoiskLinkAnchor');
+                if (filmName && filmName !== 'этого фильма') {
+                    // Формируем URL для поиска на Кинопоиске
+                    const searchUrl = `https://www.kinopoisk.ru/index.php?kp_query=${encodeURIComponent(filmName)}`;
+                    kinopoiskAnchor.href = searchUrl;
+                    kinopoiskLink.style.display = 'block';
+                } else {
+                    kinopoiskLink.style.display = 'none';
                 }
 
                 // Показываем блок с результатом
                 document.getElementById('result').style.display = 'block';
 
-                // Прокручиваем к результату
+                // Плавно прокручиваем к результату
                 document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+
+                // Если оценка 10 - запускаем специальную анимацию
+                if (finalScore === 10) {
+                    showPerfectScoreAnimation();
+                }
             });
 
-            // Функция создания конфетти
+            /**
+             * Создает анимацию конфетти
+             * @param {number} count - количество элементов конфетти
+             */
             function createConfetti(count) {
                 for (let i = 0; i < count; i++) {
                     const confetti = document.createElement('div');
@@ -714,28 +916,31 @@
                     confetti.style.width = `${size}px`;
                     confetti.style.height = `${size}px`;
 
-                    // Случайная форма
+                    // Случайная форма (50% шанс сделать круглым)
                     if (Math.random() > 0.5) {
                         confetti.style.borderRadius = '50%';
                     }
 
-                    // Случайная позиция
+                    // Случайная позиция по горизонтали
                     const startX = Math.random() * window.innerWidth;
                     confetti.style.left = `${startX}px`;
 
-                    // Случайная задержка
+                    // Случайная задержка анимации
                     confetti.style.animationDelay = `${Math.random() * 2}s`;
 
                     document.body.appendChild(confetti);
 
-                    // Удаляем конфетти после анимации
+                    // Удаляем конфетти после завершения анимации
                     setTimeout(() => {
                         confetti.remove();
                     }, 3000);
                 }
             }
 
-            // Функция создания дизлайков
+            /**
+             * Создает анимацию "дизлайков" (используется для низких оценок)
+             * @param {number} count - количество элементов
+             */
             function createDislikes(count) {
                 for (let i = 0; i < count; i++) {
                     const dislike = document.createElement('div');
@@ -743,19 +948,79 @@
                     dislike.textContent = '💩';
                     dislike.style.fontSize = `${Math.random() * 2 + 2}rem`;
 
-                    // Случайная позиция
+                    // Случайная позиция по горизонтали
                     const startX = Math.random() * window.innerWidth;
                     dislike.style.left = `${startX}px`;
 
-                    // Случайная задержка
+                    // Случайная задержка анимации
                     dislike.style.animationDelay = `${Math.random() * 2}s`;
 
                     document.body.appendChild(dislike);
 
-                    // Удаляем дизлайк после анимации
+                    // Удаляем элемент после завершения анимации
                     setTimeout(() => {
                         dislike.remove();
                     }, 3000);
+                }
+            }
+
+            /**
+             * Показывает анимацию для идеальной оценки (10 баллов)
+             */
+            function showPerfectScoreAnimation() {
+                const overlay = document.getElementById('perfectScoreOverlay');
+
+                // Показываем оверлей
+                overlay.style.opacity = '1';
+                overlay.style.pointerEvents = 'auto';
+
+                // Создаем фейерверк
+                createFireworks(20);
+
+                // Через 3 секунды скрываем оверлей
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                }, 3000);
+            }
+
+            /**
+             * Создает анимацию фейерверка
+             * @param {number} count - количество элементов фейерверка
+             */
+            function createFireworks(count) {
+                const container = document.querySelector('.perfect-score-container');
+
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+
+                        // Случайный цвет
+                        const colors = ['#ffd700', '#ff8c00', '#ff0080', '#00ffcc', '#cc00ff'];
+                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                        firework.style.boxShadow = `0 0 10px 5px ${randomColor}`;
+
+                        // Случайное направление разлета
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = 50 + Math.random() * 100;
+                        const tx = Math.cos(angle) * distance;
+                        const ty = Math.sin(angle) * distance;
+
+                        // Устанавливаем CSS переменные для анимации
+                        firework.style.setProperty('--tx', `${tx}px`);
+                        firework.style.setProperty('--ty', `${ty}px`);
+
+                        // Случайная задержка анимации
+                        firework.style.animationDelay = `${Math.random() * 0.5}s`;
+
+                        container.appendChild(firework);
+
+                        // Удаляем элемент после завершения анимации
+                        setTimeout(() => {
+                            firework.remove();
+                        }, 1500);
+                    }, i * 150); // Задержка между созданием элементов
                 }
             }
         });
