@@ -320,6 +320,96 @@
             color: var(--text-light);
             line-height: 1.8;
         }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+                border-radius: 0.8rem;
+            }
+
+            .category-name {
+                flex-direction: column;
+                font-size: 1rem;
+            }
+
+            .category-weight {
+                font-size: 0.8rem;
+                margin-top: 0.3rem;
+            }
+
+            .stars {
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                justify-content: center;
+            }
+
+            .star {
+                font-size: 1.5rem;
+            }
+
+            .rating-category {
+                margin-bottom: 1.5rem;
+            }
+
+            .film-input {
+                padding: 0.8rem;
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            button {
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+
+            .final-score {
+                font-size: 2.5rem;
+            }
+
+            .score-star {
+                font-size: 1.5rem;
+            }
+
+            .score-comment {
+                font-size: 1rem;
+            }
+
+            .credits {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .star {
+                font-size: 1.3rem;
+            }
+
+            .final-score {
+                font-size: 2rem;
+            }
+
+            .score-star {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 
