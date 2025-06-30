@@ -12,24 +12,24 @@
     <style>
         /* CSS переменные для цветов */
         :root {
-            --bg: #0f0f0f;
             /* Фон страницы */
-            --card-bg: #1a1a1a;
+            --bg: #0f0f0f;
             /* Фон карточки */
-            --text: #e0e0e0;
+            --card-bg: #1a1a1a;
             /* Основной текст */
-            --text-light: #a0a0a0;
+            --text: #e0e0e0;
             /* Светлый текст */
-            --primary: #ffd700;
+            --text-light: #a0a0a0;
             /* Основной цвет (золотой) */
+            --primary: #ffd700;
+            /* Зелёный для хороших оценок */
             --green: #4ade80;
-            /* Зеленый для хороших оценок */
+            /* Жёлтый для средних оценок */
             --yellow: #facc15;
-            /* Желтый для средних оценок */
-            --red: #f87171;
             /* Красный для плохих оценок */
-            --border: #333333;
+            --red: #f87171;
             /* Цвет границ */
+            --border: #333333;
         }
 
         /* Базовые стили */
@@ -64,7 +64,7 @@
             position: relative;
         }
 
-        /* Подчеркивание заголовка */
+        /* Подчёркивание заголовка */
         h1::after {
             content: "";
             position: absolute;
@@ -127,7 +127,7 @@
             font-weight: 400;
         }
 
-        /* Контейнер для звезд */
+        /* Контейнер для звёзд */
         .stars {
             display: flex;
             gap: 0.5rem;
@@ -237,7 +237,7 @@
             display: inline-block;
         }
 
-        /* Подчеркивание итоговой оценки */
+        /* Подчёркивание итоговой оценки */
         .final-score::after {
             content: "";
             position: absolute;
@@ -249,7 +249,7 @@
             border-radius: 3px;
         }
 
-        /* Контейнер для звезд итоговой оценки */
+        /* Контейнер для звёзд итоговой оценки */
         .score-stars {
             display: flex;
             justify-content: center;
@@ -345,12 +345,12 @@
             transition: color 0.5s ease;
         }
 
-        /* Зеленый цвет */
+        /* Зелёный цвет */
         .green {
             color: var(--green);
         }
 
-        /* Желтый цвет */
+        /* Жёлтый цвет */
         .yellow {
             color: var(--yellow);
         }
@@ -470,6 +470,52 @@
             }
         }
 
+        /* Стили для знака вопроса с подсказкой */
+        .tooltip {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--text-light);
+            color: var(--card-bg);
+            text-align: center;
+            font-size: 12px;
+            line-height: 18px;
+            cursor: help;
+            margin-left: 5px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover {
+            opacity: 1;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--card-bg);
+            color: var(--text);
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
         /* Медиазапросы для адаптации под мобильные устройства */
         @media (max-width: 768px) {
             body {
@@ -540,6 +586,11 @@
             .perfect-score {
                 font-size: 6rem;
             }
+
+            .tooltip .tooltiptext {
+                width: 150px;
+                font-size: 0.8rem;
+            }
         }
 
         /* Медиазапросы для очень маленьких экранов */
@@ -567,6 +618,10 @@
             .perfect-score {
                 font-size: 4rem;
             }
+
+            .tooltip .tooltiptext {
+                width: 120px;
+            }
         }
     </style>
 </head>
@@ -582,7 +637,13 @@
         <!-- Категории для оценки -->
         <div class="rating-category">
             <div class="category-name">
-                <span>Сюжет и сценарий <span class="category-weight">(важность: 30%)</span></span>
+                <span>Сюжет и сценарий
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените качество сюжета, логичность повествования, глубину и
+                            проработку персонажей</span>
+                    </span>
+                    <span class="category-weight">(важность: 30%)</span>
+                </span>
                 <span id="plotValue">0</span>
             </div>
             <div class="stars" id="plotStars">
@@ -601,7 +662,13 @@
 
         <div class="rating-category">
             <div class="category-name">
-                <span>Актерская игра <span class="category-weight">(важность: 25%)</span></span>
+                <span>Актёрская игра
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените убедительность актёрской игры, эмоциональную передачу и
+                            взаимодействие между персонажами</span>
+                    </span>
+                    <span class="category-weight">(важность: 25%)</span>
+                </span>
                 <span id="actingValue">0</span>
             </div>
             <div class="stars" id="actingStars">
@@ -620,27 +687,13 @@
 
         <div class="rating-category">
             <div class="category-name">
-                <span>Режиссура <span class="category-weight">(важность: 20%)</span></span>
-                <span id="directionValue">0</span>
-            </div>
-            <div class="stars" id="directionStars">
-                <span class="star" data-value="1">★</span>
-                <span class="star" data-value="2">★</span>
-                <span class="star" data-value="3">★</span>
-                <span class="star" data-value="4">★</span>
-                <span class="star" data-value="5">★</span>
-                <span class="star" data-value="6">★</span>
-                <span class="star" data-value="7">★</span>
-                <span class="star" data-value="8">★</span>
-                <span class="star" data-value="9">★</span>
-                <span class="star" data-value="10">★</span>
-            </div>
-        </div>
-
-        <div class="rating-category">
-            <div class="category-name">
-                <span>Визуальные эффекты и операторская работа <span class="category-weight">(важность:
-                        10%)</span></span>
+                <span>Визуальные эффекты и операторская работа
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените качество визуальных эффектов, работу оператора, композицию
+                            кадров и общую визуальную эстетику</span>
+                    </span>
+                    <span class="category-weight">(важность: 20%)</span>
+                </span>
                 <span id="visualsValue">0</span>
             </div>
             <div class="stars" id="visualsStars">
@@ -659,7 +712,13 @@
 
         <div class="rating-category">
             <div class="category-name">
-                <span>Саундтрек и звуковое оформление <span class="category-weight">(важность: 5%)</span></span>
+                <span>Саундтрек и звуковое оформление
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените музыкальное сопровождение, качество звукового дизайна и их
+                            соответствие происходящему на экране</span>
+                    </span>
+                    <span class="category-weight">(важность: 5%)</span>
+                </span>
                 <span id="soundValue">0</span>
             </div>
             <div class="stars" id="soundStars">
@@ -678,7 +737,12 @@
 
         <div class="rating-category">
             <div class="category-name">
-                <span>Оригинальность и новизна <span class="category-weight">(важность: 5%)</span></span>
+                <span>Оригинальность и новизна
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените уникальность идеи, свежесть подхода и отсутствие клише</span>
+                    </span>
+                    <span class="category-weight">(важность: 7%)</span>
+                </span>
                 <span id="originalityValue">0</span>
             </div>
             <div class="stars" id="originalityStars">
@@ -697,10 +761,90 @@
 
         <div class="rating-category">
             <div class="category-name">
-                <span>Эмоциональное воздействие <span class="category-weight">(важность: 5%)</span></span>
+                <span>Эмоциональное воздействие
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените силу эмоционального отклика, который вызвал у вас фильм</span>
+                    </span>
+                    <span class="category-weight">(важность: 10%)</span>
+                </span>
                 <span id="emotionValue">0</span>
             </div>
             <div class="stars" id="emotionStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Соответствие жанру
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените насколько хорошо фильм соответствует заявленному жанру и
+                            ожиданиям от него</span>
+                    </span>
+                    <span class="category-weight">(важность: 15%)</span>
+                </span>
+                <span id="genreValue">0</span>
+            </div>
+            <div class="stars" id="genreStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Темп и ритм повествования
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените баланс между динамичными и спокойными сценами, отсутствие
+                            затянутости</span>
+                    </span>
+                    <span class="category-weight">(важность: 15%)</span>
+                </span>
+                <span id="paceValue">0</span>
+            </div>
+            <div class="stars" id="paceStars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="6">★</span>
+                <span class="star" data-value="7">★</span>
+                <span class="star" data-value="8">★</span>
+                <span class="star" data-value="9">★</span>
+                <span class="star" data-value="10">★</span>
+            </div>
+        </div>
+
+        <div class="rating-category">
+            <div class="category-name">
+                <span>Атмосфера и зрелищность
+                    <span class="tooltip">?
+                        <span class="tooltiptext">Оцените способность фильма создавать уникальное настроение и общую
+                            захватывающую составляющую</span>
+                    </span>
+                    <span class="category-weight">(важность: 10%)</span>
+                </span>
+                <span id="atmosphereValue">0</span>
+            </div>
+            <div class="stars" id="atmosphereStars">
                 <span class="star" data-value="1">★</span>
                 <span class="star" data-value="2">★</span>
                 <span class="star" data-value="3">★</span>
@@ -724,7 +868,7 @@
             <div class="final-score" id="finalScore">0</div>
 
             <div class="score-stars" id="scoreStars">
-                <!-- Звезды будут добавлены через JS -->
+                <!-- Звёзды будут добавлены через JS -->
             </div>
 
             <div class="score-comment" id="scoreComment"></div>
@@ -756,15 +900,17 @@
             // Веса категорий (в процентах)
             const categoryWeights = {
                 plot: 30,    // Сюжет и сценарий
-                acting: 25,  // Актерская игра
-                direction: 20, // Режиссура
-                visuals: 10,  // Визуальные эффекты
-                sound: 5,    // Саундтрек
-                originality: 5, // Оригинальность
-                emotion: 5    // Эмоциональное воздействие
+                acting: 25,  // Актёрская игра
+                visuals: 20,  // Визуальные эффекты и операторская работа
+                sound: 5,    // Саундтрек и звуковое оформление
+                originality: 7, // Оригинальность и новизна
+                emotion: 10,    // Эмоциональное воздействие
+                genre: 15,      // Соответствие жанру
+                pace: 15,       // Темп и ритм повествования
+                atmosphere: 10  // Атмосфера и зрелищность
             };
 
-            // Инициализация звезд для всех категорий
+            // Инициализация звёзд для всех категорий
             Object.keys(categoryWeights).forEach(category => {
                 const stars = document.querySelectorAll(`#${category}Stars .star`);
                 const valueElement = document.getElementById(`${category}Value`);
@@ -776,7 +922,7 @@
                         const value = parseInt(this.getAttribute('data-value'));
                         valueElement.textContent = value;
 
-                        // Обновляем отображение звезд с анимацией
+                        // Обновляем отображение звёзд с анимацией
                         stars.forEach((s, index) => {
                             if (index < value) {
                                 s.classList.add('active');
@@ -793,14 +939,14 @@
                 });
             });
 
-            // Обработчик клика на кнопку расчета оценки
+            // Обработчик клика на кнопку расчёта оценки
             document.getElementById('calculateBtn').addEventListener('click', function () {
                 const filmName = document.getElementById('filmName').value || 'этого фильма';
                 let totalScore = 0;
                 let totalWeight = 0;
                 let count = 0;
 
-                // Собираем оценки по всем категориям с учетом весов
+                // Собираем оценки по всем категориям с учётом весов
                 Object.keys(categoryWeights).forEach(category => {
                     const value = parseInt(document.getElementById(`${category}Value`).textContent);
                     if (value > 0) {
@@ -816,7 +962,7 @@
                     return;
                 }
 
-                // Расчет взвешенной оценки (округление до 1 знака после запятой)
+                // Расчёт взвешенной оценки (округление до 1 знака после запятой)
                 let finalScore = Math.round((totalScore / totalWeight) * 10) / 10;
                 let roundedScore = Math.round(finalScore);
 
@@ -839,7 +985,7 @@
                 finalScoreElement.classList.remove('green', 'yellow', 'red');
                 finalScoreElement.classList.add(scoreColorClass);
 
-                // Отображаем звезды итоговой оценки
+                // Отображаем звёзды итоговой оценки
                 const scoreStarsContainer = document.getElementById('scoreStars');
                 scoreStarsContainer.innerHTML = '';
                 for (let i = 1; i <= 10; i++) {
@@ -859,7 +1005,7 @@
                 const commentElement = document.getElementById('scoreComment');
                 if (finalScore >= 9) {
                     commentElement.textContent = 'Шедевр!';
-                    createConfetti(50); // Создаем конфетти для высоких оценок
+                    createConfetti(50); // Создаём конфетти для высоких оценок
                 } else if (finalScore >= 8) {
                     commentElement.textContent = 'Отличный фильм!';
                 } else if (finalScore >= 6) {
@@ -869,7 +1015,7 @@
                 } else {
                     commentElement.textContent = 'Слабый фильм.';
                     if (finalScore <= 2) {
-                        createDislikes(20); // Создаем дизлайки для очень низких оценок
+                        createDislikes(20); // Создаём дизлайки для очень низких оценок
                     }
                 }
 
@@ -898,7 +1044,7 @@
             });
 
             /**
-             * Создает анимацию конфетти
+             * Создаёт анимацию конфетти
              * @param {number} count - количество элементов конфетти
              */
             function createConfetti(count) {
@@ -938,7 +1084,7 @@
             }
 
             /**
-             * Создает анимацию "дизлайков" (используется для низких оценок)
+             * Создаёт анимацию "дизлайков" (используется для низких оценок)
              * @param {number} count - количество элементов
              */
             function createDislikes(count) {
@@ -974,7 +1120,7 @@
                 overlay.style.opacity = '1';
                 overlay.style.pointerEvents = 'auto';
 
-                // Создаем фейерверк
+                // Создаём фейерверк
                 createFireworks(20);
 
                 // Через 3 секунды скрываем оверлей
@@ -985,7 +1131,7 @@
             }
 
             /**
-             * Создает анимацию фейерверка
+             * Создаёт анимацию фейерверка
              * @param {number} count - количество элементов фейерверка
              */
             function createFireworks(count) {
@@ -1001,7 +1147,7 @@
                         const randomColor = colors[Math.floor(Math.random() * colors.length)];
                         firework.style.boxShadow = `0 0 10px 5px ${randomColor}`;
 
-                        // Случайное направление разлета
+                        // Случайное направление разлёта
                         const angle = Math.random() * Math.PI * 2;
                         const distance = 50 + Math.random() * 100;
                         const tx = Math.cos(angle) * distance;
