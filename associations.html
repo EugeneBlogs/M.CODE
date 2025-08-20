@@ -41,12 +41,21 @@
                         вы
                         можете их не использовать.<br>
                         <br>
-                        <span class="text-danger">Все спорные моменты (например: относится ли какой-либо прдемет к
+                        <span class="text-danger">Все спорные моменты (например: относится ли какой-либо предмет к
                             данной теме) решаются голосованием игроков.</span><br>
                     </p>
                     <a class="btn text-info mt-3" onclick="GenerateCard()">Сгенерировать тему</a>
                     <a class="btn text-warning mt-3" onclick="location.reload()">Начать сначала</a>
-                    <h5 class="text-primary mt-5">Используйте таблцу ниже, чтобы записывать баллы участников :)</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section class="mt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="text-primary mt-5">Используйте таблицу ниже, чтобы записывать баллы участников :)</h5>
                     <h6 class="text-info">Цвета: <span class="text-warning">Побеждает</span> <span
                             class="text-danger">Проигрывает</span></h6>
                     <a class="btn text-success mt-3" onclick="AddPlayer()">Добавить игрока</a>
@@ -66,6 +75,7 @@
             </div>
         </div>
     </section>
+    <hr>
     <section class="mt-5">
         <div class="container">
             <div class="row">
@@ -75,7 +85,7 @@
                         Таким образом, вы сможете продолжить игру позже без повторения тем.<br><span
                             class="text-warning">Автосохранение каждые 2 секунды.</span></p>
                     <a class="btn text-success mt-3" id="btn_load" onclick="LoadHistory()">Загрузить историю</a>
-                    <a class="btn text-warning mt-3" id=btn_save" onclick="SaveHistory(1)">Сохранить историю</a>
+                    <a class="btn text-warning mt-3" id="btn_save" onclick="SaveHistory(1)">Сохранить историю</a>
                     <a class="btn text-danger mt-3" id="btn_clear" onclick="ClearHistory()">Очистить историю</a>
                     <br>
                     <a class="btn text-info mt-3" id="btn_add" onclick="AddTheme()">Добавить тему</a>
@@ -89,7 +99,12 @@
                                 <tr>
                                     <th scope="col">№</th>
                                     <th scope="col">Тема</th>
-                                    <th scope="col">Использовать</th>
+                                    <th scope="col">Использовать
+                                        <br>
+                                        <a class="btn text-danger mt-3" id=btn_off" onclick="ActivateThemes(0)">0</a>
+                                        /
+                                        <a class="btn text-success mt-3" id=btn_on" onclick="ActivateThemes(1)">1</a>
+                                    </th>
                                     <th scope="col">Удалить</th>
                                 </tr>
                             </thead>
@@ -312,6 +327,7 @@
             "Города на букву «К»",
             "Страны",
             "Слова на букву «Щ»",
+            "Буквы русского алфавита",
             "Аббревиатуры",
             "Русские актёры (мужского пола)",
             "Русские актрисы",
@@ -320,12 +336,18 @@
             "Русские рок-группы",
             "Музыкальные инструменты",
             "Знаменитый Александр (написать фамилию)",
+            "Знаменитый Олег (написать фамилию)",
+            "Знаменитый Никита (написать фамилию)",
+            "Знаменитая Екатерина (написать фамилию)",
+            "Знаменитая Ольга (написать фамилию)",
+            "Знаменитая Ирина (написать фамилию)",
             "Породы собак",
             "Породы кошек",
             "Фрукты",
             "Овощи",
             "Салаты",
             "Знаки зодиака",
+            "Элементы из таблицы Менделеева",
             "ТВ-каналы",
             "Бытовые электроприборы",
             "Виды кофе",
@@ -335,7 +357,7 @@
             "Приложения в телефоне (невстроенные)",
             "Цветы",
             "Птицы",
-            "Рыьы",
+            "Рыбы",
             "Деревья",
             "Грибы",
             "Праздники",
@@ -344,15 +366,16 @@
             "Русские футбольные команды",
             "Жанры фильмов",
             "Кинорежиссёры (любой пол, любая нацианальность)",
-            "Сериалы на канале ТНТ (показывают сейчас или когда-либо показывали)",
-            "Фильмы с Джеки Чаном (нельзя писать части одного фильма)",
+            "Сериалы производства ТНТ",
+            "Фильмы с Джеки Чаном",
+            "Фильмы с Леонардо Ди Каприо",
             "Мультфильмы",
             "Фильмы ужасов",
             "Учёные-физики (любой пол, любая нацианальность)",
             "Песни группы «Король и Шут»",
             "Шоу «Medium Quality»",
             "Моря",
-            "Резиденты «Comedy Club» (сейчас или были когда-то)",
+            "Резиденты «Comedy Club» (за всё время)",
             "Денежные единицы",
             "Телеведущие (мужчины)",
             "Телеведущие (женщины)",
@@ -367,6 +390,19 @@
         let used_themes = []
 
         let number_themes = 1
+
+        function ActivateThemes(num) {
+            if (num == 0) {
+                for (let i = 0; i < themes.length; i++) {
+                    document.getElementById(`theme_${i}`).checked = false
+                }
+            } else {
+                for (let i = 0; i < themes.length; i++) {
+                    document.getElementById(`theme_${i}`).checked = true
+                }
+            }
+            ChangeCheck()
+        }
 
         function DefaultThemes() {
             themes = []
