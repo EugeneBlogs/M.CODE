@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ассоциации</title>
+    <style>
+        :root {
+            --primary: #ec4899;
+            --secondary: #f472b6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --bg: #1c193a;
+            --card-bg: #27214d;
+            --border: #4c1d95;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --accent: #8b5cf6;
+            --accent-light: #a78bfa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1c193a, #27214d);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.15), transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15), transparent 30%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        .text-success {
+            color: var(--success) !important;
+        }
+
+        .text-warning {
+            color: var(--warning) !important;
+        }
+
+        .text-danger {
+            color: var(--danger) !important;
+        }
+
+        .text-info {
+            color: var(--info) !important;
+        }
+
+        .text-light {
+            color: var(--light) !important;
+        }
+
+        .text-dark {
+            color: var(--dark) !important;
+        }
+
+        .text-accent {
+            color: var(--accent) !important;
+        }
+
+        .title-container {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            position: relative;
+        }
+
+        h3 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: expandLine 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes expandLine {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        h6 {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+            color: var(--accent-light);
+            font-weight: 500;
+        }
+
+        p {
+            margin: 1rem 0;
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.text-info {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .btn.text-info:hover {
+            background: rgba(6, 182, 212, 0.25);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .btn.text-warning {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .btn.text-warning:hover {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .btn.text-success {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .btn.text-success:hover {
+            background: rgba(16, 185, 129, 0.25);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .btn.text-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .btn.text-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .btn.text-accent {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .btn.text-accent:hover {
+            background: rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+            opacity: 0.3;
+        }
+
+        section {
+            padding: 3rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        section:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        section:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        section:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(39, 33, 77, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(236, 72, 153, 0.15);
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(236, 72, 153, 0.1);
+            transform: scale(1.01);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal.show .modal-dialog {
+            transform: scale(1);
+        }
+
+        .modal-content {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            background: transparent;
+            padding: 0;
+            border: none;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--light);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body h4 {
+            margin: 0.8rem 0;
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            gap: 10px;
+        }
+
+        .modal-footer .btn {
+            min-width: 100px;
+        }
+
+        details {
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        details[open] {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        summary {
+            padding: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(39, 33, 77, 0.5);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        summary::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+
+        details[open] summary {
+            background: rgba(236, 72, 153, 0.1);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            cursor: pointer;
+            appearance: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .form-check-input:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-input:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(236, 72, 153, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);
+            }
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .glow {
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, transparent, rgba(236, 72, 153, 0.2), transparent);
+            padding: 2px 0;
+            border-radius: 4px;
+            display: inline-block;
+            animation: highlight 3s infinite;
+        }
+
+        @keyframes highlight {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .settings-modal .modal-dialog {
+            max-width: 90%;
+            width: 90%;
+        }
+
+        .settings-modal .modal-content {
+            max-height: 90vh;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--bg);
+        }
+
+        .settings-modal .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .settings-modal .modal-content::-webkit-scrollbar-track {
+            background: var(--bg);
+            border-radius: 4px;
+        }
+
+        .settings-modal .modal-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .settings-modal .modal-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .settings-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.3s ease;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .settings-btn:hover {
+            transform: translateY(-5px) rotate(90deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .settings-btn svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--success);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .save-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .save-btn svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .tooltip {
+            position: fixed;
+            bottom: 110px;
+            right: 80px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            max-width: 250px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            border: 8px solid transparent;
+            border-top: 8px solid var(--border);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 21px;
+            border: 7px solid transparent;
+            border-top: 7px solid var(--bg);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(236, 72, 153, 0.25);
+            border-color: rgba(236, 72, 153, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .add-player-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--success);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .add-player-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-player-btn svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: var(--danger);
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            transform: scale(1.2);
+        }
+
+        .delete-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 768px) {
+            h3 {
+                font-size: 2.8rem;
+            }
+
+            h6 {
+                font-size: 1.1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th,
+            td {
+                padding: 0.75rem;
+            }
+
+            .settings-btn,
+            .save-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .settings-btn svg,
+            .save-btn svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .back-btn {
+                top: 15px;
+                left: 15px;
+                font-size: 0.8rem;
+            }
+
+            .tooltip {
+                bottom: 90px;
+                right: 70px;
+                max-width: 200px;
+                font-size: 0.8rem;
+            }
+
+            .tooltip::after,
+            .tooltip::before {
+                border-width: 6px;
+            }
+
+            .tooltip::after {
+                right: 15px;
+            }
+
+            .tooltip::before {
+                right: 16px;
+            }
+
+            .add-player-btn {
+                width: 35px;
+                height: 35px;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .add-player-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .delete-btn {
+                width: 28px;
+                height: 28px;
+            }
+
+            .delete-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .settings-modal .modal-dialog {
+                width: 95%;
+                max-width: 95%;
+            }
+
+            .settings-modal .modal-content {
+                max-height: 95vh;
+                overflow-y: auto;
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 0 10px;
+            }
+
+            .modal-footer {
+                padding: 0 10px;
+                margin-bottom: 10px;
+            }
+
+            .settings-modal .modal-content {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h3 {
+                font-size: 2.2rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            section {
+                padding: 2rem 0;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .settings-btn,
+            .save-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .settings-btn svg,
+            .save-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .add-player-btn {
+                width: 30px;
+                height: 30px;
+            }
+
+            .add-player-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .delete-btn {
+                width: 26px;
+                height: 26px;
+            }
+
+            .delete-btn svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+            .settings-modal .modal-content {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-center">
+    <a href="associations_old.html" class="back-btn">Старый дизайн</a>
+
+    <section class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="title-container">
+                        <h3 class="text-primary">Ассоциации</h3>
+                        <h6 class="text-accent">Идея: шоу "Тейбл Тайм" и шоу "Карточки"</h6>
+                    </div>
+                    <div class="game-card">
+                        <p><span class="text-success">Количество игроков:</span> 3-6 (можно больше).<br>
+                            <span class="text-success">Правила игры:</span> компьютер выбирает случайную тему и тип игры
+                            (совпадение / несовпадение). Участникам необходимо написать по 5 слов на заданную тему.<br>
+                            <br>
+                            <span class="text-warning">Тип игры «Совпадение»:</span> нужно писать слова, чтобы они
+                            совпали с
+                            другим участником. Участники, у которых совпало слово, получают по 1 баллу. Если у игрока
+                            совпали все слова (необязательно с одним игроком), то он получает дополнительный балл.<br>
+                            <span class="text-warning">Тип игры «Несовпадение»:</span> нужно писать слова, чтобы они НЕ
+                            совпали с другим участником. Участник, который написал уникальное слово, получает 1 балл.
+                            Если у
+                            игрока НЕ совпали все слова, то он получает дополнительный балл.<br>
+                            <br>
+                            <span class="text-primary">Побеждает тот, кто набрал большее количество баллов.</span><br>
+                            <span class="text-warning">Максимальное количество раундов на нашем сайте:</span> <span
+                                class="text-danger" id="max_levels_span">0</span>.
+                            Если вы придумаете ещё темы, вы можете их добавить и играть дальше :) Добавленные темы
+                            будут храниться локально на вашем устройстве.<br>
+                            <br>
+                            <span class="text-danger">Все спорные моменты (например: относится ли какой-либо предмет к
+                                данной теме) решаются голосованием игроков.</span><br>
+                        </p>
+                        <div class="btn-group">
+                            <a class="btn text-info pulse" onclick="GenerateCard()">Сгенерировать тему</a>
+                            <a class="btn text-warning" onclick="location.reload()">Начать сначала</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section class="mt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <button class="add-player-btn" onclick="AddPlayer()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                            </svg>
+                        </button>
+                        <table class="table table-bordered text-light text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Игрок</th>
+                                    <th scope="col">Баллы</th>
+                                    <th scope="col">Изменить баллы</th>
+                                    <th scope="col">Удалить</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="tooltip" id="tooltip">
+        История автоматически сохраняется каждые 2 секунды. Нажмите кнопку, чтобы сохранить вручную.
+    </div>
+
+    <button class="settings-btn" id="settingsBtn" onclick="showSettings()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.48,0.41l-0.69,3.45c-0.59,0.24-1.12,0.56-1.62,0.94l-2.39-0.96c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.54 c-0.12,0.2-0.08,0.47,0.12,0.61l2.03,1.58c-0.05,0.3-0.09,0.62-0.09,0.94s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.69,3.45 c0.04,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.48-0.41l0.69-3.45c0.59-0.24,1.12-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.2,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z">
+            </path>
+        </svg>
+    </button>
+
+    <button class="save-btn" id="saveBtn" onclick="SaveHistory(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M17 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.9L19 7.1V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M8 8H16V10H8V8Z">
+            </path>
+        </svg>
+    </button>
+
+    <div class="modal settings-modal" id="settingsModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-light">Настройки игры</h4>
+                    <button type="button" class="close-btn" onclick="closeModal('settingsModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-info">Уберите галочку с тех тем, которые вы не хотите использовать в игре.</p>
+                    <p class="text-warning">Отмечено <span class="text-danger" id="checked_themes_txt">?</span> тем.
+                    </p>
+                    <div class="btn-group" style="margin-top: 2rem;">
+                        <a class="btn text-success" onclick="LoadHistory()">Загрузить историю</a>
+                        <a class="btn text-danger" onclick="ClearHistory()">Очистить историю</a>
+                        <a class="btn text-info" onclick="AddTheme()">Добавить тему</a>
+                    </div>
+                    <table class="table table-bordered text-light text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">Тема</th>
+                                <th scope="col">Использовать
+                                    <br>
+                                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+                                        <a class="btn text-danger" id="btn_off" onclick="ActivateThemes(0)">0</a>
+                                        /
+                                        <a class="btn text-success" id="btn_on" onclick="ActivateThemes(1)">1</a>
+                                    </div>
+                                </th>
+                                <th scope="col">Удалить</th>
+                            </tr>
+                        </thead>
+                        <tbody id="themes_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_theme">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-light">Вопрос №<span class="text-danger" id="number_game_text"></span>
+                    </h4>
+                    <button type="button" class="close-btn" onclick="closeModal('modal_theme')">×</button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-info">Тип игры: <span class="text-primary" id="type_game_text"></span></h4>
+                    <h4 class="text-info">Тема: <span class="text-accent" id="theme_game_text"></span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_notification">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal_head"></h4>
+                    <button type="button" class="close-btn" onclick="closeModal('modal_notification')">×</button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-light" id="modal_text"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_confirm">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-light" id="confirm_title">Подтверждение</h4>
+                    <button type="button" class="close-btn" onclick="closeConfirmModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-light" id="confirm_text"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Отмена</button>
+                    <button type="button" class="btn btn-danger" id="confirm_btn">Да, уверен</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal_prompt">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-light" id="prompt_title">Введите данные</h4>
+                    <button type="button" class="close-btn" onclick="closePromptModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-light" id="prompt_text"></h4>
+                    <input type="text" id="prompt_input" class="form-control"
+                        style="width: 100%; padding: 10px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.1); color: var(--light);">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePromptModal()">Отмена</button>
+                    <button type="button" class="btn btn-success" id="prompt_btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Редизайн сайта выполнил «Qwen 3» под руководством «MylnikCode».
+    </div>
+
+    <script>
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            setTimeout(() => {
+                document.getElementById(modalId).style.display = 'none';
+            }, 300);
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById(modalId).classList.add('show');
+            }, 10);
+        }
+
+        function showConfirm(message, callback) {
+            document.getElementById('confirm_text').textContent = message;
+            document.getElementById('confirm_btn').onclick = function () {
+                closeModal('modal_confirm');
+                callback(true);
+            };
+            showModal('modal_confirm');
+        }
+
+        function closeConfirmModal() {
+            closeModal('modal_confirm');
+        }
+
+        function showPrompt(title, message, callback) {
+            document.getElementById('prompt_title').textContent = title;
+            document.getElementById('prompt_text').textContent = message;
+            document.getElementById('prompt_input').value = '';
+            document.getElementById('prompt_btn').onclick = function () {
+                const value = document.getElementById('prompt_input').value;
+                closeModal('modal_prompt');
+                callback(value);
+            };
+            showModal('modal_prompt');
+        }
+
+        function closePromptModal() {
+            closeModal('modal_prompt');
+        }
+
+        function showSettings() {
+            if (!play) {
+                showModal('settingsModal');
+            }
+        }
+
+        document.getElementById('settingsModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal('settingsModal');
+            }
+        });
+
+        function hideSettings() {
+            document.getElementById('settingsBtn').style.display = 'none';
+            document.getElementById('saveBtn').classList.add('show');
+            showTooltip();
+        }
+
+        function showTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.add('show');
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 5000);
+        }
+
+        let play = false;
+        let load_history = false;
+        let number = 1;
+        let players = [];
+
+        function AddPlayer() {
+            showPrompt("Добавить игрока", "Введите имя игрока:", function (name) {
+                if (name && name.trim() !== "") {
+                    let table = document.getElementById("players");
+                    let tr = document.createElement("tr");
+                    tr.id = `player${number}`;
+                    tr.style.opacity = '0';
+                    tr.style.transform = 'translateY(20px)';
+                    tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">0</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 20px; padding: 6px 12px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 20px; padding: 6px 12px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 20px; padding: 6px 12px;">0</a></td><td><button class="delete-btn" onclick="DeletePlayer(${number})"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></td>`;
+                    table.appendChild(tr);
+                    setTimeout(() => {
+                        tr.style.opacity = '1';
+                        tr.style.transform = 'translateY(0)';
+                    }, 10);
+                    players.push(number);
+                    number++;
+                }
+            });
+        }
+
+        function DeletePlayer(num) {
+            let name = document.getElementById(`name${num}`).innerHTML;
+            showConfirm(`Удалить игрока «${name}»?`, function (confirmed) {
+                if (confirmed) {
+                    let playerElement = document.getElementById(`player${num}`);
+                    playerElement.style.opacity = '0';
+                    playerElement.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        playerElement.remove();
+                        let num_index = players.indexOf(num);
+                        if (num_index > -1) {
+                            players.splice(num_index, 1);
+                        }
+                    }, 300);
+                }
+            });
+        }
+
+        function Operation(oper, num) {
+            let now_score = document.getElementById(`score${num}`).innerHTML;
+            let score = 0;
+            if (oper == "+") {
+                score = Number(now_score) + 1;
+            } else if (oper == "-") {
+                score = Number(now_score) - 1;
+                if (score < 0) {
+                    score = 0;
+                }
+            } else if (oper == "0") {
+                score = 0;
+            }
+            const scoreElement = document.getElementById(`score${num}`);
+            scoreElement.style.transform = 'scale(1.2)';
+            scoreElement.style.color = oper === '+' ? '#10b981' : (oper === '-' ? '#ef4444' : '#f59e0b');
+            setTimeout(() => {
+                scoreElement.style.transform = 'scale(1)';
+                scoreElement.style.color = '#06b6d4';
+            }, 200);
+            document.getElementById(`score${num}`).innerHTML = score;
+            let scores = [];
+            let zero = 0;
+            for (let i = 0; i < players.length; i++) {
+                document.getElementById(`name${players[i]}`).classList.remove("text-warning", "text-danger", "text-light");
+                document.getElementById(`name${players[i]}`).classList.add("text-light");
+                scores.push(document.getElementById(`score${players[i]}`).innerHTML);
+                if (Number(document.getElementById(`score${players[i]}`).innerHTML) == 0) zero++;
+            }
+            let max = Math.max.apply(null, scores);
+            let min = Math.min.apply(null, scores);
+            for (let i = 0; i < players.length; i++) {
+                let now_score = Number(document.getElementById(`score${players[i]}`).innerHTML);
+                if (scores.length == zero) {
+                    document.getElementById(`name${players[i]}`).classList.add("text-light");
+                } else if (now_score == max) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light", "text-danger");
+                    document.getElementById(`name${players[i]}`).classList.add("text-warning");
+                } else if (now_score == min) {
+                    document.getElementById(`name${players[i]}`).classList.remove("text-light", "text-warning");
+                    document.getElementById(`name${players[i]}`).classList.add("text-danger");
+                }
+            }
+        }
+
+        function RND(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function LoadHistory() {
+            let array = localStorage.getItem("history_themes_associations");
+            for (let i = 0; i < themes.length; i++) {
+                if (array && array.includes(themes[i])) {
+                    document.getElementById(`theme_${i}`).checked = false;
+                    used_themes.push(themes[i]);
+                }
+            }
+            let players_list = JSON.parse(localStorage.getItem("history_players_associations"));
+            if (players_list) {
+                for (let i = 0; i < players_list.length; i++) {
+                    let name = players_list[i][0];
+                    let score = players_list[i][1];
+                    let table = document.getElementById("players");
+                    let tr = document.createElement("tr");
+                    tr.id = `player${number}`;
+                    tr.style.opacity = '0';
+                    tr.style.transform = 'translateY(20px)';
+                    tr.innerHTML = `<th class="text-light" id="name${number}">${name}</th><td class="text-info" id="score${number}">${score}</td><td><a class="btn text-success" onclick="Operation('+', ${number})" style="font-size: 20px; padding: 6px 12px;">+</a><a class="btn text-danger" onclick="Operation('-', ${number})" style="font-size: 20px; padding: 6px 12px;">-</a><a class="btn text-warning" onclick="Operation('0', ${number})" style="font-size: 20px; padding: 6px 12px;">0</a></td><td><button class="delete-btn" onclick="DeletePlayer(${number})"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></td>`;
+                    table.appendChild(tr);
+                    setTimeout(() => {
+                        tr.style.opacity = '1';
+                        tr.style.transform = 'translateY(0)';
+                    }, 10 * i);
+                    players.push(number);
+                    number++;
+                }
+            }
+            document.getElementById("modal_head").className = "text-success";
+            document.getElementById("modal_head").innerHTML = "Успешно!";
+            document.getElementById("modal_text").innerHTML = "Данные из истории загружены.";
+            showModal("modal_notification");
+            document.getElementById("btn_load").style.display = "none";
+            load_history = true;
+            ChangeCheck();
+        }
+
+        function SaveHistory(message) {
+            if (play) {
+                localStorage.setItem("history_themes_associations", used_themes.join(','));
+                let players_list = [];
+                for (let i = 0; i < players.length; i++) {
+                    let name = document.getElementById(`name${players[i]}`).innerHTML;
+                    let score = document.getElementById(`score${players[i]}`).innerHTML;
+                    let player = [name, score];
+                    players_list.push(player);
+                }
+                localStorage.setItem("history_players_associations", JSON.stringify(players_list));
+                if (message == 1) {
+                    document.getElementById("modal_head").className = "text-success";
+                    document.getElementById("modal_head").innerHTML = "Успешно!";
+                    document.getElementById("modal_text").innerHTML = "Данные сохранены в историю.";
+                    showModal("modal_notification");
+                }
+            } else {
+                if (message == 1) {
+                    document.getElementById("modal_head").className = "text-danger";
+                    document.getElementById("modal_head").innerHTML = "Ошибка!";
+                    document.getElementById("modal_text").innerHTML = "Для начала начните игру.";
+                    showModal("modal_notification");
+                }
+            }
+        }
+
+        function ClearHistory() {
+            showConfirm("Очистить историю?", function (confirmed) {
+                if (confirmed) {
+                    localStorage.removeItem("history_themes_associations");
+                    localStorage.removeItem("history_players_associations");
+                    document.getElementById("modal_head").className = "text-success";
+                    document.getElementById("modal_head").innerHTML = "Успешно!";
+                    document.getElementById("modal_text").innerHTML = "Данные истории удалены.";
+                    showModal("modal_notification");
+                }
+            });
+        }
+
+        function AddTheme() {
+            showPrompt("Добавить тему", "Введите новую тему:", function (str) {
+                if (str && str.trim() !== "") {
+                    let array = JSON.parse(localStorage.getItem("themes_associations"));
+                    if (array == null) {
+                        let arr = [];
+                        localStorage.setItem("themes_associations", JSON.stringify(arr));
+                        array = [];
+                    }
+                    array.push(str);
+                    localStorage.setItem("themes_associations", JSON.stringify(array));
+                    document.getElementById("modal_head").className = "text-success";
+                    document.getElementById("modal_head").innerHTML = "Успешно!";
+                    document.getElementById("modal_text").innerHTML = `Новая тема «${str}» сохранена на вашем устройстве!`;
+                    showModal("modal_notification");
+                    UpdateThemes();
+                }
+            });
+        }
+
+        let const_themes = [
+            "Марки автомобилей",
+            "Бренды смартфонов",
+            "Бренды одежды",
+            "Школьные уроки",
+            "Вещи в сумке у девушек",
+            "Вещи в сумке у школьника",
+            "Средства передвижения",
+            "Города на букву «К»",
+            "Страны",
+            "Слова на букву «Щ»",
+            "Буквы русского алфавита",
+            "Аббревиатуры",
+            "Русские актёры (мужского пола)",
+            "Русские актрисы",
+            "Стендап-комики (любой пол, любая нацианальность)",
+            "Блогеры (любой пол, любая нацианальность)",
+            "Русские рок-группы",
+            "Музыкальные инструменты",
+            "Знаменитый Александр (написать фамилию)",
+            "Знаменитый Олег (написать фамилию)",
+            "Знаменитый Никита (написать фамилию)",
+            "Знаменитая Екатерина (написать фамилию)",
+            "Знаменитая Ольга (написать фамилию)",
+            "Знаменитая Ирина (написать фамилию)",
+            "Породы собак",
+            "Породы кошек",
+            "Фрукты",
+            "Овощи",
+            "Салаты",
+            "Знаки зодиака",
+            "Элементы из таблицы Менделеева",
+            "ТВ-каналы",
+            "Бытовые электроприборы",
+            "Виды кофе",
+            "Женское имя",
+            "Мужское имя",
+            "Компьютерные игры",
+            "Приложения в телефоне (невстроенные)",
+            "Цветы",
+            "Птицы",
+            "Рыбы",
+            "Деревья",
+            "Грибы",
+            "Праздники",
+            "Связано с Новым Годом",
+            "Виды спорта",
+            "Русские футбольные команды",
+            "Жанры фильмов",
+            "Кинорежиссёры (любой пол, любая нацианальность)",
+            "Сериалы производства ТНТ",
+            "Фильмы с Джеки Чаном",
+            "Фильмы с Леонардо Ди Каприо",
+            "Мультфильмы",
+            "Фильмы ужасов",
+            "Учёные-физики (любой пол, любая нацианальность)",
+            "Песни группы «Король и Шут»",
+            "Шоу «Medium Quality»",
+            "Моря",
+            "Резиденты «Comedy Club» (за всё время)",
+            "Денежные единицы",
+            "Телеведущие (мужчины)",
+            "Телеведущие (женщины)",
+            "Улицы в Калининграде",
+            "Станции метро Москвы",
+            "Достопримечательности Санкт-Петербурга"
+        ];
+        let themes = [];
+        UpdateThemes();
+        let checked_themes = [];
+        let used_themes = [];
+        let number_themes = 1;
+
+        function ActivateThemes(num) {
+            if (num == 0) {
+                for (let i = 0; i < themes.length; i++) {
+                    document.getElementById(`theme_${i}`).checked = false;
+                }
+            } else {
+                for (let i = 0; i < themes.length; i++) {
+                    document.getElementById(`theme_${i}`).checked = true;
+                }
+            }
+            ChangeCheck();
+        }
+
+        function DefaultThemes() {
+            themes = [];
+            for (let i = 0; i < const_themes.length; i++) {
+                themes.push(const_themes[i]);
+            }
+            document.getElementById("themes_list").innerHTML = "";
+            window.number_themes = 1;
+            for (let i = 0; i < themes.length; i++) {
+                let table = document.getElementById("themes_list");
+                let tr = document.createElement("tr");
+                tr.style.opacity = '0';
+                tr.style.transform = 'translateY(10px)';
+                tr.innerHTML = `<td>${window.number_themes}</td><td>${themes[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" onchange="ChangeCheck()" checked></div></td><td><button class="delete-btn" onclick="DeleteTheme(${window.number_themes - 1})"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></td>`;
+                table.appendChild(tr);
+                setTimeout(() => {
+                    tr.style.opacity = '1';
+                    tr.style.transform = 'translateY(0)';
+                }, 20 * i);
+                window.number_themes++;
+            }
+        }
+
+        function UpdateThemes() {
+            let array = JSON.parse(localStorage.getItem("themes_associations"));
+            DefaultThemes();
+            if (array != null) {
+                for (let i = 0; i < array.length; i++) {
+                    themes.push(array[i]);
+                    let table = document.getElementById("themes_list");
+                    let tr = document.createElement("tr");
+                    tr.style.opacity = '0';
+                    tr.style.transform = 'translateY(10px)';
+                    tr.innerHTML = `<td>${window.number_themes}</td><td>${array[i]}</td><td><div class="form-check"><input class="form-check-input" type="checkbox" id="theme_${window.number_themes - 1}" onchange="ChangeCheck()" checked></div></td><td><button class="delete-btn" onclick="DeleteTheme(${window.number_themes - 1})"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></td>`;
+                    table.appendChild(tr);
+                    setTimeout(() => {
+                        tr.style.opacity = '1';
+                        tr.style.transform = 'translateY(0)';
+                    }, 20 * (window.number_themes - 1));
+                    window.number_themes++;
+                }
+            }
+            ChangeCheck();
+        }
+
+        function ChangeCheck() {
+            let num_themes = 0;
+            for (let i = 0; i < themes.length; i++) {
+                if (document.getElementById(`theme_${i}`).checked) {
+                    num_themes++;
+                }
+            }
+            document.getElementById("checked_themes_txt").innerHTML = num_themes;
+        }
+
+        function DeleteTheme(index) {
+            let el = themes[index];
+            showConfirm(`Удалить тему «${el}»?`, function (confirmed) {
+                if (confirmed) {
+                    let array = JSON.parse(localStorage.getItem("themes_associations"));
+                    let num = 0;
+                    for (let i = 0; i < array.length; i++) {
+                        if (array[i] == el) {
+                            num = i;
+                        }
+                    }
+                    array.splice(num, 1);
+                    localStorage.setItem("themes_associations", JSON.stringify(array));
+                    document.getElementById("modal_head").className = "text-success";
+                    document.getElementById("modal_head").innerHTML = "Успешно!";
+                    document.getElementById("modal_text").innerHTML = `Тема «${el}» удалена с устройства!`;
+                    showModal("modal_notification");
+                    UpdateThemes();
+                }
+            });
+        }
+
+        let count_levels = 1;
+        let max_levels = themes.length;
+        document.getElementById("max_levels_span").innerHTML = const_themes.length;
+
+        function GenerateCard() {
+            if (count_levels == 1) {
+                if (localStorage.getItem("history_themes_associations") != null && load_history == false) {
+                    showConfirm("У вас есть сохранения в истории. Вы действительно хотите начать игру сначала? История будет перезаписана.", function (confirmed) {
+                        if (confirmed) {
+                            startGame();
+                        }
+                    });
+                    return;
+                }
+                startGame();
+                return;
+            }
+
+            if (count_levels <= max_levels) {
+                generateRound();
+            } else {
+                document.getElementById("modal_head").className = "text-danger";
+                document.getElementById("modal_head").innerHTML = "Игра окончена!";
+                document.getElementById("modal_text").innerHTML = "Тем больше нет.";
+                showModal("modal_notification");
+            }
+        }
+
+        function startGame() {
+            for (let i = 0; i < themes.length; i++) {
+                if (document.getElementById(`theme_${i}`).checked) {
+                    checked_themes.push(themes[i]);
+                }
+            }
+            max_levels = checked_themes.length;
+            hideSettings();
+            play = true;
+            generateRound();
+        }
+
+        function generateRound() {
+            type = RND(1, 3);
+            type_game = "";
+            if (type == 1) {
+                type_game = "Совпадение";
+            } else if (type == 2) {
+                type_game = "Несовпадение";
+            }
+            theme_number = RND(0, checked_themes.length);
+            theme = checked_themes[theme_number];
+            checked_themes.splice(theme_number, 1);
+            document.getElementById("number_game_text").innerHTML = count_levels;
+            document.getElementById("type_game_text").innerHTML = type_game;
+            document.getElementById("theme_game_text").innerHTML = theme;
+            showModal("modal_theme");
+            count_levels++;
+            used_themes.push(theme);
+        }
+
+        setInterval(function () {
+            SaveHistory();
+        }, 2000);
+
+        ChangeCheck();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>
